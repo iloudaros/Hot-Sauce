@@ -543,9 +543,9 @@ goto find_rule; \
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "zektsik.l"
+#line 1 "hotsauce.l"
 #define INITIAL 0
-#line 4 "zektsik.l"
+#line 4 "hotsauce.l"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -700,7 +700,7 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 25 "zektsik.l"
+#line 25 "hotsauce.l"
 
 
 #line 707 "lex.yy.c"
@@ -796,276 +796,276 @@ do_action:	/* This label is used only to access EOF actions. */
 	{ /* beginning of action switch */
 case 1:
 YY_RULE_SETUP
-#line 27 "zektsik.l"
-{return KEY_PLUS;}
+#line 27 "hotsauce.l"
+{printtokens(KEY_PLUS); return KEY_PLUS;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 28 "zektsik.l"
-{return KEY_MIN;}
+#line 28 "hotsauce.l"
+{printtokens(KEY_MIN); return KEY_MIN;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 29 "zektsik.l"
-{return KEY_MUL;}
+#line 29 "hotsauce.l"
+{printtokens(KEY_MUL); return KEY_MUL;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 30 "zektsik.l"
-{return KEY_DIV;}
+#line 30 "hotsauce.l"
+{printtokens(KEY_DIV); return KEY_DIV;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 31 "zektsik.l"
-{return KEY_POWER;}
+#line 31 "hotsauce.l"
+{printtokens(KEY_POWER); return KEY_POWER;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 32 "zektsik.l"
-{return KEY_EQUAL;}
+#line 32 "hotsauce.l"
+{printtokens(KEY_EQUAL); return KEY_EQUAL;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 33 "zektsik.l"
-{return KEY_NOTEQUAL;}
+#line 33 "hotsauce.l"
+{printtokens(KEY_NOTEQUAL); return KEY_NOTEQUAL;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 34 "zektsik.l"
-{return KEY_LAND;}
+#line 34 "hotsauce.l"
+{printtokens(KEY_LAND); return KEY_LAND;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 35 "zektsik.l"
-{return KEY_LOR;}
+#line 35 "hotsauce.l"
+{printtokens(KEY_LOR); return KEY_LOR;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 36 "zektsik.l"
-{return KEY_COLON;}
+#line 36 "hotsauce.l"
+{printtokens(KEY_COLON); return KEY_COLON;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 37 "zektsik.l"
-{return KEY_DOT;}
+#line 37 "hotsauce.l"
+{printtokens(KEY_DOT); return KEY_DOT;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 38 "zektsik.l"
-{return KEY_SEMICOLON;}
+#line 38 "hotsauce.l"
+{printtokens(KEY_SEMICOLON); return KEY_SEMICOLON;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 39 "zektsik.l"
-{return KEY_COMMA;}
+#line 39 "hotsauce.l"
+{printtokens(KEY_COMMA); return KEY_COMMA;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 40 "zektsik.l"
-{return KEY_PARL;}
+#line 40 "hotsauce.l"
+{printtokens(KEY_PARL); return KEY_PARL;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 41 "zektsik.l"
-{return KEY_PARR;}
+#line 41 "hotsauce.l"
+{printtokens(KEY_PARR); return KEY_PARR;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 42 "zektsik.l"
-{return KEY_BRACKETL;}
+#line 42 "hotsauce.l"
+{printtokens(KEY_BRACKETL); return KEY_BRACKETL;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 43 "zektsik.l"
-{return KEY_BRACKETR;}
+#line 43 "hotsauce.l"
+{printtokens(KEY_BRACKETR); return KEY_BRACKETR;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 44 "zektsik.l"
-{return KEY_CURLYL;}
+#line 44 "hotsauce.l"
+{printtokens(KEY_CURLYL); return KEY_CURLYL;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 45 "zektsik.l"
-{return KEY_CURLYR;}
+#line 45 "hotsauce.l"
+{printtokens(KEY_CURLYR); return KEY_CURLYR;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 46 "zektsik.l"
-{return KEY_PROGRAM;}
+#line 46 "hotsauce.l"
+{printtokens(KEY_PROGRAM); return KEY_PROGRAM;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 47 "zektsik.l"
-{return KEY_FUNCTION;}
+#line 47 "hotsauce.l"
+{printtokens(KEY_FUNCTION); return KEY_FUNCTION;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 48 "zektsik.l"
-{return KEY_ENDFUNCTION;}
+#line 48 "hotsauce.l"
+{printtokens(KEY_ENDFUNCTION); return KEY_ENDFUNCTION;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 49 "zektsik.l"
-{return KEY_VARS;}
+#line 49 "hotsauce.l"
+{printtokens(KEY_VARS); return KEY_VARS;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 50 "zektsik.l"
-{return KEY_CHAR;}
+#line 50 "hotsauce.l"
+{printtokens(KEY_CHAR); return KEY_CHAR;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 51 "zektsik.l"
-{return KEY_INT;}
+#line 51 "hotsauce.l"
+{printtokens(KEY_INT); return KEY_INT;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 52 "zektsik.l"
-{return KEY_RETURN;}
+#line 52 "hotsauce.l"
+{printtokens(KEY_RETURN); return KEY_RETURN;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 53 "zektsik.l"
-{return KEY_MAIN;}
+#line 53 "hotsauce.l"
+{printtokens(KEY_MAIN); return KEY_MAIN;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 54 "zektsik.l"
-{return KEY_ENDMAIN;}
+#line 54 "hotsauce.l"
+{printtokens(KEY_ENDMAIN); return KEY_ENDMAIN;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 55 "zektsik.l"
-{return KEY_WHILE;}
+#line 55 "hotsauce.l"
+{printtokens(KEY_WHILE); return KEY_WHILE;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 56 "zektsik.l"
-{return KEY_ENDWHILE;}
+#line 56 "hotsauce.l"
+{printtokens(KEY_ENDWHILE); return KEY_ENDWHILE;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 57 "zektsik.l"
-{return KEY_AND;}
+#line 57 "hotsauce.l"
+{printtokens(KEY_AND); return KEY_AND;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 58 "zektsik.l"
-{return KEY_OR;}
+#line 58 "hotsauce.l"
+{printtokens(KEY_OR); return KEY_OR;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 59 "zektsik.l"
-{return KEY_FOR;}
+#line 59 "hotsauce.l"
+{printtokens(KEY_FOR); return KEY_FOR;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 60 "zektsik.l"
-{return KEY_TO;}
+#line 60 "hotsauce.l"
+{printtokens(KEY_TO); return KEY_TO;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 61 "zektsik.l"
-{return KEY_STEP;}
+#line 61 "hotsauce.l"
+{printtokens(KEY_STEP); return KEY_STEP;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 62 "zektsik.l"
-{return KEY_ENDFOR;}
+#line 62 "hotsauce.l"
+{printtokens(KEY_ENDFOR); return KEY_ENDFOR;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 63 "zektsik.l"
-{return KEY_IF;}
+#line 63 "hotsauce.l"
+{printtokens(KEY_IF); return KEY_IF;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 64 "zektsik.l"
-{return KEY_THEN;}
+#line 64 "hotsauce.l"
+{printtokens(KEY_THEN); return KEY_THEN;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 65 "zektsik.l"
-{return KEY_ELSEIF;}
+#line 65 "hotsauce.l"
+{printtokens(KEY_ELSEIF); return KEY_ELSEIF;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 66 "zektsik.l"
-{return KEY_ELSE;}
+#line 66 "hotsauce.l"
+{printtokens(KEY_ELSE); return KEY_ELSE;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 67 "zektsik.l"
-{return KEY_ENDIF;}
+#line 67 "hotsauce.l"
+{printtokens(KEY_ENDIF); return KEY_ENDIF;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 68 "zektsik.l"
-{return KEY_SWITCH;}
+#line 68 "hotsauce.l"
+{printtokens(KEY_SWITCH); return KEY_SWITCH;}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 69 "zektsik.l"
-{return KEY_CASE;}
+#line 69 "hotsauce.l"
+{printtokens(KEY_CASE); return KEY_CASE;}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 70 "zektsik.l"
-{return KEY_DEFAULT;}
+#line 70 "hotsauce.l"
+{printtokens(KEY_DEFAULT); return KEY_DEFAULT;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 71 "zektsik.l"
-{return KEY_ENDSWITCH;}
+#line 71 "hotsauce.l"
+{printtokens(KEY_ENDSWITCH); return KEY_ENDSWITCH;}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 72 "zektsik.l"
-{return KEY_PRINT;}
+#line 72 "hotsauce.l"
+{printtokens(KEY_PRINT); return KEY_PRINT;}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 73 "zektsik.l"
-{return KEY_BREAK;}
+#line 73 "hotsauce.l"
+{printtokens(KEY_BREAK); return KEY_BREAK;}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 74 "zektsik.l"
-{return KEY_BOOLEAN;}
+#line 74 "hotsauce.l"
+{printtokens(KEY_BOOLEAN); return KEY_BOOLEAN;}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 75 "zektsik.l"
-{return KEY_LETTER;}
+#line 75 "hotsauce.l"
+{printtokens(KEY_LETTER); return KEY_LETTER;}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 76 "zektsik.l"
-{return KEY_NUM;}
+#line 76 "hotsauce.l"
+{printtokens(KEY_NUM); return KEY_NUM;}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 77 "zektsik.l"
-{return KEY_FLOAT;}
+#line 77 "hotsauce.l"
+{printtokens(KEY_FLOAT); return KEY_FLOAT;}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 78 "zektsik.l"
-{return KEY_ALPHANUM;}
+#line 78 "hotsauce.l"
+{printtokens(KEY_ALPHANUM); return KEY_ALPHANUM;}
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 79 "zektsik.l"
-{return KEY_WS;}
+#line 79 "hotsauce.l"
+{printtokens(KEY_WS); return KEY_WS;}
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 80 "zektsik.l"
-{return KEY_EOF;}
+#line 80 "hotsauce.l"
+{printtokens(KEY_EOF); return KEY_EOF;}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 81 "zektsik.l"
+#line 81 "hotsauce.l"
 ECHO;
 	YY_BREAK
 #line 1072 "lex.yy.c"
@@ -1950,7 +1950,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 81 "zektsik.l"
+#line 81 "hotsauce.l"
 
 
 int main(int argc, char *argv[]) {
