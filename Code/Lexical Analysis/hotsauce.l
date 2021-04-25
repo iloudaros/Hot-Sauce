@@ -14,13 +14,10 @@ digit [0-9]
 letter [a-zA-Z]
 ws [\t\n\r]
 
-boolean ("True"|"False")
 escaped_string (\\.|[^\"])*
-
 num {digit}+
-string {letter}+
-alphanumeric ({string}|{num})*
-float {num}"."{num}
+
+
 
 %%
 
@@ -29,6 +26,8 @@ float {num}"."{num}
 "*"             {printtokens(KEY_MUL); return KEY_MUL;}
 "/"             {printtokens(KEY_DIV); return KEY_DIV;}
 "^"             {printtokens(KEY_POWER); return KEY_POWER;}
+">"             {printtokens(KEY_GREATER); return KEY_GREATER;}
+"<"             {printtokens (KEY_LESS); return KEY_LESS;}
 "="             {printtokens(KEY_EQUAL); return KEY_EQUAL;}
 "!="            {printtokens(KEY_NOTEQUAL); return KEY_NOTEQUAL;}
 "&&"            {printtokens(KEY_LAND); return KEY_LAND;}
@@ -71,11 +70,8 @@ float {num}"."{num}
 "ENDSWITCH"     {printtokens(KEY_ENDSWITCH); return KEY_ENDSWITCH;}
 "PRINT"         {printtokens(KEY_PRINT); return KEY_PRINT;}
 "BREAK"         {printtokens(KEY_BREAK); return KEY_BREAK;}
-{boolean}       {printtokens(KEY_BOOLEAN); return KEY_BOOLEAN;}
-{letter}+       {printtokens(KEY_LETTER); return KEY_LETTER;}
+{letter}        {printtokens(KEY_LETTER); return KEY_LETTER;}
 {num}           {printtokens(KEY_NUM); return KEY_NUM;}
-{num}"."{num}	        {printtokens(KEY_FLOAT); return KEY_FLOAT;}
-{alphanumeric}  {printtokens(KEY_ALPHANUM); return KEY_ALPHANUM;}
 {ws}            {printtokens(KEY_WS); return KEY_WS;}
 <<EOF>>         {printtokens(KEY_EOF); return KEY_EOF;}
 %%
