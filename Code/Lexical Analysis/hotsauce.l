@@ -12,7 +12,7 @@
 
 digit [0-9]
 letter [a-zA-Z]
-ws [\t\n\r]
+ws [ \t\n\r]
 
 escaped_string (\\.|[^\"])*
 num {digit}+
@@ -27,8 +27,9 @@ num {digit}+
 "/"             {printtokens(KEY_DIV); return KEY_DIV;}
 "^"             {printtokens(KEY_POWER); return KEY_POWER;}
 ">"             {printtokens(KEY_GREATER); return KEY_GREATER;}
-"<"             {printtokens (KEY_LESS); return KEY_LESS;}
-"="             {printtokens(KEY_EQUAL); return KEY_EQUAL;}
+"<"             {printtokens(KEY_LESS); return KEY_LESS;}
+"="             {printtokens(KEY_ASSIGN); return KEY_ASSIGN;}
+"=="            {printtokens(KEY_EQUAL); return KEY_EQUAL;}
 "!="            {printtokens(KEY_NOTEQUAL); return KEY_NOTEQUAL;}
 "&&"            {printtokens(KEY_LAND); return KEY_LAND;}
 "||"            {printtokens(KEY_LOR); return KEY_LOR;}
