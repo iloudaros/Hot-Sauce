@@ -13,10 +13,10 @@
 digit [0-9]
 letter [a-zA-Z]
 ws [ \t\n\r]
+varname ^[a-zA-Z_$][a-zA-Z_$0-9]*$
 
 escaped_string (\\.|[^\"])*
 num {digit}+
-
 
 
 %%
@@ -71,7 +71,7 @@ num {digit}+
 "ENDSWITCH"     {printtokens(KEY_ENDSWITCH); return KEY_ENDSWITCH;}
 "PRINT"         {printtokens(KEY_PRINT); return KEY_PRINT;}
 "BREAK"         {printtokens(KEY_BREAK); return KEY_BREAK;}
-^[a-zA-Z_$][a-zA-Z_$0-9]*$ {printtokens(VAR_NAME); return VAR_NAME;}
+{varname}       {printtokens(VAR_NAME); return VAR_NAME;}
 {letter}        {printtokens(KEY_LETTER); return KEY_LETTER;}
 {num}           {printtokens(KEY_NUM); return KEY_NUM;}
 {ws}            {printtokens(KEY_WS); return KEY_WS;}
