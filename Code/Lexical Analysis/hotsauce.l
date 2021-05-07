@@ -43,6 +43,7 @@ num {digit}+
 "]"             {printtokens(KEY_BRACKETR); return KEY_BRACKETR;}
 "{"             {printtokens(KEY_CURLYL); return KEY_CURLYL;}
 "}"             {printtokens(KEY_CURLYR); return KEY_CURLYR;}
+"%"             {printtokens(KEY_COMMEND); return KEY_COMMEND;}
 "PROGRAM"       {printtokens(KEY_PROGRAM); return KEY_PROGRAM;}
 "FUNCTION"      {printtokens(KEY_FUNCTION); return KEY_FUNCTION;}
 "END_FUNCTION"  {printtokens(KEY_ENDFUNCTION); return KEY_ENDFUNCTION;}
