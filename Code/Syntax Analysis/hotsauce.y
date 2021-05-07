@@ -102,10 +102,16 @@ vardeclaration: KEY_VARS variables;
 
 
 //Εντολές
-aexpression:
+aexpression: aexpression aoperator aexpression
+| KEY_PARL aexpression KEY_PARR 
+| KEY_NUM
+| VAR_NAME
+| KEY_MIN aexpression
 ;
 
-lexpression:
+lexpression: aexpression
+| lexpression loperator lexpression
+| KEY_PARL lexpression KEY_PARR
 ;
 
 assignmnet: VAR_NAME "=" keynumber ";"
