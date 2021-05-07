@@ -65,9 +65,9 @@ type: KEY_CHAR
 | KEY_INT
 ;
 
-variable: type VAR_NAME ";";
+variable: type VAR_NAME KEY_SEMICOLON;
 
-array: variable "[" KEY_NUM "]" ;
+array: variable KEY_BRACKETL KEY_NUM KEY_BRACKETR ;
 
 variables: variable
 | array
@@ -93,9 +93,9 @@ loperator: KEY_LOR
 
 
 //Δηλώσεις
-programtitle: KEY_PROGRAM string "\n" ;
+programtitle: KEY_PROGRAM string NEWLINE ;
 
-funcdeclaration: KEY_FUNCTION string "(" variables ")" ";" ;
+funcdeclaration: KEY_FUNCTION string KEY_PARL variables KEY_PARR KEY_SEMICOLON ;
 
 vardeclaration: KEY_VARS variables;
 
@@ -103,7 +103,7 @@ vardeclaration: KEY_VARS variables;
 
 //Εντολές
 aexpression: aexpression aoperator aexpression
-| KEY_PARL aexpression KEY_PARR 
+| KEY_PARL aexpression KEY_PARR
 | KEY_NUM
 | VAR_NAME
 | KEY_MIN aexpression
@@ -114,43 +114,43 @@ lexpression: aexpression
 | KEY_PARL lexpression KEY_PARR
 ;
 
-assignmnet: VAR_NAME "=" keynumber ";"
-|VAR_NAME "=" keynumber ";"
+assignmnet: VAR_NAME KEY_ASSIGN keynumber KEY_SEMICOLON
+|VAR_NAME KEY_ASSIGN keynumber KEY_SEMICOLON
 ;
 
-printstatement: KEY_PRINT "(" string ")" ";"
-| KEY_PRINT "(" string "[" VAR_NAME "]" ")" ";"
+printstatement: KEY_PRINT KEY_PARL string KEY_PARR KEY_SEMICOLON
+| KEY_PRINT KEY_PARL string KEY_BRACKETL VAR_NAME KEY_BRACKETR KEY_PARR KEY_SEMICOLON
 ;
 
 
 
 //Δομές Επανάληψης
-while: KEY_WHILE "(" lexpression ")" "\n" code "\n" KEY_ENDWHILE ;
+while: KEY_WHILE KEY_PARL lexpression KEY_PARR NEWLINE code NEWLINE KEY_ENDWHILE ;
 
-for: KEY_FOR KEY_NUM KEY_TO KEY_NUM KEY_STEP KEY_NUM "\n" code "\n" KEY_ENDFOR ;
+for: KEY_FOR KEY_NUM KEY_TO KEY_NUM KEY_STEP KEY_NUM NEWLINE code NEWLINE KEY_ENDFOR ;
 
 
 
 //Δομές Απόφασης
-if: KEY_IF "(" lexpression ")" KEY_THEN code elseif else KEY_ENDIF;
+if: KEY_IF KEY_PARL lexpression KEY_PARR KEY_THEN code elseif else KEY_ENDIF;
 
-elseif: elseif KEY_ELSEIF "(" lexpression ")" code
-| KEY_ELSEIF "(" lexpression ")" code
+elseif: elseif KEY_ELSEIF KEY_PARL lexpression KEY_PARR code
+| KEY_ELSEIF KEY_PARL lexpression KEY_PARR code
 | /* empty */
 ;
 
-else: KEY_ELSE "(" lexpression ")" code
+else: KEY_ELSE KEY_PARL lexpression KEY_PARR code
 | /* empty */
 ;
 
-switch: KEY_SWITCH "(" lexpression ")" "\n" case default KEY_ENDSWITCH;
+switch: KEY_SWITCH KEY_PARL lexpression KEY_PARR NEWLINE case default KEY_ENDSWITCH;
 
-case: case KEY_CASE "(" lexpression ")" code
-| KEY_CASE "(" lexpression ")" code
+case: case KEY_CASE KEY_PARL lexpression KEY_PARR code
+| KEY_CASE KEY_PARL lexpression KEY_PARR code
 | /* empty */
 ;
 
-default: KEY_DEFAULT "(" lexpression ")" code
+default: KEY_DEFAULT KEY_PARL lexpression KEY_PARR code
 | /* empty */
 ;
 
@@ -173,11 +173,11 @@ statement: if
 | KEY_BREAK
 ;
 
-function: funcdeclaration "\n" vardeclaration "\n" code "\n" KEY_RETURN aexpression "\n" KEY_ENDFUNCTION
-| funcdeclaration "\n" vardeclaration "\n" code "\n" KEY_RETURN KEY_LETTER "\n" KEY_ENDFUNCTION
+function: funcdeclaration NEWLINE vardeclaration NEWLINE code NEWLINE KEY_RETURN aexpression NEWLINE KEY_ENDFUNCTION
+| funcdeclaration NEWLINE vardeclaration NEWLINE code NEWLINE KEY_RETURN KEY_LETTER NEWLINE KEY_ENDFUNCTION
 ;
 
-main: KEY_MAIN "\n" vardeclaration "\n" code KEY_ENDMAIN ;
+main: KEY_MAIN NEWLINE vardeclaration NEWLINE code KEY_ENDMAIN ;
 
 program: programtitle funcdeclaration main ;
 
