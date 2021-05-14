@@ -43,7 +43,7 @@ num {digit}+
 "]"             {printtokens(KEY_BRACKETR); return KEY_BRACKETR;}
 "{"             {printtokens(KEY_CURLYL); return KEY_CURLYL;}
 "}"             {printtokens(KEY_CURLYR); return KEY_CURLYR;}
-"%"             {printtokens(KEY_COMMEND); return KEY_COMMEND;}
+"%"             {printtokens(KEY_COMMENT); return KEY_COMMENT;}
 "PROGRAM"       {printtokens(KEY_PROGRAM); return KEY_PROGRAM;}
 "FUNCTION"      {printtokens(KEY_FUNCTION); return KEY_FUNCTION;}
 "END_FUNCTION"  {printtokens(KEY_ENDFUNCTION); return KEY_ENDFUNCTION;}
@@ -72,8 +72,8 @@ num {digit}+
 "ENDSWITCH"     {printtokens(KEY_ENDSWITCH); return KEY_ENDSWITCH;}
 "PRINT"         {printtokens(KEY_PRINT); return KEY_PRINT;}
 "BREAK"         {printtokens(KEY_BREAK); return KEY_BREAK;}
-"\n"            {printtokens(NEWLINE); return NEWLINE;}
-{varname}       {printtokens(VAR_NAME); return VAR_NAME;}
+"\n"            {printtokens(KEY_NEWLINE); return KEY_NEWLINE;}
+{varname}       {printtokens(KEY_VARNAME); return KEY_VARNAME;}
 {letter}        {printtokens(KEY_LETTER); return KEY_LETTER;}
 {num}           {printtokens(KEY_NUM); return KEY_NUM;}
 {ws}            {printtokens(KEY_WS); return KEY_WS;}
