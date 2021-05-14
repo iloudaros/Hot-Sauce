@@ -14,7 +14,7 @@ int yylex();
 %token KEY_PROGRAM
 %token KEY_FUNCTION KEY_RETURN KEY_ENDFUNCTION
 %token KEY_VARS KEY_CHAR KEY_INT KEY_VARNAME
-%token KEY_LETTER KEY_NUM KEY_WS
+%token KEY_LETTER KEY_NUM KEY_WS KEY_NEWLINE
 %token KEY_EOF
 %token KEY_MAIN KEY_ENDMAIN
 %token KEY_WHILE KEY_ENDWHILE
@@ -32,10 +32,6 @@ int yylex();
 %left KEY_PLUS KEY_MIN
 %left KEY_MUL KEY_DIV
 %left KEY_POWER
-
-
-
-
 
 
 %%
@@ -112,7 +108,7 @@ lexpression: aexpression
 | KEY_PARL lexpression KEY_PARR
 ;
 
-assignmet: KEY_VARNAME KEY_ASSIGN aexpression KEY_SEMICOLON /* !!! Αν δημιουργήσει πρόβλημα, βάζουμε KEY_NUM*/
+assignment: KEY_VARNAME KEY_ASSIGN aexpression KEY_SEMICOLON /* !!! Αν δημιουργήσει πρόβλημα, βάζουμε KEY_NUM*/
 | KEY_VARNAME KEY_ASSIGN KEY_CHAR KEY_SEMICOLON
 ;
 
@@ -152,7 +148,7 @@ default: KEY_DEFAULT KEY_PARL lexpression KEY_PARR KEY_COLON KEY_NEWLINE code
 comment: KEY_COMMENT string;
 
 //Πιο αφηρημένες έννοιες
-code:  statement | LBRACE statements RBRACE ;
+code:  statement | KEY_BRACKETL statements KEY_BRACKETR ;
 
 statements: statements statement | statement;
 
