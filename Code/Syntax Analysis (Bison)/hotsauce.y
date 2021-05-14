@@ -13,7 +13,7 @@ int yylex();
 /*** Here, we declare the tokens ***/
 %token KEY_PROGRAM
 %token KEY_FUNCTION KEY_RETURN KEY_ENDFUNCTION
-%token KEY_VARS KEY_CHAR KEY_INT VAR_NAME
+%token KEY_VARS KEY_CHAR KEY_INT KEY_VARNAME
 %token KEY_LETTER KEY_NUM KEY_WS
 %token KEY_EOF
 %token KEY_MAIN KEY_ENDMAIN
@@ -22,7 +22,7 @@ int yylex();
 %token KEY_AND KEY_OR
 %token KEY_IF KEY_THEN KEY_ELSEIF KEY_ELSE KEY_ENDIF
 %token KEY_SWITCH KEY_CASE KEY_DEFAULT KEY_ENDSWITCH
-%token KEY_PRINT KEY_COMMEND
+%token KEY_PRINT KEY_COMMENT
 %token KEY_BREAK
 %token KEY_ASSIGN
 %token KEY_CURLYR KEY_CURLYL KEY_BRACKETR KEY_BRACKETL KEY_PARR KEY_PARL KEY_COMMA KEY_SEMICOLON KEY_DOT KEY_COLON
@@ -43,20 +43,20 @@ int yylex();
 
 //Βασικές Έννοιες
 punctuation: KEY_CURLYR
-|KEY_CURLYL
-|KEY_BRACKETR
-|KEY_BRACKETL
-|KEY_PARR
-|KEY_PARL
-|KEY_COMMA
-|KEY_SEMICOLON
-|KEY_DOT
-|KEY_COLON
+| KEY_CURLYL
+| KEY_BRACKETR
+| KEY_BRACKETL
+| KEY_PARR
+| KEY_PARL
+| KEY_COMMA
+| KEY_SEMICOLON
+| KEY_DOT
+| KEY_COLON
 ;
 
-string: KEY_LETTER string
-| KEY_NUM string
-| punctuation string
+string: string KEY_LETTER
+| string KEY_NUM
+| string punctuation
 | KEY_LETTER
 | KEY_NUM
 ;
@@ -65,11 +65,12 @@ type: KEY_CHAR
 | KEY_INT
 ;
 
-variable: type VAR_NAME KEY_SEMICOLON;
+variable: type KEY_VARNAME KEY_SEMICOLON;
 
-array: variable KEY_BRACKETL KEY_NUM KEY_BRACKETR ;
+array: type KEY_VARNAME KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON
+| KEY_VARNAME KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON;
 
-variables: variable
+variables: variable /* !!! Προσοχή, υπάρχει περίπτωση να καταστρατηγείται το LR(1)*/
 | array
 | variables variable
 | variables array
@@ -90,22 +91,19 @@ loperator: KEY_LOR
 | KEY_NOTEQUAL
 ;
 
-
-
 //Δηλώσεις
-programtitle: KEY_PROGRAM string NEWLINE ;
+programtitle: KEY_PROGRAM string KEY_NEWLINE ;
 
 funcdeclaration: KEY_FUNCTION string KEY_PARL variables KEY_PARR KEY_SEMICOLON ;
 
 vardeclaration: KEY_VARS variables;
 
 
-
 //Εντολές
 aexpression: aexpression aoperator aexpression
 | KEY_PARL aexpression KEY_PARR
 | KEY_NUM
-| VAR_NAME
+| KEY_VARNAME
 | KEY_MIN aexpression
 ;
 
@@ -114,70 +112,64 @@ lexpression: aexpression
 | KEY_PARL lexpression KEY_PARR
 ;
 
-assignmnet: VAR_NAME KEY_ASSIGN keynumber KEY_SEMICOLON
-|VAR_NAME KEY_ASSIGN keynumber KEY_SEMICOLON
+assignmet: KEY_VARNAME KEY_ASSIGN aexpression KEY_SEMICOLON /* !!! Αν δημιουργήσει πρόβλημα, βάζουμε KEY_NUM*/
+| KEY_VARNAME KEY_ASSIGN KEY_CHAR KEY_SEMICOLON
 ;
 
 printstatement: KEY_PRINT KEY_PARL string KEY_PARR KEY_SEMICOLON
-| KEY_PRINT KEY_PARL string KEY_BRACKETL VAR_NAME KEY_BRACKETR KEY_PARR KEY_SEMICOLON
+| KEY_PRINT KEY_PARL string KEY_BRACKETL KEY_VARNAME KEY_BRACKETR KEY_PARR KEY_SEMICOLON
 ;
-
-
 
 //Δομές Επανάληψης
-while: KEY_WHILE KEY_PARL lexpression KEY_PARR NEWLINE code NEWLINE KEY_ENDWHILE ;
+while: KEY_WHILE KEY_PARL lexpression KEY_PARR KEY_NEWLINE code KEY_NEWLINE KEY_ENDWHILE ;
 
-for: KEY_FOR KEY_NUM KEY_TO KEY_NUM KEY_STEP KEY_NUM NEWLINE code NEWLINE KEY_ENDFOR ;
-
-
+for: KEY_FOR KEY_NUM KEY_TO KEY_NUM KEY_STEP KEY_NUM KEY_NEWLINE code KEY_NEWLINE KEY_ENDFOR ;
 
 //Δομές Απόφασης
-if: KEY_IF KEY_PARL lexpression KEY_PARR KEY_THEN code elseif else KEY_ENDIF;
+if: KEY_IF KEY_PARL lexpression KEY_PARR KEY_THEN KEY_NEWLINE code elseif else KEY_ENDIF;
 
-elseif: elseif KEY_ELSEIF KEY_PARL lexpression KEY_PARR code
-| KEY_ELSEIF KEY_PARL lexpression KEY_PARR code
+elseif: elseif KEY_ELSEIF KEY_PARL lexpression KEY_PARR KEY_NEWLINE code
+| KEY_ELSEIF KEY_PARL lexpression KEY_PARR KEY_NEWLINE code
 | /* empty */
 ;
 
-else: KEY_ELSE KEY_PARL lexpression KEY_PARR code
+else: KEY_ELSE KEY_PARL lexpression KEY_PARR KEY_NEWLINE code
 | /* empty */
 ;
 
-switch: KEY_SWITCH KEY_PARL lexpression KEY_PARR NEWLINE case default KEY_ENDSWITCH;
+switch: KEY_SWITCH KEY_PARL lexpression KEY_PARR KEY_NEWLINE case default KEY_ENDSWITCH;
 
-case: case KEY_CASE KEY_PARL lexpression KEY_PARR code
-| KEY_CASE KEY_PARL lexpression KEY_PARR code
+case: case KEY_CASE KEY_PARL lexpression KEY_PARR KEY_COLON KEY_NEWLINE code
+| KEY_CASE KEY_PARL lexpression KEY_PARR KEY_COLON KEY_NEWLINE code
 | /* empty */
 ;
 
-default: KEY_DEFAULT KEY_PARL lexpression KEY_PARR code
+default: KEY_DEFAULT KEY_PARL lexpression KEY_PARR KEY_COLON KEY_NEWLINE code
 | /* empty */
 ;
-
-
 
 //Σχόλια
-commend: KEY_COMMEND string;
+comment: KEY_COMMENT string;
 
 //Πιο αφηρημένες έννοιες
 code:  statement | LBRACE statements RBRACE ;
 
 statements: statements statement | statement;
 
-statement: if
+statement: if  /* !!! Προσοχή, υπάρχει περίπτωση να καταστρατηγείται το LR(1)*/
 | for
 | while
-| assigment
+| assignment
 | switch
-| commend
+| comment
 | KEY_BREAK
 ;
 
-function: funcdeclaration NEWLINE vardeclaration NEWLINE code NEWLINE KEY_RETURN aexpression NEWLINE KEY_ENDFUNCTION
-| funcdeclaration NEWLINE vardeclaration NEWLINE code NEWLINE KEY_RETURN KEY_LETTER NEWLINE KEY_ENDFUNCTION
+function: funcdeclaration KEY_NEWLINE vardeclaration KEY_NEWLINE code KEY_NEWLINE KEY_RETURN aexpression KEY_NEWLINE KEY_ENDFUNCTION
+| funcdeclaration KEY_NEWLINE vardeclaration KEY_NEWLINE code KEY_NEWLINE KEY_RETURN KEY_LETTER KEY_NEWLINE KEY_ENDFUNCTION
 ;
 
-main: KEY_MAIN NEWLINE vardeclaration NEWLINE code KEY_ENDMAIN ;
+main: KEY_MAIN KEY_NEWLINE vardeclaration KEY_NEWLINE code KEY_ENDMAIN ;
 
 program: programtitle funcdeclaration main ;
 
