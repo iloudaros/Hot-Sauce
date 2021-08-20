@@ -14,7 +14,7 @@ int yylex();
 %token KEY_PROGRAM
 %token KEY_FUNCTION KEY_RETURN KEY_ENDFUNCTION
 %token KEY_VARS KEY_CHAR KEY_INT KEY_VARNAME
-%token KEY_LETTER KEY_NUM KEY_WS KEY_NEWLINE
+%token KEY_IDENTIFIER KEY_NUM KEY_NEWLINE
 %token KEY_EOF
 %token KEY_MAIN KEY_ENDMAIN
 %token KEY_WHILE KEY_ENDWHILE
@@ -33,9 +33,35 @@ int yylex();
 %left KEY_MUL KEY_DIV
 %left KEY_POWER
 
-
 %%
 /*** Here, you can see the rules ***/
+
+//Declarations
+program: KEY_PROGRAM KEY_IDENTIFIER KEY_NEWLINE /*struct_decl*/ functions main KEY_EOF;
+
+functions:
+      function
+      | functions function;
+
+function:
+      //empty
+      | KEY_FUNCTION KEY_IDENTIFIER KEY_PARL parameters KEY_PARR KEY_NEWLINE code KEY_RETURN return_val KEY_SEMICOLON KEY_ENDFUNCTION;
+
+parameters:
+      //empty
+      | KEY_IDENTIFIER
+      | parameters KEY_COMMA KEY_IDENTIFIER;
+
+return_val:
+      KEY_IDENTIFIER
+      | KEY_NUMBER;
+
+
+      ///bis hier alles gut
+
+vardeclaration: KEY_VARS variables;
+
+
 
 //Βασικές Έννοιες
 punctuation: KEY_CURLYR
@@ -48,13 +74,6 @@ punctuation: KEY_CURLYR
 | KEY_SEMICOLON
 | KEY_DOT
 | KEY_COLON
-;
-
-string: string KEY_LETTER
-| string KEY_NUM
-| string punctuation
-| KEY_LETTER
-| KEY_NUM
 ;
 
 type: KEY_CHAR
@@ -72,7 +91,7 @@ variables: variable /* !!! Προσοχή, υπάρχει περίπτωση ν�
 | variables array
 ;
 
-aoperator:  KEY_PLUS
+aoperator: KEY_PLUS
 | KEY_MIN
 | KEY_MUL
 | KEY_DIV
@@ -86,13 +105,6 @@ loperator: KEY_LOR
 | KEY_EQUAL
 | KEY_NOTEQUAL
 ;
-
-//Δηλώσεις
-programtitle: KEY_PROGRAM string KEY_NEWLINE ;
-
-funcdeclaration: KEY_FUNCTION string KEY_PARL variables KEY_PARR KEY_SEMICOLON ;
-
-vardeclaration: KEY_VARS variables;
 
 
 //Εντολές
@@ -162,12 +174,10 @@ statement: if  /* !!! Προσοχή, υπάρχει περίπτωση να κ�
 ;
 
 function: funcdeclaration KEY_NEWLINE vardeclaration KEY_NEWLINE code KEY_NEWLINE KEY_RETURN aexpression KEY_NEWLINE KEY_ENDFUNCTION
-| funcdeclaration KEY_NEWLINE vardeclaration KEY_NEWLINE code KEY_NEWLINE KEY_RETURN KEY_LETTER KEY_NEWLINE KEY_ENDFUNCTION
+| funcdeclaration KEY_NEWLINE vardeclaration KEY_NEWLINE code KEY_NEWLINE KEY_RETURN KEY_IDENTIFIER KEY_NEWLINE KEY_ENDFUNCTION
 ;
 
 main: KEY_MAIN KEY_NEWLINE vardeclaration KEY_NEWLINE code KEY_ENDMAIN ;
-
-program: programtitle funcdeclaration main ;
 
 
 %%
