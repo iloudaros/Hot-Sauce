@@ -10,14 +10,12 @@
 %option noyywrap
 %option yylineno
 
-
+identifier [a-zA-Z_$][a-zA-Z_$0-9]*  //used for all non-reserved words
 digit [0-9]
-letter [a-zA-Z]
-ws [ \t\n\r]
-varname ^[a-zA-Z_$][a-zA-Z_$0-9]*$
+whitespace [\t\v\r]
 
 escaped_string (\\.|[^\"])*
-num {digit}+
+number {digit}+
 
 
 %%
@@ -74,10 +72,9 @@ num {digit}+
 "PRINT"         {printtokens(KEY_PRINT); return KEY_PRINT;}
 "BREAK"         {printtokens(KEY_BREAK); return KEY_BREAK;}
 "\n"            {printtokens(KEY_NEWLINE); return KEY_NEWLINE;}
-{varname}       {printtokens(KEY_VARNAME); return KEY_VARNAME;}
+{identifier}    {printtokens(KEY_IDENTIFIER); return KEY_IDENTIFIER;}
 {letter}        {printtokens(KEY_LETTER); return KEY_LETTER;}
-{num}           {printtokens(KEY_NUM); return KEY_NUM;}
-{ws}            {printtokens(KEY_WS); return KEY_WS;}
+{number}        {printtokens(KEY_NUMBER); return KEY_NUMBER;}
 <<EOF>>         {printtokens(KEY_EOF); return KEY_EOF;}
 %%
 
