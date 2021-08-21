@@ -8,12 +8,15 @@ extern FILE *yyin;
 extern FILE *yyout;
 int yylex();
 
+
+
 %}
 
 /*** Here, we declare the tokens ***/
+
 %token KEY_PROGRAM
 %token KEY_FUNCTION KEY_RETURN KEY_ENDFUNCTION
-%token KEY_VARS KEY_CHAR KEY_INT KEY_VARNAME
+%token KEY_VARS KEY_CHAR KEY_INT
 %token KEY_IDENTIFIER KEY_NUM KEY_NEWLINE
 %token KEY_EOF
 %token KEY_MAIN KEY_ENDMAIN
@@ -37,7 +40,8 @@ int yylex();
 /*** Here, you can see the rules ***/
 
 //Declarations
-program: KEY_PROGRAM KEY_IDENTIFIER KEY_NEWLINE /*struct_decl*/ functions main KEY_EOF;
+program: 
+      KEY_PROGRAM KEY_IDENTIFIER KEY_NEWLINE /*struct_decl*/ functions main KEY_EOF;
 
 functions:
       function
@@ -45,7 +49,7 @@ functions:
 
 function:
       //empty
-      | KEY_FUNCTION KEY_IDENTIFIER KEY_PARL parameters KEY_PARR KEY_NEWLINE code KEY_RETURN return_val KEY_SEMICOLON KEY_ENDFUNCTION;
+      | KEY_FUNCTION KEY_IDENTIFIER KEY_PARL parameters KEY_PARR KEY_NEWLINE body KEY_RETURN return_val KEY_SEMICOLON KEY_ENDFUNCTION;
 
 parameters:
       //empty
@@ -57,10 +61,39 @@ return_val:
       | KEY_NUMBER;
 
 
-      ///bis hier alles gut
+body:
+      variables
+      | variables commands;
 
-vardeclaration: KEY_VARS variables;
+variables:
+      variable
+      | variables variable;
 
+variable:
+      //empty
+      | int
+      | char
+      | char_array
+      | int_array;
+
+int:
+      KEY_VARS KEY_INT identifier_list KEY_SEMICOLON;
+
+char:
+      KEY_VARS KEY_CHAR identifier_list KEY_SEMICOLON;
+
+identifier_list: 
+      identifier
+      | identifier_list KEY_COMMA identifier;
+      
+int_array:
+      KEY_VARS KEY_INT KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON;
+
+char_array: 
+      KEY_VARS KEY_CHAR KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON;
+
+
+//bis hier alles gut
 
 
 //Βασικές Έννοιες
@@ -76,20 +109,8 @@ punctuation: KEY_CURLYR
 | KEY_COLON
 ;
 
-type: KEY_CHAR
-| KEY_INT
-;
 
-variable: type KEY_VARNAME KEY_SEMICOLON;
 
-array: type KEY_VARNAME KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON
-| KEY_VARNAME KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON;
-
-variables: variable /* !!! Προσοχή, υπάρχει περίπτωση να καταστρατηγείται το LR(1)*/
-| array
-| variables variable
-| variables array
-;
 
 aoperator: KEY_PLUS
 | KEY_MIN
