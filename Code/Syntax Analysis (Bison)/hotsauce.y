@@ -36,6 +36,12 @@ int yylex();
 %left KEY_MUL KEY_DIV
 %left KEY_POWER
 
+
+%token KEY_TYPEDEF
+%token KEY_STRUCT        
+%token KEY_ENDSTRUCT     
+
+
 %%
 /*** Here, you can see the rules ***/
 
@@ -59,7 +65,6 @@ parameters:
 return_val:
       KEY_IDENTIFIER
       | KEY_NUMBER;
-
 
 body:
       variables
@@ -94,6 +99,24 @@ char_array:
 
 
 //bis hier alles gut
+
+//Struct try 
+
+struct_decl:
+	  KEY_STRUCT KEY_IDENTIFIER KEY_NEWLINE KEY_VARS KEY_NEWLINE KEY_ENDSTRUCT KEY_NEWLINE;
+
+typedef_decl: 
+	  KEY_TYPEDEF KEY_IDENTIFIER KEY_STRUCT KEY_NEWLINE KEY_VARS KEY_NEWLINE KEY_IDENTIFIER KEY_ENDSTRUCT KEY_NEWLINE;
+	  
+struct_decls: 
+	  struct_decl
+	  | struct_decl struct_decls
+	  | typedef_decl
+	  | typedef_decl struct_decls;
+	  
+struct_call: 
+	  KEY_STRUCT KEY_IDENTIFIER;
+
 
 
 //Βασικές Έννοιες
