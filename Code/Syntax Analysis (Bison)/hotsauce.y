@@ -20,6 +20,7 @@ int yylex();
 %token KEY_IDENTIFIER KEY_NUM KEY_NEWLINE
 %token KEY_EOF
 %token KEY_MAIN KEY_ENDMAIN
+%token KEY_MAIN KEY_STARTMAIN
 %token KEY_WHILE KEY_ENDWHILE
 %token KEY_FOR KEY_TO KEY_STEP KEY_ENDFOR
 %token KEY_AND KEY_OR
@@ -117,6 +118,8 @@ struct_decls:
 struct_call: 
 	  KEY_STRUCT KEY_IDENTIFIER;
 
+main:
+	  KEY_STARTMAIN KEY_NEWLINE body KEY_ENDMAIN KEY_NEWLINE;
 
 
 //Βασικές Έννοιες
@@ -131,9 +134,6 @@ punctuation: KEY_CURLYR
 | KEY_DOT
 | KEY_COLON
 ;
-
-
-
 
 aoperator: KEY_PLUS
 | KEY_MIN
