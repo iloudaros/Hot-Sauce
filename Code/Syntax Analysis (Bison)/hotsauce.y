@@ -1,5 +1,3 @@
-/***** The Parser of the greatest computer language of all time, HotSauce *****/
-
 %{
 #include <stdio.h>
 #include <math.h>
@@ -39,16 +37,37 @@ int yylex();
 
 
 %token KEY_TYPEDEF
-%token KEY_STRUCT        
-%token KEY_ENDSTRUCT     
+%token KEY_STRUCT
+%token KEY_ENDSTRUCT
 
 
 %%
 /*** Here, you can see the rules ***/
 
 //Declarations
-program: 
+program:
       KEY_PROGRAM KEY_IDENTIFIER KEY_NEWLINE /*struct_decl*/ functions main KEY_EOF;
+
+/*** start of structs ***/
+
+struct_decl:
+	  KEY_STRUCT KEY_IDENTIFIER KEY_NEWLINE KEY_VARS KEY_NEWLINE KEY_ENDSTRUCT KEY_NEWLINE;
+
+typedef_decl:
+	  KEY_TYPEDEF KEY_IDENTIFIER KEY_STRUCT KEY_NEWLINE KEY_VARS KEY_NEWLINE KEY_IDENTIFIER KEY_ENDSTRUCT KEY_SEMICOLON KEY_NEWLINE;
+
+struct_decls:
+	  struct_decl
+	  | struct_decl struct_decls
+	  | typedef_decl
+	  | typedef_decl struct_decls;
+
+struct_call:
+	  KEY_STRUCT KEY_IDENTIFIER;
+
+    /*** end of structs ***/
+
+/*** FUNCTIONS ***/
 
 functions:
       function
@@ -69,7 +88,7 @@ return_val:
 
 body:
       variables
-      | variables commands;
+      | variables statements;
 
 variables:
       variable
@@ -88,52 +107,36 @@ int:
 char:
       KEY_VARS KEY_CHAR identifier_list KEY_SEMICOLON;
 
-identifier_list: 
+identifier_list:
       identifier
       | identifier_list KEY_COMMA identifier;
-      
+
 int_array:
       KEY_VARS KEY_INT KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON;
 
-char_array: 
+char_array:
       KEY_VARS KEY_CHAR KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON;
-
 
 //bis hier alles gut
 
-//Struct try 
+statements:
+      statement
+      | statements statement;
 
-struct_decl:
-	  KEY_STRUCT KEY_IDENTIFIER KEY_NEWLINE KEY_VARS KEY_NEWLINE KEY_ENDSTRUCT KEY_NEWLINE;
-
-typedef_decl: 
-	  KEY_TYPEDEF KEY_IDENTIFIER KEY_STRUCT KEY_NEWLINE KEY_VARS KEY_NEWLINE KEY_IDENTIFIER KEY_ENDSTRUCT KEY_SEMICOLON KEY_NEWLINE;
-	  
-struct_decls: 
-	  struct_decl
-	  | struct_decl struct_decls
-	  | typedef_decl
-	  | typedef_decl struct_decls;
-	  
-struct_call: 
-	  KEY_STRUCT KEY_IDENTIFIER;
+statement:
+      //empty
+      | assignment
+      | while
+      | for
+      | if
+      | switch
+      | print
+      | break
+      | comment
 
 main:
 	  KEY_STARTMAIN KEY_NEWLINE body KEY_ENDMAIN KEY_NEWLINE;
 
-
-//Βασικές Έννοιες
-punctuation: KEY_CURLYR
-| KEY_CURLYL
-| KEY_BRACKETR
-| KEY_BRACKETL
-| KEY_PARR
-| KEY_PARL
-| KEY_COMMA
-| KEY_SEMICOLON
-| KEY_DOT
-| KEY_COLON
-;
 
 aoperator: KEY_PLUS
 | KEY_MIN

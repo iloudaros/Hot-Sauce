@@ -12,10 +12,11 @@
 
 identifier [a-zA-Z_$][a-zA-Z_$0-9]*  //used for all non-reserved words
 digit [0-9]
+non_zero_digit [1-9]
 whitespace [\t\v\r]
 
 escaped_string (\\.|[^\"])*
-number {digit}+
+number {non_zero_digit}{digit}*|"0"
 
 
 %%
