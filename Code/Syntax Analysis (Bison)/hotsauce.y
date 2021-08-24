@@ -34,6 +34,7 @@ int yylex();
 %left KEY_PLUS KEY_MIN
 %left KEY_MUL KEY_DIV
 %left KEY_POWER
+%left KEY_NEG
 
 
 %token KEY_TYPEDEF
@@ -117,11 +118,10 @@ int_array:
 char_array:
       KEY_VARS KEY_CHAR KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON;
 
-//bis hier alles gut
-
 statements:
       statement
-      | statements statement;
+      | statements statement
+      ;
 
 statement:
       //empty
@@ -133,17 +133,29 @@ statement:
       | print
       | break
       | comment
+      ;
+
+assignment:
+      KEY_IDENTIFIER KEY_ASSIGN expression KEY_SEMICOLON
+      | KEY_IDENTIFIER KEY_ASSIGN KEY_NUMBER KEY_SEMICOLON
+      ;
+
+expression:
+      NUMBER { $$=$1; }
+      | expression KEY_PLUS expression {$$ = $1 + $3;}
+      | expression KEY_MINUS expression {$$ = $1 - $3;}
+      | expression KEY_MUL expression {$$ = $1 * $3;}
+      | expression KEY_DIV expression {$$ = $1 / $3;}
+      | KEY_MINUS expression %prec KEY_NEG {$$ = -$2;}
+      | KEY_PARL expression KEY_PARR {$$ = $2;}
+      | KEY_IDENTIFIER KEY_PARL parameters KEY_PARR KEY_SEMICOLON
+      ;
+
+
+//bis hier alles gut
 
 main:
 	  KEY_STARTMAIN KEY_NEWLINE body KEY_ENDMAIN KEY_NEWLINE;
-
-
-aoperator: KEY_PLUS
-| KEY_MIN
-| KEY_MUL
-| KEY_DIV
-| KEY_POWER
-;
 
 loperator: KEY_LOR
 | KEY_LAND
@@ -155,20 +167,10 @@ loperator: KEY_LOR
 
 
 //Εντολές
-aexpression: aexpression aoperator aexpression
-| KEY_PARL aexpression KEY_PARR
-| KEY_NUM
-| KEY_VARNAME
-| KEY_MIN aexpression
-;
 
 lexpression: aexpression
 | lexpression loperator lexpression
 | KEY_PARL lexpression KEY_PARR
-;
-
-assignment: KEY_VARNAME KEY_ASSIGN aexpression KEY_SEMICOLON /* !!! Αν δημιουργήσει πρόβλημα, βάζουμε KEY_NUM*/
-| KEY_VARNAME KEY_ASSIGN KEY_CHAR KEY_SEMICOLON
 ;
 
 printstatement: KEY_PRINT KEY_PARL string KEY_PARR KEY_SEMICOLON
