@@ -49,6 +49,26 @@ int yylex();
 //Declarations
 program: 
       KEY_PROGRAM KEY_IDENTIFIER KEY_NEWLINE /*struct_decl*/ functions main KEY_EOF;
+	  
+/*** start of structs ***/	  
+
+struct_decl:
+	  KEY_STRUCT KEY_IDENTIFIER variables KEY_ENDSTRUCT KEY_NEWLINE;
+
+typedef_decl: 
+	  KEY_TYPEDEF KEY_IDENTIFIER KEY_STRUCT variables KEY_ENDSTRUCT KEY_SEMICOLON KEY_NEWLINE;
+	  
+struct_decls: 
+	  struct_decl
+	  | struct_decl struct_decls
+	  | typedef_decl
+	  | typedef_decl struct_decls
+	  ;
+	  
+struct_call: 
+	  KEY_STRUCT KEY_IDENTIFIER;
+
+/*** FUNCTIONS ***/
 
 functions:
       function
@@ -61,26 +81,31 @@ function:
 parameters:
       //empty
       | KEY_IDENTIFIER
-      | parameters KEY_COMMA KEY_IDENTIFIER;
+      | parameters KEY_COMMA KEY_IDENTIFIER
+	  ;
 
 return_val:
       KEY_IDENTIFIER
-      | KEY_NUMBER;
+      | KEY_NUMBER
+	  ;
 
 body:
       variables
-      | variables commands;
+      | variables commands
+	  ;
 
 variables:
       variable
-      | variables variable;
+      | variables variable
+	  ;
 
 variable:
       //empty
       | int
       | char
       | char_array
-      | int_array;
+      | int_array
+	  ;
 
 int:
       KEY_VARS KEY_INT identifier_list KEY_SEMICOLON;
@@ -90,7 +115,8 @@ char:
 
 identifier_list: 
       identifier
-      | identifier_list KEY_COMMA identifier;
+      | identifier_list KEY_COMMA identifier
+	  ;
       
 int_array:
       KEY_VARS KEY_INT KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON;
@@ -101,46 +127,46 @@ char_array:
 
 //bis hier alles gut
 
-//Struct try 
 
-struct_decl:
-	  KEY_STRUCT KEY_IDENTIFIER variables KEY_ENDSTRUCT KEY_NEWLINE;
+statements:
+      statement
+      | statements statement
+	  ;
+	  
+statement:
+      //empty
+      | assignment
+      | while
+      | for
+      | if
+      | switch
+      | print
+      | break
+      | comment
+	  ;
+	  
+assignment:
+      KEY_IDENTIFIER KEY_ASSIGN expression KEY_SEMICOLON
+      | KEY_IDENTIFIER KEY_ASSIGN KEY_NUMBER KEY_SEMICOLON
+      ;
 
-typedef_decl: 
-	  KEY_TYPEDEF KEY_IDENTIFIER KEY_STRUCT variables KEY_ENDSTRUCT KEY_SEMICOLON KEY_NEWLINE;
+expression:
+      NUMBER { $$=$1; }
+      | expression KEY_PLUS expression {$$ = $1 + $3;}
+      | expression KEY_MINUS expression {$$ = $1 - $3;}
+      | expression KEY_MUL expression {$$ = $1 * $3;}
+      | expression KEY_DIV expression {$$ = $1 / $3;}
+      | KEY_MINUS expression %prec KEY_NEG {$$ = -$2;}
+      | KEY_PARL expression KEY_PARR {$$ = $2;}
+      | KEY_IDENTIFIER KEY_PARL parameters KEY_PARR KEY_SEMICOLON
+      ;
+
 	  
-struct_decls: 
-	  struct_decl
-	  | struct_decl struct_decls
-	  | typedef_decl
-	  | typedef_decl struct_decls;
-	  
-struct_call: 
-	  KEY_STRUCT KEY_IDENTIFIER;
+
+//bis hier alles gut
 
 main:
 	  KEY_STARTMAIN KEY_NEWLINE body KEY_ENDMAIN KEY_NEWLINE;
-
-
-//Βασικές Έννοιες
-punctuation: KEY_CURLYR
-| KEY_CURLYL
-| KEY_BRACKETR
-| KEY_BRACKETL
-| KEY_PARR
-| KEY_PARL
-| KEY_COMMA
-| KEY_SEMICOLON
-| KEY_DOT
-| KEY_COLON
-;
-
-aoperator: KEY_PLUS
-| KEY_MIN
-| KEY_MUL
-| KEY_DIV
-| KEY_POWER
-;
 
 loperator: KEY_LOR
 | KEY_LAND
@@ -151,13 +177,6 @@ loperator: KEY_LOR
 ;
 
 
-//Εντολές
-aexpression: aexpression aoperator aexpression
-| KEY_PARL aexpression KEY_PARR
-| KEY_NUM
-| KEY_VARNAME
-| KEY_MIN aexpression
-;
 
 lexpression: aexpression
 | lexpression loperator lexpression
