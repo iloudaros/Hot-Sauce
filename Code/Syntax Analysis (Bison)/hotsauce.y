@@ -48,7 +48,7 @@ int yylex();
 
 //Declarations
 program: 
-      KEY_PROGRAM KEY_IDENTIFIER KEY_NEWLINE /*struct_decl*/ functions main KEY_EOF;
+      KEY_PROGRAM KEY_IDENTIFIER KEY_NEWLINE struct_decl functions main KEY_EOF;
 	  
 /*** start of structs ***/	  
 
@@ -125,9 +125,6 @@ char_array:
       KEY_VARS KEY_CHAR KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON;
 
 
-//bis hier alles gut
-
-
 statements:
       statement
       | statements statement
@@ -167,6 +164,17 @@ expression:
 
 main:
 	  KEY_STARTMAIN KEY_NEWLINE body KEY_ENDMAIN KEY_NEWLINE;
+
+
+
+
+
+
+
+
+
+
+
 
 loperator: KEY_LOR
 | KEY_LAND
