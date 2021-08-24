@@ -166,8 +166,69 @@ main:
 	  KEY_STARTMAIN KEY_NEWLINE body KEY_ENDMAIN KEY_NEWLINE;
 
 
+/*** IF ***/
 
 
+if_stmt: 
+	  if KEY_ENDIF
+	  | if else KEY_ENDIF
+	  | if else_ifs KEY_ENDIF
+	  | if else_ifs else KEY_ENDIF
+	  ;
+
+if: 
+	  KEY_IF KEY_BRACKETL expression KEY_BRACKETR KEY_THEN statement;
+	  
+else: 
+	  KEY_ELSE statement;
+
+else_ifs:
+	  else_ifs else_if
+	  | elseif
+	  ;
+	  
+else_if: 
+	  KEY_ELSEIF KEY_BRACKETL expression KEY_BRACKETR KEY_THEN statement;
+	  
+
+/*** SWITCH ***/  
+	  
+
+switch_stmt:
+	  switch cases KEY_ENDSWITCH
+	  | switch cases default KEY_ENDSWITCH
+	  ;
+	  
+switch: 
+	  KEY_SWITCH KEY_BRACKETR expression KEY_BRACKETR;
+	  
+cases:
+	  cases case
+	  | case
+	  ;
+	  
+case: 
+	  KEY_CASE KEY_BRACKETR expression KEY_BRACKETR KEY_COLON statement;
+	  
+
+default: 
+	  KEY_DEFAULT KEY_COLON statement;
+	  
+
+/*** WHILE ***/
+
+while: 
+	  KEY_WHILE KEY_BRACKETL expression KEY_BRACKETR statement KEY_ENDWHILE;
+
+
+/*** FOR ***/
+
+for: 
+	  KEY_FOR identifier KEY_COLON KEY_EQUAL int KEY_TO int KEY_STEP int statement KEY_ENDFOR;
+	
+	  
+
+	  
 
 
 
