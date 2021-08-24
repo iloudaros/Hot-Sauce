@@ -66,7 +66,7 @@ struct_decls:
 struct_call:
 	  KEY_STRUCT KEY_IDENTIFIER;
 
-    /*** end of structs ***/
+/*** end of structs ***/
 
 /*** FUNCTIONS ***/
 
@@ -151,7 +151,6 @@ expression:
       | KEY_IDENTIFIER KEY_PARL parameters KEY_PARR KEY_SEMICOLON
       ;
 
-
 //bis hier alles gut
 
 main:
@@ -164,7 +163,6 @@ loperator: KEY_LOR
 | KEY_EQUAL
 | KEY_NOTEQUAL
 ;
-
 
 //Εντολές
 
@@ -211,23 +209,7 @@ comment: KEY_COMMENT string;
 //Πιο αφηρημένες έννοιες
 code:  statement | KEY_BRACKETL statements KEY_BRACKETR ;
 
-statements: statements statement | statement;
-
-statement: if  /* !!! Προσοχή, υπάρχει περίπτωση να καταστρατηγείται το LR(1)*/
-| for
-| while
-| assignment
-| switch
-| comment
-| KEY_BREAK
-;
-
-function: funcdeclaration KEY_NEWLINE vardeclaration KEY_NEWLINE code KEY_NEWLINE KEY_RETURN aexpression KEY_NEWLINE KEY_ENDFUNCTION
-| funcdeclaration KEY_NEWLINE vardeclaration KEY_NEWLINE code KEY_NEWLINE KEY_RETURN KEY_IDENTIFIER KEY_NEWLINE KEY_ENDFUNCTION
-;
-
 main: KEY_MAIN KEY_NEWLINE vardeclaration KEY_NEWLINE code KEY_ENDMAIN ;
-
 
 %%
 /*** And finaly, the parser in action ***/
