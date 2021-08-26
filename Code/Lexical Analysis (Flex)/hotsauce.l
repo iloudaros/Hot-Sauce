@@ -27,7 +27,7 @@ number {non_zero_digit}{digit}*|"0"
 "/"             {printtokens(KEY_DIV); return KEY_DIV;}
 "^"             {printtokens(KEY_POWER); return KEY_POWER;}
 ">"             {printtokens(KEY_GREATER); return KEY_GREATER;}
-"<"             {printtokens(KEY_LESS); return KEY_LESS;}
+"<"             {printtokens(KEY_LESSER); return KEY_LESSER;}
 "="             {printtokens(KEY_ASSIGN); return KEY_ASSIGN;}
 "=="            {printtokens(KEY_EQUAL); return KEY_EQUAL;}
 "!="            {printtokens(KEY_NOTEQUAL); return KEY_NOTEQUAL;}
