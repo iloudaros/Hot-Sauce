@@ -9,7 +9,6 @@ extern FILE *yyout;
 int yylex();
 
 
-
 %}
 
 /*** Here, we declare the tokens ***/
@@ -23,49 +22,49 @@ int yylex();
 %token KEY_MAIN KEY_STARTMAIN
 %token KEY_WHILE KEY_ENDWHILE
 %token KEY_FOR KEY_TO KEY_STEP KEY_ENDFOR
-%token KEY_AND KEY_OR
 %token KEY_IF KEY_THEN KEY_ELSEIF KEY_ELSE KEY_ENDIF
 %token KEY_SWITCH KEY_CASE KEY_DEFAULT KEY_ENDSWITCH
 %token KEY_PRINT KEY_COMMENT
 %token KEY_BREAK
 %token KEY_ASSIGN
 %token KEY_CURLYR KEY_CURLYL KEY_BRACKETR KEY_BRACKETL KEY_PARR KEY_PARL KEY_COMMA KEY_SEMICOLON KEY_DOT KEY_COLON
-%left KEY_LOR
-%left KEY_LAND
-%left KEY_GREATER KEY_LESS KEY_EQUAL KEY_NOTEQUAL
+
+%left KEY_OR
+%left KEY_AND
+%left KEY_GREATER KEY_LESSER KEY_EQUAL KEY_NOTEQUAL
 %left KEY_PLUS KEY_MIN
 %left KEY_MUL KEY_DIV
 %left KEY_POWER
 
-
 %token KEY_TYPEDEF
-%token KEY_STRUCT        
-%token KEY_ENDSTRUCT     
+%token KEY_STRUCT
+%token KEY_ENDSTRUCT
 
+%type<item> print_data
 
 %%
 /*** Here, you can see the rules ***/
 
 //Declarations
-program: 
-      KEY_PROGRAM KEY_IDENTIFIER KEY_NEWLINE struct_decl functions main KEY_EOF;
-	  
-/*** start of structs ***/	  
+program:
+      KEY_PROGRAM KEY_IDENTIFIER KEY_NEWLINE struct_decl functions main KEY_EOF {printf("Alles gut!")};
+
+/*** start of structs ***/
 
 struct_decl:
 	  KEY_STRUCT KEY_IDENTIFIER variables KEY_ENDSTRUCT KEY_NEWLINE;
 
-typedef_decl: 
+typedef_decl:
 	  KEY_TYPEDEF KEY_IDENTIFIER KEY_STRUCT variables KEY_ENDSTRUCT KEY_SEMICOLON KEY_NEWLINE;
-	  
-struct_decls: 
+
+struct_decls:
 	  struct_decl
 	  | struct_decl struct_decls
 	  | typedef_decl
 	  | typedef_decl struct_decls
 	  ;
-	  
-struct_call: 
+
+struct_call:
 	  KEY_STRUCT KEY_IDENTIFIER;
 
 /*** FUNCTIONS ***/
@@ -82,7 +81,7 @@ parameters:
       //empty
       | KEY_IDENTIFIER
       | parameters KEY_COMMA KEY_IDENTIFIER
-	  ;
+	;
 
 return_val:
       KEY_IDENTIFIER
@@ -91,7 +90,7 @@ return_val:
 
 body:
       variables
-      | variables commands
+      | variables statements
 	  ;
 
 variables:
@@ -113,15 +112,15 @@ int:
 char:
       KEY_VARS KEY_CHAR identifier_list KEY_SEMICOLON;
 
-identifier_list: 
-      identifier
-      | identifier_list KEY_COMMA identifier
+identifier_list:
+      KEY_IDENTIFIER
+      | identifier_list KEY_COMMA KEY_IDENTIFIER
 	  ;
-      
+
 int_array:
       KEY_VARS KEY_INT KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON;
 
-char_array: 
+char_array:
       KEY_VARS KEY_CHAR KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON;
 
 
@@ -129,7 +128,7 @@ statements:
       statement
       | statements statement
 	  ;
-	  
+
 statement:
       //empty
       | assignment
@@ -140,15 +139,15 @@ statement:
       | print
       | break
       | comment
-	  ;
-	  
+	;
+
 assignment:
       KEY_IDENTIFIER KEY_ASSIGN expression KEY_SEMICOLON
       | KEY_IDENTIFIER KEY_ASSIGN KEY_NUMBER KEY_SEMICOLON
       ;
 
 expression:
-      NUMBER { $$=$1; }
+      KEY_NUMBER {$$ = $1;}
       | expression KEY_PLUS expression {$$ = $1 + $3;}
       | expression KEY_MINUS expression {$$ = $1 - $3;}
       | expression KEY_MUL expression {$$ = $1 * $3;}
@@ -158,77 +157,112 @@ expression:
       | KEY_IDENTIFIER KEY_PARL parameters KEY_PARR KEY_SEMICOLON
       ;
 
-	  
-
-//bis hier alles gut
-
 main:
-	  KEY_STARTMAIN KEY_NEWLINE body KEY_ENDMAIN KEY_NEWLINE;
-
+	KEY_STARTMAIN KEY_NEWLINE body KEY_ENDMAIN KEY_NEWLINE;
 
 /*** IF ***/
 
+if_stmt:
+	if KEY_ENDIF
+	| if else KEY_ENDIF
+	| if else_ifs KEY_ENDIF
+	| if else_ifs else KEY_ENDIF
+	;
+if:
+	KEY_IF KEY_PARL conditions KEY_PARR KEY_THEN statements;
 
-if_stmt: 
-	  if KEY_ENDIF
-	  | if else KEY_ENDIF
-	  | if else_ifs KEY_ENDIF
-	  | if else_ifs else KEY_ENDIF
-	  ;
-
-if: 
-	  KEY_IF KEY_BRACKETL expression KEY_BRACKETR KEY_THEN statement;
-	  
-else: 
-	  KEY_ELSE statement;
+else:
+	KEY_ELSE statements;
 
 else_ifs:
-	  else_ifs else_if
-	  | elseif
-	  ;
-	  
-else_if: 
-	  KEY_ELSEIF KEY_BRACKETL expression KEY_BRACKETR KEY_THEN statement;
-	  
+      elseif
+	| else_ifs else_if
+	;
 
-/*** SWITCH ***/  
-	  
+else_if:
+	KEY_ELSEIF KEY_PARL conditions KEY_PARR KEY_THEN statements;
+
+conditions:
+      condition
+      | conditions condition
+
+condition:
+    KEY_NUMBER
+    | KEY_IDENTIFIER
+    | condition KEY_GREATER condition
+    | condition KEY_LESSER condition
+    | condition KEY_EQUAL condition
+    | condition KEY_NOTEQUAL condition
+    | condition KEY_AND condition
+    | condition KEY_OR condition
+    | KEY_PARL condition KEY_PARR
+    ;
+
+/*** SWITCH ***/
 
 switch_stmt:
-	  switch cases KEY_ENDSWITCH
-	  | switch cases default KEY_ENDSWITCH
-	  ;
-	  
-switch: 
-	  KEY_SWITCH KEY_BRACKETR expression KEY_BRACKETR;
-	  
-cases:
-	  cases case
-	  | case
-	  ;
-	  
-case: 
-	  KEY_CASE KEY_BRACKETR expression KEY_BRACKETR KEY_COLON statement;
-	  
+      switch cases KEY_ENDSWITCH
+	| switch cases default KEY_ENDSWITCH
+	;
 
-default: 
-	  KEY_DEFAULT KEY_COLON statement;
-	  
+switch:
+	KEY_SWITCH KEY_PARL conditions KEY_PARR KEY_NEWLINE;
+
+cases:
+	case
+	|cases case
+	;
+
+case:
+	KEY_CASE KEY_PARL conditions KEY_PARR KEY_COLON statements;
+
+
+default:
+	KEY_DEFAULT KEY_COLON statements;
+
 
 /*** WHILE ***/
 
-while: 
-	  KEY_WHILE KEY_BRACKETL expression KEY_BRACKETR statement KEY_ENDWHILE;
-
+while:
+	KEY_WHILE KEY_PARL conditions KEY_PARR statements KEY_ENDWHILE;
 
 /*** FOR ***/
 
-for: 
-	  KEY_FOR identifier KEY_COLON KEY_EQUAL int KEY_TO int KEY_STEP int statement KEY_ENDFOR;
-	
-	  
+for:
+	KEY_FOR identifier KEY_COLON KEY_EQUAL KEY_NUMBER KEY_TO JEY_NUMBER KEY_STEP KEY_NUMBER statements KEY_ENDFOR;
 
-	  
+
+      //bis hier alles gut
+
+
+/*** PRINT ***/
+
+print_statement:
+       KEY_PRINT KEY_PARL KEY_PARR KEY_COLON
+       |KEY_PRINT KEY_PARL lexpression KEY_PARR KEY_COLON
+       |KEY_PRINT KEY_PARL lexpresiion KEY_BRACKETL print_data KEY_BRACKETR KEY_PARR KEY_COLON
+       ;
+
+print_data:
+       identifier
+    	 |int
+    	 |char
+    	 |expression
+    	 ;
+
+
+/*** BREAK ***/
+
+
+break_statement:
+
+       KEY_BREAK KEY_COLON;
+       |KEY_BREAK cases
+    	 |cases
+    	 ;
+
+
+
 
 
 
