@@ -27,12 +27,10 @@ number {non_zero_digit}{digit}*|"0"
 "/"             {printtokens(KEY_DIV); return KEY_DIV;}
 "^"             {printtokens(KEY_POWER); return KEY_POWER;}
 ">"             {printtokens(KEY_GREATER); return KEY_GREATER;}
-"<"             {printtokens(KEY_LESS); return KEY_LESS;}
+"<"             {printtokens(KEY_LESSER); return KEY_LESSER;}
 "="             {printtokens(KEY_ASSIGN); return KEY_ASSIGN;}
 "=="            {printtokens(KEY_EQUAL); return KEY_EQUAL;}
 "!="            {printtokens(KEY_NOTEQUAL); return KEY_NOTEQUAL;}
-"&&"            {printtokens(KEY_LAND); return KEY_LAND;}
-"||"            {printtokens(KEY_LOR); return KEY_LOR;}
 ":"             {printtokens(KEY_COLON); return KEY_COLON;}
 "."             {printtokens(KEY_DOT); return KEY_DOT;}
 ";"             {printtokens(KEY_SEMICOLON); return KEY_SEMICOLON;}
