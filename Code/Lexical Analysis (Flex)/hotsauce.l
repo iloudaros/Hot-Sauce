@@ -15,7 +15,9 @@ digit [0-9]
 non_zero_digit [1-9]
 whitespace [\t\v\r]
 
-escaped_string (\\.|[^\"])*
+string \"[a-zA-Z][[:space:]:;,()A-Za-z0-9_.-]*\"
+
+escaped_string (\\.|[^])*
 number {non_zero_digit}{digit}*|"0"
 
 
@@ -25,7 +27,6 @@ number {non_zero_digit}{digit}*|"0"
 "-"             {printtokens(KEY_MIN); return KEY_MIN;}
 "*"             {printtokens(KEY_MUL); return KEY_MUL;}
 "/"             {printtokens(KEY_DIV); return KEY_DIV;}
-"^"             {printtokens(KEY_POWER); return KEY_POWER;}
 ">"             {printtokens(KEY_GREATER); return KEY_GREATER;}
 "<"             {printtokens(KEY_LESSER); return KEY_LESSER;}
 "="             {printtokens(KEY_ASSIGN); return KEY_ASSIGN;}
@@ -41,6 +42,7 @@ number {non_zero_digit}{digit}*|"0"
 "]"             {printtokens(KEY_BRACKETR); return KEY_BRACKETR;}
 "{"             {printtokens(KEY_CURLYL); return KEY_CURLYL;}
 "}"             {printtokens(KEY_CURLYR); return KEY_CURLYR;}
+"\""            {printtokens(KEY_QUOTE); return KEY_QUOTE;}
 "%"             {printtokens(KEY_COMMENT); return KEY_COMMENT;}
 "PROGRAM"       {printtokens(KEY_PROGRAM); return KEY_PROGRAM;}
 "FUNCTION"      {printtokens(KEY_FUNCTION); return KEY_FUNCTION;}
@@ -72,6 +74,7 @@ number {non_zero_digit}{digit}*|"0"
 "BREAK"         {printtokens(KEY_BREAK); return KEY_BREAK;}
 "\n"            {printtokens(KEY_NEWLINE); return KEY_NEWLINE;}
 {identifier}    {printtokens(KEY_IDENTIFIER); return KEY_IDENTIFIER;}
+{string}        {printtokens(KEY_STRING); return KEY_STRING;}
 {letter}        {printtokens(KEY_LETTER); return KEY_LETTER;}
 {number}        {printtokens(KEY_NUMBER); return KEY_NUMBER;}
 <<EOF>>         {printtokens(KEY_EOF); return KEY_EOF;}
