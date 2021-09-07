@@ -10,12 +10,13 @@
 %option noyywrap
 %option yylineno
 
-identifier [a-zA-Z_$][a-zA-Z_$0-9]*  //used for all non-reserved words
 digit [0-9]
 non_zero_digit [1-9]
 whitespace [\t\v\r]
 
 string \"[a-zA-Z][[:space:]:;,()A-Za-z0-9_.-]*\"
+
+identifier [a-zA-Z_$][a-zA-Z_$0-9]*
 
 escaped_string (\\.|[^])*
 number {non_zero_digit}{digit}*|"0"
@@ -75,7 +76,6 @@ number {non_zero_digit}{digit}*|"0"
 "\n"            {printtokens(KEY_NEWLINE); return KEY_NEWLINE;}
 {identifier}    {printtokens(KEY_IDENTIFIER); return KEY_IDENTIFIER;}
 {string}        {printtokens(KEY_STRING); return KEY_STRING;}
-{letter}        {printtokens(KEY_LETTER); return KEY_LETTER;}
 {number}        {printtokens(KEY_NUMBER); return KEY_NUMBER;}
 <<EOF>>         {printtokens(KEY_EOF); return KEY_EOF;}
 %%
