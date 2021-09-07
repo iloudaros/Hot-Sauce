@@ -76,7 +76,7 @@ number {non_zero_digit}{digit}*|"0"
 "\n"            {printtokens(KEY_NEWLINE); return KEY_NEWLINE;}
 {identifier}    {printtokens(KEY_IDENTIFIER); return KEY_IDENTIFIER;}
 {string}        {printtokens(KEY_STRING); return KEY_STRING;}
-{number}        {printtokens(KEY_NUMBER); return KEY_NUMBER;}
+{number}        {printtokens(KEY_NUM); return KEY_NUM;}
 <<EOF>>         {printtokens(KEY_EOF); return KEY_EOF;}
 %%
 
@@ -99,5 +99,5 @@ int main(int argc, char *argv[]) {
 }
 
 void printtokens(int tokennum){
-  prtintf("Token found \'%s\' (%d) at line %d \n", yytext, tokennum, yylineno);
+  printf("Token found \'%s\' (%d) at line %d \n", yytext, tokennum, yylineno);
 }
