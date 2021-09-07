@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../Syntax\ Analysis\ \(Bison\)/hotsauce.tab.h"
+#include "hotsauce.tab.h"
 %}
 
 %option noyywrap
