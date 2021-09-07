@@ -19,7 +19,6 @@ int yylex();
 %token KEY_IDENTIFIER KEY_NUM KEY_NEWLINE
 %token KEY_EOF
 %token KEY_MAIN KEY_ENDMAIN
-%token KEY_MAIN KEY_STARTMAIN
 %token KEY_WHILE KEY_ENDWHILE
 %token KEY_FOR KEY_TO KEY_STEP KEY_ENDFOR
 %token KEY_IF KEY_THEN KEY_ELSEIF KEY_ELSE KEY_ENDIF
@@ -42,14 +41,14 @@ int yylex();
 %token KEY_STRUCT
 %token KEY_ENDSTRUCT
 
-%type<item> print_data
+//%type<item> print_data
 
 %%
 /*** Here, you can see the rules ***/
 
 //Declarations
 program:
-  KEY_PROGRAM KEY_IDENTIFIER KEY_NEWLINE struct_decl functions main KEY_EOF {printf("Alles gut!")}
+  KEY_PROGRAM KEY_IDENTIFIER KEY_NEWLINE /*struct_decl*/ functions main KEY_EOF {printf("Alles gut!")}
   ;
 
 /*** start of structs ***/
@@ -95,11 +94,11 @@ parameters:
 
 return_val:
   KEY_IDENTIFIER
-  | KEY_NUMBER
+  | KEY_NUM
 	;
 
 main:
-  KEY_STARTMAIN KEY_NEWLINE body KEY_ENDMAIN KEY_NEWLINE
+  KEY_MAIN KEY_NEWLINE body KEY_ENDMAIN KEY_NEWLINE
   ;
 
 body:
@@ -151,26 +150,26 @@ statement:
   | assignment
   | while
   | for
-  | if_stmt
-  | switch_stmt
+  | if
+  | switch
   | print
   | break
-  | comment
+  //| comment
 	;
 
 assignment:
   KEY_IDENTIFIER KEY_ASSIGN expression KEY_SEMICOLON
-  | KEY_IDENTIFIER KEY_ASSIGN KEY_NUMBER KEY_SEMICOLON
+  | KEY_IDENTIFIER KEY_ASSIGN KEY_NUM KEY_SEMICOLON
   ;
 
 expression:
-  KEY_NUMBER {$$ = $1;}
-  | expression KEY_PLUS expression {$$ = $1 + $3;}
-  | expression KEY_MINUS expression {$$ = $1 - $3;}
-  | expression KEY_MUL expression {$$ = $1 * $3;}
-  | expression KEY_DIV expression {$$ = $1 / $3;}
-  | KEY_MINUS expression %prec KEY_NEG {$$ = -$2;}
-  | KEY_PARL expression KEY_PARR {$$ = $2;}
+  KEY_NUM //{$$ = $1;}
+  | expression KEY_PLUS expression //{$$ = $1 + $3;}
+  | expression KEY_MIN expression //{$$ = $1 - $3;}
+  | expression KEY_MUL expression //{$$ = $1 * $3;}
+  | expression KEY_DIV expression //{$$ = $1 / $3;}
+  | KEY_MIN expression %prec KEY_MIN //{$$ = -$2;}
+  | KEY_PARL expression KEY_PARR //{$$ = $2;}
   | KEY_IDENTIFIER KEY_PARL parameters KEY_PARR KEY_SEMICOLON
   ;
 
@@ -192,7 +191,7 @@ else:
   ;
 
 else_ifs:
-  elseif
+  else_if
 	| else_ifs else_if
 	;
 
@@ -206,7 +205,7 @@ conditions:
   ;
 
 condition:
-  KEY_NUMBER
+  KEY_NUM
   | KEY_IDENTIFIER
   | condition KEY_GREATER condition
   | condition KEY_LESSER condition
@@ -250,7 +249,7 @@ while:
 /*** FOR ***/
 
 for:
-	KEY_FOR identifier KEY_COLON KEY_EQUAL KEY_NUMBER KEY_TO JEY_NUMBER KEY_STEP KEY_NUMBER statements KEY_ENDFOR
+	KEY_FOR KEY_IDENTIFIER KEY_COLON KEY_EQUAL KEY_NUM KEY_TO KEY_NUM KEY_STEP KEY_NUM statements KEY_ENDFOR
   ;
 
 /*** PRINT ***/
