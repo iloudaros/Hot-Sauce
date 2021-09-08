@@ -6,7 +6,8 @@ iloudaros: ../Lexical\ Analysis\ (Flex)/hotsauce.l ../Syntax\ Analysis\ (Bison)/
 	cp ../Syntax\ Analysis\ \(Bison\)/hotsauce.y ./
 	bison -d hotsauce.y
 	flex hotsauce.l
-	gcc -o hotsauce hotsauce.tab.c lex.yy.c
+	gcc -c hotsauce.tab.c lex.yy.c
+	gcc y.tab.o lex.yy.o -o hotsauce
 
 itsikelis: ../Lexical\ Analysis\ (Flex)/hotsauce.l ../Syntax\ Analysis\ (Bison)/hotsauce.y
 	cp ../Lexical\ Analysis\ \(Flex\)/hotsauce.l ./
