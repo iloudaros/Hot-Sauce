@@ -4,10 +4,14 @@
 iloudaros: ../Lexical\ Analysis\ (Flex)/hotsauce.l ../Syntax\ Analysis\ (Bison)/hotsauce.y
 	cp ../Lexical\ Analysis\ \(Flex\)/hotsauce.l ./
 	cp ../Syntax\ Analysis\ \(Bison\)/hotsauce.y ./
+	cp ../Syntax\ Analysis\ \(Bison\)/test.hotsauce.txt ./
 	bison -d hotsauce.y
 	flex hotsauce.l
 	gcc -c hotsauce.tab.c lex.yy.c
-	gcc y.tab.o lex.yy.o -o hotsauce
+	gcc hotsauce.tab.o lex.yy.o -o hotsauce
+
+
+
 
 itsikelis: ../Lexical\ Analysis\ (Flex)/hotsauce.l ../Syntax\ Analysis\ (Bison)/hotsauce.y
 	cp ../Lexical\ Analysis\ \(Flex\)/hotsauce.l ./
@@ -15,7 +19,12 @@ itsikelis: ../Lexical\ Analysis\ (Flex)/hotsauce.l ../Syntax\ Analysis\ (Bison)/
 	bison -d hotsauce.y
 	flex hotsauce.l
 
+
+
+
 azekyria: ../Lexical\ Analysis\ (Flex)/hotsauce.l ../Syntax\ Analysis\ (Bison)/hotsauce.y
+
+
 
 
 
