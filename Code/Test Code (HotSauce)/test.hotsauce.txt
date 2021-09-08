@@ -1,0 +1,25 @@
+PROGRAM HOTSAUCE
+
+FUNCTION foo(VARS INTEGER int;)
+IF (int < 5) THEN
+int = 0;
+ELSE 
+int = 1;
+ENDIF
+END_FUNCTION
+
+STARTMAIN
+
+VARS CHAR char;
+char = a;
+
+VARS INTEGER int;
+int = 6;
+
+FOR counter=1 TO 5 STEP 1
+foo(int);
+int = int - 1;
+ENDFOR
+
+ENDMAIN
+
