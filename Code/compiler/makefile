@@ -1,16 +1,16 @@
 #NOT READY
 
 
-iloudaros: ../Lexical\ Analysis\ (Flex)/hotsauce.l ../Syntax\ Analysis\ (Bison)/hotsauce.y
-	cp ../Lexical\ Analysis\ \(Flex\)/hotsauce.l ./
-	cp ../Syntax\ Analysis\ \(Bison\)/hotsauce.y ./
-	cp ../Test\ Code\ \(HotSauce\)/test.hotsauce.txt ./
-	cp ../Exec\ Helper/Exec_Helper.c ./
-	bison -t -d hotsauce.y
-	flex -d hotsauce.l
+iloudaros: ../lexical_analysis_flex/hotsauce.l ../syntax_analysis_bison/hotsauce.y
+	cp ../lexical_analysis_flex/hotsauce.l ./
+	cp ../syntax_analysis_bison/hotsauce.y ./
+	cp ../test_code/test.hotsauce.txt ./
+	cp ../exec_helper/exec_helper.c ./
+	bison -d hotsauce.y
+	flex -t -d hotsauce.l
 	gcc -c hotsauce.tab.c lex.yy.c
 	gcc hotsauce.tab.o lex.yy.o -o hotsauce
-	gcc -o Exec_Helper Exec_Helper.c
+	gcc -o exec_helper exec_helper.c
 	./Exec_Helper
 
 
