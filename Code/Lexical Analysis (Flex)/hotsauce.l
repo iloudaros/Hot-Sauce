@@ -20,8 +20,8 @@ string	([']{string_item}*['])|(["]{string_item}*["])
 
 
 escaped_string (\\.|[^])*
-NEWLINE		\n
-WHITESPACE	[ \t\v\n\f]
+newline		\n
+whitespace	[ \t\v\n\f]
 
 
 %%
@@ -78,8 +78,7 @@ WHITESPACE	[ \t\v\n\f]
 "%"             {return KEY_COMMENT;}
 <<EOF>>         {return KEY_EOF;}
 
-NEWLINE         {return KEY_NEWLINE}
-WHITESPACE      {return KEY_WHITESPACE}
+{newline}         {return KEY_NEWLINE}
 
 
 {identifier}    {
@@ -87,7 +86,7 @@ WHITESPACE      {return KEY_WHITESPACE}
 				          yylval.item.type = ID;
 				          yylval.item.data_type = LITERAL;
 				          return KEY_IDENTIFIER}
-                
+
 
 {string}        {
                   if(strlen(yytext) > 3)
