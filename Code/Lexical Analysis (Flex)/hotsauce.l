@@ -9,41 +9,24 @@
 
 %option noyywrap
 
+identifier [a-zA-Z_][a-zA-Z_$0-9]*
+
 digit [0-9]
 non_zero_digit [1-9]
-whitespace [\t\v\r]
+number {non_zero_digit}{digit}*|"0"
 
-string ["][a-zA-Z][[:space:]:;,()A-Za-z0-9_.-]*["]
+string_item ([^\n\'\"\\])|([\\].)
+string	([']{string_item}*['])|(["]{string_item}*["])
+//string ["][a-zA-Z][[:space:]:;,()A-Za-z0-9_.-]*["]
 
-identifier [a-zA-Z_$][a-zA-Z_$0-9]*
 
 escaped_string (\\.|[^])*
-number {non_zero_digit}{digit}*|"0"
+whitespace [\t\v\r]
+
 
 
 %%
 
-"+"             {return KEY_PLUS;}
-"-"             {return KEY_MIN;}
-"*"             {return KEY_MUL;}
-"/"             {return KEY_DIV;}
-">"             {return KEY_GREATER;}
-"<"             {return KEY_LESSER;}
-"="             {return KEY_ASSIGN;}
-"=="            {return KEY_EQUAL;}
-"!="            {return KEY_NOTEQUAL;}
-":"             {return KEY_COLON;}
-"."             {return KEY_DOT;}
-";"             {return KEY_SEMICOLON;}
-","             {return KEY_COMMA;}
-"("             {return KEY_PARL;}
-")"             {return KEY_PARR;}
-"["             {return KEY_BRACKETL;}
-"]"             {return KEY_BRACKETR;}
-"{"             {return KEY_CURLYL;}
-"}"             {return KEY_CURLYR;}
-"\""            {return KEY_QUOTE;}
-"%"             {return KEY_COMMENT;}
 "PROGRAM"       {return KEY_PROGRAM;}
 "FUNCTION"      {return KEY_FUNCTION;}
 "END_FUNCTION"  {return KEY_ENDFUNCTION;}
@@ -72,27 +55,56 @@ number {non_zero_digit}{digit}*|"0"
 "ENDSWITCH"     {return KEY_ENDSWITCH;}
 "PRINT"         {return KEY_PRINT;}
 "BREAK"         {return KEY_BREAK;}
+
+"+"             {return KEY_PLUS;}
+"-"             {return KEY_MIN;}
+"*"             {return KEY_MUL;}
+"/"             {return KEY_DIV;}
+">"             {return KEY_GREATER;}
+"<"             {return KEY_LESSER;}
+"="             {return KEY_ASSIGN;}
+"=="            {return KEY_EQUAL;}
+"!="            {return KEY_NOTEQUAL;}
+":"             {return KEY_COLON;}
+"."             {return KEY_DOT;}
+";"             {return KEY_SEMICOLON;}
+","             {return KEY_COMMA;}
+"("             {return KEY_PARL;}
+")"             {return KEY_PARR;}
+"["             {return KEY_BRACKETL;}
+"]"             {return KEY_BRACKETR;}
+"{"             {return KEY_CURLYL;}
+"}"             {return KEY_CURLYR;}
+"\""            {return KEY_QUOTE;}
+"%"             {return KEY_COMMENT;}
 "\n"            {return KEY_NEWLINE;}
-{identifier}    {return KEY_IDENTIFIER;}
-{string}        {return KEY_STRING;}
-{number}        {return KEY_NUM;}
 <<EOF>>         {return KEY_EOF;}
+
+
+{identifier}    {
+				          strcpy(yylval.item.name, yytext);
+				          yylval.item.type = ID;
+				          yylval.item.data_type = LITERAL;
+				          return KEY_IDENTIFIER}
+                }
+
+{string}        {
+                  if(strlen(yytext) > 3)
+                  {
+                    strcpy(yylval.item.string, yytext);
+				            yylval.item.type = STRING;
+				            yylval.item.data_type = LITERAL;
+				            return KEY_STRING;
+                  }
+                  else
+                  {
+                    strcpy(yylval.item.string, yytext);
+				            yylval.item.type = CHAR;
+				            yylval.item.data_type = LITERAL;
+                    return KEY_CHARACTER;
+                  }
+                }
+
+{number}        {return KEY_NUM;}
+
 %%
-
-//int main(int argc, char *argv[]) {
-//    int token;
-//		if(argc>1){
-//		  yyin = fopen(argv[1], "r");
-//			if (yyin==NULL){
-//			   perror ("error open");
-//				 return -1;
-//			}
-//		}
-//		do{
-//		  token = yylex();
-
-//		}while (token != KEY_EOF);
-//
-//		fclose(yyin);
-//		yyterminate();
-//}
