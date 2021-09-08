@@ -164,7 +164,6 @@ statements:
   ;
 
 statement:
-  //empty
   | assignment
   | while
   | for
