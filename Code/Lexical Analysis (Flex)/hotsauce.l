@@ -21,8 +21,8 @@ string	([']{string_item}*['])|(["]{string_item}*["])
 
 
 escaped_string (\\.|[^])*
-whitespace [\t\v\r]
-
+NEWLINE		\n
+WHITESPACE	[ \t\v\n\f]
 
 
 %%
@@ -77,8 +77,10 @@ whitespace [\t\v\r]
 "}"             {return KEY_CURLYR;}
 "\""            {return KEY_QUOTE;}
 "%"             {return KEY_COMMENT;}
-"\n"            {return KEY_NEWLINE;}
 <<EOF>>         {return KEY_EOF;}
+
+NEWLINE         {return KEY_NEWLINE}
+WHITESPACE      {return KEY_WHITESPACE}
 
 
 {identifier}    {
