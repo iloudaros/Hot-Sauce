@@ -9,3 +9,4 @@ Code/Compiler/hotsauce.tab.o
 Code/Compiler/lex.yy.o
 Code/Compiler/Exec_Helper.c
 Code/Compiler/hotsauce
+Code/Compiler/test.hotsauce.txt
