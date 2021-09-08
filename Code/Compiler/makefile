@@ -15,11 +15,11 @@ itsikelis: ../Lexical\ Analysis\ (Flex)/hotsauce.l ../Syntax\ Analysis\ (Bison)/
 	bison -d hotsauce.y
 	flex hotsauce.l
 
-azekyria:
+azekyria: ../Lexical\ Analysis\ (Flex)/hotsauce.l ../Syntax\ Analysis\ (Bison)/hotsauce.y
 
 
 
-ckratimenou
+ckratimenou: ../Lexical\ Analysis\ (Flex)/hotsauce.l ../Syntax\ Analysis\ (Bison)/hotsauce.y
 
 clean:
 	rm -f hotsauce.l
