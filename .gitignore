@@ -8,3 +8,7 @@ Code/Compiler/hotsauce.tab.o
 Code/Compiler/hotsauce.y
 Code/Compiler/lex.yy.c
 Code/Compiler/lex.yy.o
+Code/Compiler/exec_helper
+Code/Compiler/exec_helper.c
+Code/Compiler/output
+Code/Compiler/test.hotsauce.txt
