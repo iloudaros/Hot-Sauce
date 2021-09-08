@@ -1,18 +1,24 @@
 #NOT READY
 
 
-mac: ../Lexical\ Analysis\ (Flex)/hotsauce.l ../Syntax\ Analysis\ (Bison)/hotsauce.y
+iloudaros: ../Lexical\ Analysis\ (Flex)/hotsauce.l ../Syntax\ Analysis\ (Bison)/hotsauce.y
 	cp ../Lexical\ Analysis\ \(Flex\)/hotsauce.l ./
 	cp ../Syntax\ Analysis\ \(Bison\)/hotsauce.y ./
 	bison -d hotsauce.y
 	flex hotsauce.l
 	gcc -o hotsauce hotsauce.tab.c lex.yy.c
 
-windows: ../Lexical\ Analysis\ (Flex)/hotsauce.l ../Syntax\ Analysis\ (Bison)/hotsauce.y
+itsikelis: ../Lexical\ Analysis\ (Flex)/hotsauce.l ../Syntax\ Analysis\ (Bison)/hotsauce.y
 	cp ../Lexical\ Analysis\ \(Flex\)/hotsauce.l ./
 	cp ../Syntax\ Analysis\ \(Bison\)/hotsauce.y ./
 	bison -d hotsauce.y
 	flex hotsauce.l
+
+azekyria:
+
+
+
+ckratimenou
 
 clean:
 	rm -f hotsauce.l
