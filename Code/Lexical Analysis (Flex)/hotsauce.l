@@ -78,29 +78,30 @@ whitespace	[ \t\v\n\f]
 "%"             {return KEY_COMMENT;}
 <<EOF>>         {return KEY_EOF;}
 
-{newline}         {return KEY_NEWLINE}
+{newline}         {return KEY_NEWLINE;}
 
 
 {identifier}    {
-				          strcpy(yylval.item.name, yytext);
-				          yylval.item.type = ID;
-				          yylval.item.data_type = LITERAL;
-				          return KEY_IDENTIFIER}
+				          //strcpy(yylval.item.name, yytext);
+				          //yylval.item.type = ID;
+				         //yylval.item.data_type = LITERAL;
+				          return KEY_IDENTIFIER;
+                }
 
 
 {string}        {
                   if(strlen(yytext) > 3)
                   {
-                    strcpy(yylval.item.string, yytext);
-				            yylval.item.type = STRING;
-				            yylval.item.data_type = LITERAL;
+                            //strcpy(yylval.item.string, yytext);
+				            //yylval.item.type = STRING;
+				            //yylval.item.data_type = LITERAL;
 				            return KEY_STRING;
                   }
                   else
                   {
-                    strcpy(yylval.item.string, yytext);
-				            yylval.item.type = CHAR;
-				            yylval.item.data_type = LITERAL;
+                            //strcpy(yylval.item.string, yytext);
+				            //yylval.item.type = CHAR;
+				            //yylval.item.data_type = LITERAL;
                     return KEY_CHARACTER;
                   }
                 }

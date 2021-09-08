@@ -9,9 +9,14 @@
 extern int yylex();
 extern int yyparse();
 extern FILE *yyin;
+extern FILE *yyout;
 extern int yylineno;
 extern int  yywrap;
-void yyerror(const char *s);
+
+void yyerror(char *);
+int yylex();
+/* void yyerror(const char *s); */
+
 
 %}
 
@@ -63,9 +68,10 @@ main:
   ;
 
 body:
-  KEY_VARS variables
+  //empty
+  | KEY_VARS variables
   | KEY_VARS variables statements
-	;
+  ;
 
 /*** start of structs ***/
 /*
