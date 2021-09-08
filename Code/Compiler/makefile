@@ -5,7 +5,8 @@ iloudaros: ../Lexical\ Analysis\ (Flex)/hotsauce.l ../Syntax\ Analysis\ (Bison)/
 	cp ../Lexical\ Analysis\ \(Flex\)/hotsauce.l ./
 	cp ../Syntax\ Analysis\ \(Bison\)/hotsauce.y ./
 	cp ../Test\ Code\ \(HotSauce\)/test.hotsauce.txt ./
-	cp ../Exec\ Helper/Exec_Helper.c ./ 
+	cp ../Exec_Helper/Exec_Helper.c ./
+
 	bison -t -d hotsauce.y
 	flex -d hotsauce.l
 	gcc -c hotsauce.tab.c lex.yy.c
