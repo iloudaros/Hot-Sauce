@@ -191,7 +191,7 @@ if:
 	;
 
 if_start:
-	KEY_IF KEY_PARL conditions KEY_PARR KEY_THEN statements
+	KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements
   ;
 
 else_ifs:
@@ -200,16 +200,11 @@ else_ifs:
 	;
 
 else_if:
-	KEY_ELSEIF KEY_PARL conditions KEY_PARR KEY_THEN statements
+	KEY_ELSEIF KEY_PARL condition KEY_PARR KEY_THEN statements
   ;
 
 else:
 	KEY_ELSE statements
-  ;
-
-conditions:
-  condition
-  | conditions KEY_COMMA condition
   ;
 
 condition:
@@ -232,7 +227,7 @@ switch:
 	;
 
 switch_start:
-	KEY_SWITCH KEY_PARL conditions KEY_PARR KEY_NEWLINE
+	KEY_SWITCH KEY_PARL condition KEY_PARR KEY_NEWLINE
   ;
 
 cases:
@@ -241,7 +236,7 @@ cases:
 	;
 
 case:
-	KEY_CASE KEY_PARL conditions KEY_PARR KEY_COLON statements KEY_BREAK
+	KEY_CASE KEY_PARL condition KEY_PARR KEY_COLON statements KEY_BREAK
   ;
 
 default:
@@ -251,7 +246,7 @@ default:
 /*** WHILE ***/
 
 while:
-	KEY_WHILE KEY_PARL conditions KEY_PARR statements KEY_ENDWHILE
+	KEY_WHILE KEY_PARL condition KEY_PARR statements KEY_ENDWHILE
   ;
 
 /*** FOR ***/
