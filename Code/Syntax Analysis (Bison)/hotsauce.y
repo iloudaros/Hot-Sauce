@@ -6,10 +6,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-void yyerror(char *);
+extern int yylex();
+extern int yyparse();
 extern FILE *yyin;
-extern FILE *yyout;
-int yylex();
+extern int yylineno;
+extern int  yywrap;
+void yyerror(const char *s);
 
 %}
 
@@ -30,6 +32,7 @@ int yylex();
 %token KEY_ASSIGN
 %token KEY_CURLYR KEY_CURLYL KEY_BRACKETR KEY_BRACKETL KEY_PARR KEY_PARL KEY_COMMA KEY_SEMICOLON KEY_DOT KEY_COLON
 %token KEY_QUOTE
+%token KEY_CHARACTER
 %token KEY_STRING
 
 %left KEY_AND
@@ -164,6 +167,7 @@ statement:
 assignment:
   KEY_IDENTIFIER KEY_ASSIGN expression KEY_SEMICOLON
   | KEY_IDENTIFIER KEY_ASSIGN KEY_NUM KEY_SEMICOLON
+  | KEY_IDENTIFIER KEY_ASSIGN KEY_CHARACTER KEY_SEMICOLON
   ;
 
 expression:
