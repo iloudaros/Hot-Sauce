@@ -158,7 +158,6 @@ statements:
   ;
 
 statement:
-  //empty
   | assignment
   | while
   | for
@@ -166,6 +165,7 @@ statement:
   | switch
   | print
   | break
+  | /*nothing*/
   //| comment
 	;
 

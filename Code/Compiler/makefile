@@ -6,7 +6,7 @@ mac: ../Lexical\ Analysis\ (Flex)/hotsauce.l ../Syntax\ Analysis\ (Bison)/hotsau
 	cp ../Syntax\ Analysis\ \(Bison\)/hotsauce.y ./
 	bison -d hotsauce.y
 	flex hotsauce.l
-	gcc-11 -o hotsauce hotsauce.tab.c lex.yy.c
+	gcc -o hotsauce hotsauce.tab.c lex.yy.c
 
 windows: ../Lexical\ Analysis\ (Flex)/hotsauce.l ../Syntax\ Analysis\ (Bison)/hotsauce.y
 	cp ../Lexical\ Analysis\ \(Flex\)/hotsauce.l ./
