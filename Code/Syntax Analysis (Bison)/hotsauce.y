@@ -58,6 +58,15 @@ program:
   KEY_PROGRAM KEY_IDENTIFIER KEY_NEWLINE /*struct_decl*/ functions main KEY_EOF {printf("Alles gut!");}
   ;
 
+main:
+  KEY_MAIN body KEY_ENDMAIN
+  ;
+
+body:
+  KEY_VARS variables
+  | KEY_VARS variables statements
+	;
+
 /*** start of structs ***/
 /*
 struct_decl:
@@ -90,7 +99,7 @@ functions:
 
 function:
   //empty
-  | KEY_FUNCTION KEY_IDENTIFIER KEY_PARL parameters KEY_PARR KEY_NEWLINE body KEY_RETURN return_val KEY_SEMICOLON KEY_ENDFUNCTION
+  | KEY_FUNCTION KEY_IDENTIFIER KEY_PARL parameters KEY_PARR body KEY_RETURN return KEY_ENDFUNCTION
   ;
 
 parameters:
@@ -99,18 +108,14 @@ parameters:
   | parameters KEY_COMMA KEY_IDENTIFIER
 	;
 
+return:
+  KEY_RETURN
+  | KEY_RETURN return_val KEY_SEMICOLON
+  ;
+
 return_val:
   KEY_IDENTIFIER
   | KEY_NUM
-	;
-
-main:
-  KEY_MAIN KEY_NEWLINE body KEY_ENDMAIN KEY_NEWLINE
-  ;
-
-body:
-  KEY_VARS variables
-  | KEY_VARS variables statements
 	;
 
 variables:
