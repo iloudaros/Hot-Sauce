@@ -17,7 +17,6 @@ number {non_zero_digit}{digit}*|"0"
 
 string_item ([^\n\'\"\\])|([\\].)
 string	([']{string_item}*['])|(["]{string_item}*["])
-//string ["][a-zA-Z][[:space:]:;,()A-Za-z0-9_.-]*["]
 
 
 escaped_string (\\.|[^])*

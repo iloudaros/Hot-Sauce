@@ -11,10 +11,10 @@ hotsauce: ../Lexical\ Analysis\ (Flex)/hotsauce.l ../Syntax\ Analysis\ (Bison)/h
 	gcc hotsauce.tab.o lex.yy.o -o hotsauce
 
 
-#clean:
-#	rm -f hotsauce.l
-#	rm -f hotsauce.y
-#	rm -f hotsauce.tab.c
-#	rm -f hotsauce.tab.h
-#	rm -f lex.yy.c
-#	rm -f hotsauce
+clean:
+	rm -f hotsauce.l
+	rm -f hotsauce.y
+	rm -f hotsauce.tab.c
+	rm -f hotsauce.tab.h
+	rm -f lex.yy.c
+	rm -f hotsauce
