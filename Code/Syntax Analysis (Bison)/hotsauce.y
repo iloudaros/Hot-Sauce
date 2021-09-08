@@ -171,6 +171,7 @@ statement:
   | switch
   | print
   | break
+  | /*nothing*/
   //| comment
 	;
 
