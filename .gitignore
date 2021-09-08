@@ -1,2 +1,6 @@
 
 .DS_Store
+Code/Compiler/hotsauce.l
+Code/Compiler/hotsauce.tab.c
+Code/Compiler/hotsauce.tab.h
+Code/Compiler/hotsauce.y

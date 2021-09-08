@@ -87,7 +87,7 @@ WHITESPACE      {return KEY_WHITESPACE}
 				          yylval.item.type = ID;
 				          yylval.item.data_type = LITERAL;
 				          return KEY_IDENTIFIER}
-                }
+                
 
 {string}        {
                   if(strlen(yytext) > 3)
