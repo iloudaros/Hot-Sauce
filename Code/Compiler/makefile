@@ -7,13 +7,14 @@ hotsauce: ../Lexical\ Analysis\ (Flex)/hotsauce.l ../Syntax\ Analysis\ (Bison)/h
 	cp ../Syntax\ Analysis\ \(Bison\)/hotsauce.y ./
 	bison -d hotsauce.y
 	flex hotsauce.l
-	gcc-11 -o hotsauce hotsauce.tab.c lex.yy.c
+	gcc -c hotsauce.tab.c lex.yy.c
+	gcc hotsauce.tab.o lex.yy.o -o hotsauce
 
 
-clean:
-	rm -f hotsauce.l
-	rm -f hotsauce.y
-	rm -f hotsauce.tab.c
-	rm -f hotsauce.tab.h
-	rm -f lex.yy.c
-	rm -f hotsauce
+#clean:
+#	rm -f hotsauce.l
+#	rm -f hotsauce.y
+#	rm -f hotsauce.tab.c
+#	rm -f hotsauce.tab.h
+#	rm -f lex.yy.c
+#	rm -f hotsauce

@@ -3,7 +3,9 @@
 %{
 
 #include <stdio.h>
-#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+
 void yyerror(char *);
 extern FILE *yyin;
 extern FILE *yyout;
@@ -41,6 +43,8 @@ int yylex();
 %token KEY_STRUCT
 %token KEY_ENDSTRUCT
 
+
+
 //%type<item> print_data
 
 %%
@@ -48,7 +52,7 @@ int yylex();
 
 //Declarations
 program:
-  KEY_PROGRAM KEY_IDENTIFIER KEY_NEWLINE /*struct_decl*/ functions main KEY_EOF {printf("Alles gut!")}
+  KEY_PROGRAM KEY_IDENTIFIER KEY_NEWLINE /*struct_decl*/ functions main KEY_EOF {printf("Alles gut!");}
   ;
 
 /*** start of structs ***/
@@ -186,10 +190,6 @@ if_start:
 	KEY_IF KEY_PARL conditions KEY_PARR KEY_THEN statements
   ;
 
-else:
-	KEY_ELSE statements
-  ;
-
 else_ifs:
   else_if
 	| else_ifs else_if
@@ -197,6 +197,10 @@ else_ifs:
 
 else_if:
 	KEY_ELSEIF KEY_PARL conditions KEY_PARR KEY_THEN statements
+  ;
+
+else:
+	KEY_ELSE statements
   ;
 
 conditions:
@@ -255,9 +259,9 @@ for:
 /*** PRINT ***/
 
 print:
-  KEY_PRINT KEY_PARL KEY_PARR KEY_COLON
-  | KEY_PRINT KEY_PARL KEY_STRING KEY_PARR KEY_COLON
-  |  KEY_PRINT KEY_PARL KEY_STRING KEY_PARR KEY_COLON print_data KEY_BRACKETR KEY_PARR KEY_COLON
+  KEY_PRINT KEY_PARL KEY_PARR KEY_SEMICOLON
+  | KEY_PRINT KEY_PARL KEY_STRING KEY_PARR KEY_SEMICOLON
+  |  KEY_PRINT KEY_PARL KEY_STRING KEY_PARR print_data KEY_BRACKETR KEY_PARR KEY_SEMICOLON
   ;
 
 print_data:
