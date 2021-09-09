@@ -43,7 +43,7 @@ clean:
 	rm -f hotsauce.tab.h
 	rm -f lex.yy.c
 	rm -f hotsauce
-	rm -f exec_helper
+	rm -f run
 	rm -f output
 	rm -f exec_helper.c
 	rm -f hotsauce.tab.o
