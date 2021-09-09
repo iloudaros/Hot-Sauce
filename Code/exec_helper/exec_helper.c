@@ -19,6 +19,10 @@ int main() {
 
 
 	if (choice=='y') system("./hotsauce test.hotsauce.txt");
-	else printf("Hotsauce is ready for use.\ntest.hotsauce.txt has been copied in the local directory.");
+	else
+	{
+		system("clear");
+		printf("\n\n*****************************************************************\n|  ✅  Hotsauce is ready for use.                               |\n|  📣  test.hotsauce.txt has been copied in the local directory.|\n*****************************************************************\n");
+	}
 
 }
