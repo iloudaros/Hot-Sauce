@@ -18,13 +18,14 @@ number {non_zero_digit}{digit}*|"0"
 string_item ([^\n\'\"\\])|([\\].)
 string	([']{string_item}*['])|(["]{string_item}*["])
 
-
-escaped_string (\\.|[^])*
-newline		\n
 whitespace	[ \t\v\n\f]
 
 
 %%
+
+^[ ]*\n	   			 {/* Ignore blank lines. */   } 			
+^[\t]*\n   			 {/* Ignore blank lines. */   }
+[%].*			    	 { /*Ignore comments*/        }
 
 "PROGRAM"       {return KEY_PROGRAM;}
 "FUNCTION"      {return KEY_FUNCTION;}
@@ -75,10 +76,6 @@ whitespace	[ \t\v\n\f]
 "{"             {return KEY_CURLYL;}
 "}"             {return KEY_CURLYR;}
 "\""            {return KEY_QUOTE;}
-"%"             {return KEY_COMMENT;}
-<<EOF>>         {return KEY_EOF;}
-
-{newline}         {return KEY_NEWLINE;}
 
 
 {identifier}    {
@@ -107,5 +104,7 @@ whitespace	[ \t\v\n\f]
                 }
 
 {number}        {return KEY_NUM;}
+{whitespace}    {  }
+<<EOF>>         {return KEY_EOF;}
 
 %%

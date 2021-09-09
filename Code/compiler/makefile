@@ -22,7 +22,7 @@ itsikelis: ../lexical_analysis_flex/hotsauce.l ../syntax_analysis_bison/hotsauce
 	cp ../test_code/test.hotsauce.txt ./
 	cp ../exec_helper/exec_helper.c ./
 	bison -t -d hotsauce.y
-	flex -d hotsauce.l
+	flex hotsauce.l
 	gcc -c hotsauce.tab.c lex.yy.c
 	gcc hotsauce.tab.o lex.yy.o -o hotsauce
 	gcc -o exec_helper exec_helper.c

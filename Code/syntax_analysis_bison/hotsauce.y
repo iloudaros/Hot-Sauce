@@ -27,7 +27,7 @@ int yylex();
 %token KEY_PROGRAM
 %token KEY_FUNCTION KEY_RETURN KEY_ENDFUNCTION
 %token KEY_VARS KEY_CHAR KEY_INT
-%token KEY_IDENTIFIER KEY_NUM KEY_NEWLINE
+%token KEY_IDENTIFIER KEY_NUM 
 %token KEY_EOF
 %token KEY_MAIN KEY_ENDMAIN
 %token KEY_WHILE KEY_ENDWHILE
@@ -62,7 +62,7 @@ int yylex();
 
 //Declarations
 program:
-  KEY_PROGRAM KEY_IDENTIFIER KEY_NEWLINE /*struct_decl*/ functions main KEY_EOF {printf("Alles gut!");}
+  KEY_PROGRAM KEY_IDENTIFIER  /*struct_decl*/ functions main KEY_EOF {printf("Alles gut!");}
   ;
 
 main:
@@ -78,11 +78,11 @@ body:
 /*** start of structs ***/
 /*
 struct_decl:
-	  KEY_STRUCT KEY_IDENTIFIER variables KEY_ENDSTRUCT KEY_NEWLINE
+	  KEY_STRUCT KEY_IDENTIFIER variables KEY_ENDSTRUCT 
     ;
 
 typedef_decl:
-	  KEY_TYPEDEF KEY_IDENTIFIER KEY_STRUCT variables KEY_ENDSTRUCT KEY_SEMICOLON KEY_NEWLINE
+	  KEY_TYPEDEF KEY_IDENTIFIER KEY_STRUCT variables KEY_ENDSTRUCT KEY_SEMICOLON 
     ;
 
 struct_decls:
@@ -240,7 +240,7 @@ switch:
 	;
 
 switch_start:
-	KEY_SWITCH KEY_PARL condition KEY_PARR KEY_NEWLINE
+	KEY_SWITCH KEY_PARL condition KEY_PARR 
   ;
 
 cases:
