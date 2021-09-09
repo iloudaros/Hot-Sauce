@@ -23,7 +23,7 @@ whitespace	[ \t\v\n\f]
 
 %%
 
-^[ ]*\n	   			 {/* Ignore blank lines. */   } 			
+^[ ]*\n	   			 {/* Ignore blank lines. */   }
 ^[\t]*\n   			 {/* Ignore blank lines. */   }
 [%].*			    	 { /*Ignore comments*/        }
 
@@ -66,16 +66,14 @@ whitespace	[ \t\v\n\f]
 "=="            {return KEY_EQUAL;}
 "!="            {return KEY_NOTEQUAL;}
 ":"             {return KEY_COLON;}
-"."             {return KEY_DOT;}
 ";"             {return KEY_SEMICOLON;}
 ","             {return KEY_COMMA;}
 "("             {return KEY_PARL;}
 ")"             {return KEY_PARR;}
 "["             {return KEY_BRACKETL;}
 "]"             {return KEY_BRACKETR;}
-"{"             {return KEY_CURLYL;}
-"}"             {return KEY_CURLYR;}
 "\""            {return KEY_QUOTE;}
+
 
 
 {identifier}    {
