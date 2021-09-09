@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-//hi
+//Declarations of flex derived tools
 
 extern int yylex();
 extern int yyparse();
@@ -15,10 +15,8 @@ extern FILE *yyout;
 extern int yylineno;
 extern int  yywrap;
 
-void yyerror(char *);
+void yyerror(const char *);
 int yylex();
-/* void yyerror(const char *s); */
-
 
 %}
 
@@ -27,7 +25,7 @@ int yylex();
 %token KEY_PROGRAM
 %token KEY_FUNCTION KEY_RETURN KEY_ENDFUNCTION
 %token KEY_VARS KEY_CHAR KEY_INT
-%token KEY_IDENTIFIER KEY_NUM 
+%token KEY_IDENTIFIER KEY_NUM
 %token KEY_EOF
 %token KEY_MAIN KEY_ENDMAIN
 %token KEY_WHILE KEY_ENDWHILE
@@ -77,11 +75,11 @@ body:
 /*** start of structs ***/
 /*
 struct_decl:
-	  KEY_STRUCT KEY_IDENTIFIER variables KEY_ENDSTRUCT 
+	  KEY_STRUCT KEY_IDENTIFIER variables KEY_ENDSTRUCT
     ;
 
 typedef_decl:
-	  KEY_TYPEDEF KEY_IDENTIFIER KEY_STRUCT variables KEY_ENDSTRUCT KEY_SEMICOLON 
+	  KEY_TYPEDEF KEY_IDENTIFIER KEY_STRUCT variables KEY_ENDSTRUCT KEY_SEMICOLON
     ;
 
 struct_decls:
@@ -238,7 +236,7 @@ switch:
 	;
 
 switch_start:
-	KEY_SWITCH KEY_PARL condition KEY_PARR 
+	KEY_SWITCH KEY_PARL condition KEY_PARR
   ;
 
 cases:
