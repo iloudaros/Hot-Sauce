@@ -72,9 +72,6 @@ whitespace	[ \t\v\n\f]
 ")"             {return KEY_PARR;}
 "["             {return KEY_BRACKETL;}
 "]"             {return KEY_BRACKETR;}
-"\""            {return KEY_QUOTE;}
-
-
 
 {identifier}    {
 				          //strcpy(yylval.item.name, yytext);
