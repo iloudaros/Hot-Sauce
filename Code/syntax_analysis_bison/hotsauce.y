@@ -287,9 +287,11 @@ break:
 %%
 /*** And finally, the parser in action ***/
 
-void yyerror(char *s) {
-    fprintf(stderr, "%s\n", s);
-}
+void yyerror(const char* s)
+  {
+	fprintf(stderr, "Line: %d --> Parser error\n", yylineno);
+	exit(1);
+  }
 
 int main ( int argc, char **argv  )
   {
