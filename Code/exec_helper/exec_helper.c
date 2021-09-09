@@ -3,7 +3,7 @@
 
 int main() {
 
-	system("clear");
+//	system("clear");
 	printf("\t=============\n\nDo you wanna compile the input \"test\" using hotsauce?[y/n]\n");
 	char choice;
 	char dump;
@@ -18,7 +18,11 @@ int main() {
 	}while((choice!='y') && (choice!='n'));
 
 
-	if (choice=='y') system("./hotsauce test.hotsauce.txt");
+	if (choice=='y') 
+	{
+		system("clear");
+		system("./hotsauce test.hotsauce.txt");
+	}
 	else
 	{
 		system("clear");

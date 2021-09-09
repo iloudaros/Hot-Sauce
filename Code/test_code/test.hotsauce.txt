@@ -1,4 +1,26 @@
-PROGRAM HI
+PROGRAM HOTSAUCE
+
+FUNCTION foo(a)
+VARS 
+INTEGER tsotso;
+IF (a < 5) THEN
+tsotso = 0;
+ELSE
+tsotso = 1;
+ENDIF
+RETURN a
+END_FUNCTION
+
 STARTMAIN
+
 VARS
+CHAR b;
+INTEGER c;
+c = 5;
+
+FOR counter:=1 TO 5 STEP 1
+foo(c);
+c = c - 1;
+ENDFOR
+
 ENDMAIN

@@ -100,6 +100,4 @@ whitespace	[ \t\v\n\f]
 
 {number}        {return KEY_NUM;}
 {whitespace}    {  }
-<<EOF>>         {return KEY_EOF;}
-
 %%

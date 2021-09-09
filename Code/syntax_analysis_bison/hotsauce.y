@@ -15,8 +15,8 @@ extern FILE *yyout;
 extern int yylineno;
 extern int  yywrap;
 
-void yyerror(const char *);
 int yylex();
+void yyerror(const char* s);
 
 %}
 
@@ -26,7 +26,6 @@ int yylex();
 %token KEY_FUNCTION KEY_RETURN KEY_ENDFUNCTION
 %token KEY_VARS KEY_CHAR KEY_INT
 %token KEY_IDENTIFIER KEY_NUM
-%token KEY_EOF
 %token KEY_MAIN KEY_ENDMAIN
 %token KEY_WHILE KEY_ENDWHILE
 %token KEY_FOR KEY_TO KEY_STEP KEY_ENDFOR
@@ -59,17 +58,21 @@ int yylex();
 
 //Declarations
 program:
-  KEY_PROGRAM KEY_IDENTIFIER  /*struct_decl*/ functions main KEY_EOF {printf("Alles gut!");}
+  KEY_PROGRAM KEY_IDENTIFIER functions main {printf("Alles gut!");}
   ;
 
 main:
   KEY_MAIN body KEY_ENDMAIN
   ;
 
+vardeclaration:
+  //empty
+  | KEY_VARS variables KEY_SEMICOLON;
+
+
 body:
   //empty
-  | KEY_VARS variables
-  | KEY_VARS variables statements
+  | vardeclaration statements
   ;
 
 /*** start of structs ***/
@@ -104,7 +107,7 @@ functions:
 
 function:
   //empty
-  | KEY_FUNCTION KEY_IDENTIFIER KEY_PARL parameters KEY_PARR body KEY_RETURN return KEY_ENDFUNCTION
+  | KEY_FUNCTION KEY_IDENTIFIER KEY_PARL parameters KEY_PARR body return KEY_ENDFUNCTION
   ;
 
 parameters:
@@ -114,8 +117,7 @@ parameters:
 	;
 
 return:
-  KEY_RETURN
-  | KEY_RETURN return_val KEY_SEMICOLON
+  | KEY_RETURN return_val
   ;
 
 return_val:
@@ -171,6 +173,7 @@ statement:
   | switch
   | print
   | break
+  | KEY_IDENTIFIER KEY_PARL identifier_list KEY_PARR KEY_SEMICOLON
 	;
 
 assignment:
@@ -215,6 +218,8 @@ else_if:
 else:
 	KEY_ELSE statements
   ;
+
+
 
 condition:
   KEY_NUM
@@ -296,11 +301,7 @@ void yyerror(const char* s)
 int main ( int argc, char **argv  )
   {
   ++argv; --argc;
-  if ( argc > 0 )
-        yyin = fopen( argv[0], "r" );
-  else
-        yyin = stdin;
-  yyout = fopen ( "output", "w" );
+  if ( argc > 0 ) yyin = fopen( argv[0], "r" );
   yyparse ();
 
   return 0;

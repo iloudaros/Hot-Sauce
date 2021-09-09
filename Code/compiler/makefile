@@ -6,7 +6,7 @@ iloudaros: ../lexical_analysis_flex/hotsauce.l ../syntax_analysis_bison/hotsauce
 	cp ../syntax_analysis_bison/hotsauce.y ./
 	cp ../test_code/test.hotsauce.txt ./
 	cp ../exec_helper/exec_helper.c ./
-	bison -d hotsauce.y
+	bison -t -d hotsauce.y
 	flex -d hotsauce.l
 	gcc -c hotsauce.tab.c lex.yy.c
 	gcc hotsauce.tab.o lex.yy.o -o hotsauce
