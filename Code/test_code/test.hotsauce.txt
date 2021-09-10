@@ -19,6 +19,13 @@ c = 5;
 %This is a comment
 FOR counter:= 1 TO 5 STEP 1
 foo(c);
+
+/* This
+is
+a
+multiline
+comment */
+
 c = c - 1;
 ENDFOR
 

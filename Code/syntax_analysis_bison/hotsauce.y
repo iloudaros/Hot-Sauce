@@ -58,7 +58,7 @@ void yyerror(const char* s);
 
 //Declarations
 program:
-  KEY_PROGRAM KEY_IDENTIFIER functions main {printf("Alles gut!");}
+  KEY_PROGRAM KEY_IDENTIFIER functions main {printf("Parsed Successfully!🔥");}
   ;
 
 main:
@@ -298,8 +298,8 @@ void yyerror(const char* s)
 
 int main ( int argc, char **argv  )
   {
-  ++argv; --argc;
-  if ( argc > 0 ) yyin = fopen( argv[0], "r" );
+
+  yyin = fopen( argv[1], "r" );
   yyparse ();
 
   return 0;

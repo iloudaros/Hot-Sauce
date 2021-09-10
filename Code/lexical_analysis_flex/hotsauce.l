@@ -21,12 +21,12 @@ string	([']{string_item}*['])|(["]{string_item}*["])
 
 whitespace	[ \t\v\n\f]
 
-
 %%
 
 ^[ ]*\n	   			 {/* Ignore blank lines. */   }
 ^[\t]*\n   			 {/* Ignore blank lines. */   }
 [%].*			    	 { /*Ignore comments*/        }
+[/][*][^*]*[*]+([^*/][^*]*[*]+)*[/]   		 { /*Ignore this type of comments*/}
 
 "PROGRAM"       {return KEY_PROGRAM;}
 "FUNCTION"      {return KEY_FUNCTION;}
@@ -76,28 +76,13 @@ whitespace	[ \t\v\n\f]
 \n							{}
 
 {identifier}    {
-				          //strcpy(yylval.item.name, yytext);
-				          //yylval.item.type = ID;
-				         //yylval.item.data_type = LITERAL;
 				          return KEY_IDENTIFIER;
                 }
 
 
 {string}        {
-                  if(strlen(yytext) > 3)
-                  {
-                            //strcpy(yylval.item.string, yytext);
-				            //yylval.item.type = STRING;
-				            //yylval.item.data_type = LITERAL;
-				            return KEY_STRING;
-                  }
-                  else
-                  {
-                            //strcpy(yylval.item.string, yytext);
-				            //yylval.item.type = CHAR;
-				            //yylval.item.data_type = LITERAL;
-                    return KEY_CHARACTER;
-                  }
+                  if(strlen(yytext) > 3) return KEY_STRING;
+                  else return KEY_CHARACTER;
                 }
 
 {number}        {return KEY_NUM;}
