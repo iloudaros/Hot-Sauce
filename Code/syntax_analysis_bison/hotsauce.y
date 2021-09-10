@@ -19,7 +19,7 @@ int yylex();
 void yyerror(const char* s);
 
 %}
-
+%locations
 /*** Here, we declare the tokens ***/
 
 %token KEY_PROGRAM
@@ -35,8 +35,8 @@ void yyerror(const char* s);
 %token KEY_BREAK
 %token KEY_ASSIGN
 %token KEY_BRACKETR KEY_BRACKETL KEY_PARR KEY_PARL KEY_COMMA KEY_SEMICOLON KEY_COLON
-%token KEY_CHARACTER
-%token KEY_STRING
+%token KEY_CHARACTER KEY_STRING
+%token KEY_NEWLINE
 
 %left KEY_AND
 %left KEY_OR
@@ -67,7 +67,7 @@ main:
 
 vardeclaration:
   //empty
-  | KEY_VARS variables KEY_SEMICOLON;
+  | KEY_VARS variables;
 
 
 body:
@@ -184,13 +184,14 @@ assignment:
   ;
 
 expression:
-  KEY_NUM //{$$ = $1;}
-  | expression KEY_PLUS expression //{$$ = $1 + $3;}
-  | expression KEY_MIN expression //{$$ = $1 - $3;}
-  | expression KEY_MUL expression //{$$ = $1 * $3;}
-  | expression KEY_DIV expression //{$$ = $1 / $3;}
-  | KEY_MIN expression %prec KEY_MIN //{$$ = -$2;}
-  | KEY_PARL expression KEY_PARR //{$$ = $2;}
+  KEY_NUM
+  | KEY_IDENTIFIER
+  | expression KEY_PLUS expression
+  | expression KEY_MIN expression
+  | expression KEY_MUL expression
+  | expression KEY_DIV expression
+  | KEY_MIN expression %prec KEY_MIN
+  | KEY_PARL expression KEY_PARR
   | KEY_IDENTIFIER KEY_PARL parameters KEY_PARR KEY_SEMICOLON
   ;
 
@@ -260,15 +261,11 @@ default:
 
 /*** WHILE ***/
 
-while:
-	KEY_WHILE KEY_PARL condition KEY_PARR statements KEY_ENDWHILE
-  ;
+while: KEY_WHILE KEY_PARL condition KEY_PARR statements KEY_ENDWHILE;
 
 /*** FOR ***/
 
-for:
-	KEY_FOR KEY_IDENTIFIER KEY_COLON KEY_EQUAL KEY_NUM KEY_TO KEY_NUM KEY_STEP KEY_NUM statements KEY_ENDFOR
-  ;
+for: KEY_FOR KEY_IDENTIFIER KEY_COLON KEY_EQUAL KEY_NUM KEY_TO KEY_NUM KEY_STEP KEY_NUM statements KEY_ENDFOR ;
 
 /*** PRINT ***/
 

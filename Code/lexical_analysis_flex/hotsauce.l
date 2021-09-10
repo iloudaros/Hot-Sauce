@@ -8,6 +8,7 @@
 %}
 
 %option noyywrap
+%option yylineno
 
 identifier [a-zA-Z_][a-zA-Z_$0-9]*
 
@@ -72,6 +73,7 @@ whitespace	[ \t\v\n\f]
 ")"             {return KEY_PARR;}
 "["             {return KEY_BRACKETL;}
 "]"             {return KEY_BRACKETR;}
+\n							{}
 
 {identifier}    {
 				          //strcpy(yylval.item.name, yytext);
@@ -100,4 +102,5 @@ whitespace	[ \t\v\n\f]
 
 {number}        {return KEY_NUM;}
 {whitespace}    {  }
+
 %%

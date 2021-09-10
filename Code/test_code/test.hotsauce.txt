@@ -1,13 +1,12 @@
 PROGRAM HOTSAUCE
 
 FUNCTION foo(a)
-VARS 
+VARS
 INTEGER tsotso;
-IF (a < 5) THEN
 tsotso = 0;
-ELSE
-tsotso = 1;
-ENDIF
+WHILE (tsotso < 5)
+tsotso = tsotso + 1;
+ENDWHILE
 RETURN a
 END_FUNCTION
 
@@ -17,8 +16,8 @@ VARS
 CHAR b;
 INTEGER c;
 c = 5;
-
-FOR counter:=1 TO 5 STEP 1
+%This is a comment
+FOR counter:= 1 TO 5 STEP 1
 foo(c);
 c = c - 1;
 ENDFOR
