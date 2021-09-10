@@ -123,6 +123,7 @@ return:
 return_val:
   KEY_IDENTIFIER
   | KEY_NUM
+  | KEY_CHARACTER
 	;
 
 variables:
