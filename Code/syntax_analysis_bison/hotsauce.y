@@ -19,7 +19,6 @@ int yylex();
 void yyerror(const char* s);
 
 %}
-%locations
 /*** Here, we declare the tokens ***/
 
 %token KEY_PROGRAM
