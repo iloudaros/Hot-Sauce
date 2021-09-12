@@ -15,28 +15,46 @@ extern FILE *yyout;
 extern int yylineno;
 extern int  yywrap;
 
-int yylex();
+//int yylex();
 void yyerror(const char* s);
 
 %}
+
+%code requires
+{
+  #include "array.h"
+  struct arr vars;
+  struct arr funcs;
+  struct arr structs;
+}
+
+%union
+{
+  struct variable item;
+}
+
 %locations
 /*** Here, we declare the tokens ***/
 
 %token KEY_PROGRAM
 %token KEY_FUNCTION KEY_RETURN KEY_ENDFUNCTION
 %token KEY_VARS KEY_CHAR KEY_INT
-%token KEY_IDENTIFIER KEY_NUM
 %token KEY_MAIN KEY_ENDMAIN
 %token KEY_WHILE KEY_ENDWHILE
 %token KEY_FOR KEY_TO KEY_STEP KEY_ENDFOR
-%token KEY_IF KEY_THEN KEY_ELSEIF KEY_ELSE KEY_ENDIF
+%token KEY_IF KEY_ELSEIF KEY_ENDIF
+%token KEY_THEN
+%token KEY_ELSE
 %token KEY_SWITCH KEY_CASE KEY_DEFAULT KEY_ENDSWITCH
 %token KEY_PRINT
 %token KEY_BREAK
 %token KEY_ASSIGN
 %token KEY_BRACKETR KEY_BRACKETL KEY_PARR KEY_PARL KEY_COMMA KEY_SEMICOLON KEY_COLON
-%token KEY_CHARACTER KEY_STRING
-%token KEY_NEWLINE
+
+%token<item> KEY_CHARACTER
+%token<item> KEY_NUM
+%token<item> KEY_IDENTIFIER
+%token<item> KEY_STRING
 
 %left KEY_AND
 %left KEY_OR
@@ -48,8 +66,6 @@ void yyerror(const char* s);
 %token KEY_TYPEDEF
 %token KEY_STRUCT
 %token KEY_ENDSTRUCT
-
-
 
 //%type<item> print_data
 
@@ -78,11 +94,11 @@ body:
 /*** start of structs ***/
 /*
 struct_decl:
-	  KEY_STRUCT KEY_IDENTIFIER variables KEY_ENDSTRUCT
+	  KEY_STRUCT KEY_IDENTIFIER variables KEY_SEMICOLON KEY_ENDSTRUCT
     ;
 
 typedef_decl:
-	  KEY_TYPEDEF KEY_IDENTIFIER KEY_STRUCT variables KEY_ENDSTRUCT KEY_SEMICOLON
+	  KEY_TYPEDEF KEY_STRUCT KEY_IDENTIFIER variables KEY_SEMICOLON KEY_IDENTIFIER KEY_ENDSTRUCT
     ;
 
 struct_decls:
@@ -97,7 +113,6 @@ struct_call:
     ;
 
 */
-
 /*** FUNCTIONS ***/
 
 functions:
@@ -107,7 +122,7 @@ functions:
 
 function:
   //empty
-  | KEY_FUNCTION KEY_IDENTIFIER KEY_PARL parameters KEY_PARR body return KEY_ENDFUNCTION
+  | KEY_FUNCTION KEY_IDENTIFIER KEY_PARL parameters KEY_PARR body return KEY_ENDFUNCTION {$2.type=FUN; insert_arr(&funcs,$2);}
   ;
 
 parameters:
@@ -174,7 +189,10 @@ statement:
   | switch
   | print
   | break
-  | KEY_IDENTIFIER KEY_PARL identifier_list KEY_PARR KEY_SEMICOLON
+  | KEY_IDENTIFIER KEY_PARL identifier_list KEY_PARR KEY_SEMICOLON {check_arr($1,&funcs);}
+  | KEY_IDENTIFIER KEY_PARL KEY_PARR KEY_SEMICOLON {check_arr($1,&funcs);}
+//  | struct_decl
+//  | typedef_decl
 	;
 
 assignment:
@@ -197,8 +215,8 @@ expression:
 
 /*** IF ***/
 
-if:
-	if_start KEY_ENDIF
+
+/*if_start KEY_ENDIF
 	| if_start else KEY_ENDIF
 	| if_start else_ifs KEY_ENDIF
 	| if_start else_ifs else KEY_ENDIF
@@ -208,19 +226,38 @@ if_start:
 	KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements
   ;
 
-else_ifs:
-  else_if
-	| else_ifs else_if
-	;
+  else_ifs:
+    else_if
+  	| else_ifs else_if
+  	;
 
-else_if:
-	KEY_ELSEIF KEY_PARL condition KEY_PARR KEY_THEN statements
-  ;
+  else_if:
+  	KEY_ELSEIF KEY_PARL condition KEY_PARR KEY_THEN statements
+    ;
+
+  else:
+  	KEY_ELSE statements
+    ;*/
+
+if:
+      KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements KEY_ENDIF
+      | KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements else KEY_ENDIF
+      | KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements else_if KEY_ENDIF
+      | KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements else_if else KEY_ENDIF
+      ;
 
 else:
-	KEY_ELSE statements
-  ;
+       KEY_ELSE statements
+       ;
 
+else_if:
+        KEY_ELSEIF KEY_PARL condition KEY_PARR KEY_THEN statements
+        ;
+
+else_ifs:
+        else_if
+        | else_if else_ifs
+        ;
 
 
 condition:
@@ -298,6 +335,10 @@ void yyerror(const char* s)
 
 int main ( int argc, char **argv  )
   {
+
+  init_arr(&vars, 10);
+  init_arr(&funcs, 10);
+  init_arr(&structs, 10);
 
   yyin = fopen( argv[1], "r" );
   yyparse ();

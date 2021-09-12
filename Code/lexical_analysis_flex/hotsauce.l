@@ -56,6 +56,9 @@ whitespace	[ \t\v\n\f]
 "ENDSWITCH"     {return KEY_ENDSWITCH;}
 "PRINT"         {return KEY_PRINT;}
 "BREAK"         {return KEY_BREAK;}
+"STRUCT"        {return KEY_STRUCT;}
+"TYPEDEF"       {return KEY_TYPEDEF;}
+"ENDSTRUCT"			{return KEY_ENDSTRUCT;}
 
 "+"             {return KEY_PLUS;}
 "-"             {return KEY_MIN;}
