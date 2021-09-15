@@ -16,7 +16,9 @@ VARS
 CHAR b;
 INTEGER c,e;
 c = 5;
+
 %This is a comment
+
 FOR counter:= 1 TO 5 STEP 1
 foo(c);
 
