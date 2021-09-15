@@ -1,0 +1,2737 @@
+State 3 conflicts: 2 shift/reduce
+State 9 conflicts: 1 shift/reduce
+State 15 conflicts: 2 shift/reduce
+State 18 conflicts: 2 shift/reduce
+State 27 conflicts: 2 shift/reduce, 8 reduce/reduce
+State 41 conflicts: 1 shift/reduce
+State 43 conflicts: 1 shift/reduce
+State 115 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: KEY_PROGRAM KEY_IDENTIFIER struct_decls functions main
+
+    2 main: KEY_MAIN body KEY_ENDMAIN
+
+    3 vardeclaration: /* empty */
+    4               | KEY_VARS variables_decl
+
+    5 variables_decl: variable_decl
+    6               | variables_decl variable_decl
+
+    7 variable_decl: /* empty */
+    8              | int_decl
+    9              | char_decl
+   10              | char_array_decl
+   11              | int_array_decl
+
+   12 int_decl: int KEY_SEMICOLON
+
+   13 char_decl: char KEY_SEMICOLON
+
+   14 int_array_decl: KEY_INT KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON
+
+   15 char_array_decl: KEY_CHAR KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON
+
+   16 int: KEY_INT identifier_list
+
+   17 char: KEY_CHAR identifier_list
+
+   18 int_array: KEY_INT KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR
+
+   19 char_array: KEY_CHAR KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR
+
+   20 struct_decl: KEY_STRUCT KEY_IDENTIFIER vardeclaration KEY_ENDSTRUCT
+
+   21 typedef_decl: KEY_TYPEDEF KEY_STRUCT KEY_IDENTIFIER vardeclaration KEY_SEMICOLON KEY_IDENTIFIER KEY_ENDSTRUCT
+
+   22 struct_decls: struct_decl
+   23             | struct_decls struct_decl
+   24             | typedef_decl
+   25             | struct_decls typedef_decl
+   26             | /* empty */
+
+   27 struct_call: KEY_STRUCT KEY_IDENTIFIER
+
+   28 functions: function
+   29          | functions function
+
+   30 function: /* empty */
+   31         | KEY_FUNCTION KEY_IDENTIFIER KEY_PARL parameters KEY_PARR body return KEY_ENDFUNCTION
+
+   32 parameters: parameter
+   33           | parameters KEY_COMMA parameter
+
+   34 parameter: int
+   35          | char
+   36          | int_array
+   37          | char_array
+   38          | struct_call
+
+   39 body: vardeclaration statements
+
+   40 return: /* empty */
+   41       | KEY_RETURN return_val
+
+   42 return_val: KEY_IDENTIFIER
+   43           | KEY_NUM
+   44           | KEY_CHARACTER
+
+   45 identifier_list: KEY_IDENTIFIER
+   46                | identifier_list KEY_COMMA KEY_IDENTIFIER
+
+   47 statements: statement
+   48           | statements statement
+
+   49 statement: assignment
+   50          | while
+   51          | for
+   52          | if
+   53          | switch
+   54          | print
+   55          | KEY_IDENTIFIER KEY_PARL identifier_list KEY_PARR KEY_SEMICOLON
+   56          | KEY_IDENTIFIER KEY_PARL KEY_PARR KEY_SEMICOLON
+
+   57 assignment: KEY_IDENTIFIER KEY_ASSIGN expression KEY_SEMICOLON
+   58           | KEY_IDENTIFIER KEY_ASSIGN KEY_NUM KEY_SEMICOLON
+   59           | KEY_IDENTIFIER KEY_ASSIGN KEY_CHARACTER KEY_SEMICOLON
+
+   60 expression: KEY_NUM
+   61           | KEY_IDENTIFIER
+   62           | expression KEY_PLUS expression
+   63           | expression KEY_MIN expression
+   64           | expression KEY_MUL expression
+   65           | expression KEY_DIV expression
+   66           | KEY_MIN expression
+   67           | KEY_PARL expression KEY_PARR
+   68           | KEY_IDENTIFIER KEY_PARL parameters KEY_PARR KEY_SEMICOLON
+
+   69 if: KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements KEY_ENDIF
+   70   | if_else
+   71   | if_elsif
+   72   | if_elsif_else
+
+   73 if_else: KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements KEY_ELSE statements KEY_ENDIF
+
+   74 if_elsif: KEY_IF KEY_PARL condition KEY_PARR else_ifs KEY_ENDIF
+
+   75 else_ifs: else_if
+   76         | else_ifs else_if
+
+   77 else_if: KEY_ELSEIF KEY_PARL condition KEY_PARR KEY_THEN statements
+
+   78 if_elsif_else: KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements else_ifs KEY_ELSE statements KEY_ENDIF
+
+   79 switch: switch_start cases_term
+   80       | switch_start cases default
+
+   81 switch_start: KEY_SWITCH KEY_PARL condition KEY_PARR
+
+   82 cases_term: cases KEY_ENDSWITCH
+
+   83 cases: case
+   84      | cases case
+
+   85 case: KEY_CASE KEY_PARL condition KEY_PARR KEY_COLON statements KEY_BREAK KEY_SEMICOLON
+
+   86 default: KEY_DEFAULT KEY_COLON statements KEY_ENDSWITCH
+
+   87 condition: KEY_NUM
+   88          | KEY_IDENTIFIER
+   89          | condition KEY_GREATER condition
+   90          | condition KEY_LESSER condition
+   91          | condition KEY_EQUAL condition
+   92          | condition KEY_NOTEQUAL condition
+   93          | condition KEY_AND condition
+   94          | condition KEY_OR condition
+   95          | KEY_PARL condition KEY_PARR
+
+   96 while: KEY_WHILE KEY_PARL condition KEY_PARR statements KEY_ENDWHILE
+
+   97 for: KEY_FOR KEY_IDENTIFIER KEY_COLON KEY_ASSIGN KEY_NUM KEY_TO KEY_NUM KEY_STEP KEY_NUM statements KEY_ENDFOR
+
+   98 print: KEY_PRINT KEY_PARL KEY_STRING KEY_PARR KEY_SEMICOLON
+   99      | KEY_PRINT KEY_PARL KEY_STRING KEY_PARR KEY_COMMA KEY_IDENTIFIER KEY_BRACKETR KEY_PARR KEY_SEMICOLON
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+KEY_PROGRAM (258) 1
+KEY_FUNCTION (259) 31
+KEY_RETURN (260) 41
+KEY_ENDFUNCTION (261) 31
+KEY_VARS (262) 4
+KEY_CHAR (263) 15 17 19
+KEY_INT (264) 14 16 18
+KEY_MAIN (265) 2
+KEY_ENDMAIN (266) 2
+KEY_WHILE (267) 96
+KEY_ENDWHILE (268) 96
+KEY_FOR (269) 97
+KEY_TO (270) 97
+KEY_STEP (271) 97
+KEY_ENDFOR (272) 97
+KEY_IF (273) 69 73 74 78
+KEY_ELSEIF (274) 77
+KEY_ENDIF (275) 69 73 74 78
+KEY_THEN (276) 69 73 77 78
+KEY_ELSE (277) 73 78
+KEY_SWITCH (278) 81
+KEY_CASE (279) 85
+KEY_DEFAULT (280) 86
+KEY_ENDSWITCH (281) 82 86
+KEY_PRINT (282) 98 99
+KEY_BREAK (283) 85
+KEY_ASSIGN (284) 57 58 59 97
+KEY_BRACKETR (285) 14 15 18 19 99
+KEY_BRACKETL (286) 14 15 18 19
+KEY_PARR (287) 31 55 56 67 68 69 73 74 77 78 81 85 95 96 98 99
+KEY_PARL (288) 31 55 56 67 68 69 73 74 77 78 81 85 95 96 98 99
+KEY_COMMA (289) 33 46 99
+KEY_SEMICOLON (290) 12 13 14 15 21 55 56 57 58 59 68 85 98 99
+KEY_COLON (291) 85 86 97
+KEY_CHARACTER (292) 44 59
+KEY_NUM (293) 14 15 18 19 43 58 60 87 97
+KEY_IDENTIFIER (294) 1 14 15 18 19 20 21 27 31 42 45 46 55 56 57 58
+    59 61 68 88 97 99
+KEY_STRING (295) 98 99
+KEY_AND (296) 93
+KEY_OR (297) 94
+KEY_NOTEQUAL (298) 92
+KEY_EQUAL (299) 91
+KEY_LESSER (300) 90
+KEY_GREATER (301) 89
+KEY_DIV (302) 65
+KEY_MUL (303) 64
+KEY_MIN (304) 63 66
+KEY_PLUS (305) 62
+KEY_TYPEDEF (306) 21
+KEY_STRUCT (307) 20 21 27
+KEY_ENDSTRUCT (308) 20 21
+
+
+Nonterminals, with rules where they appear
+
+$accept (54)
+    on left: 0
+program (55)
+    on left: 1, on right: 0
+main (56)
+    on left: 2, on right: 1
+vardeclaration (57)
+    on left: 3 4, on right: 20 21 39
+variables_decl (58)
+    on left: 5 6, on right: 4 6
+variable_decl (59)
+    on left: 7 8 9 10 11, on right: 5 6
+int_decl (60)
+    on left: 12, on right: 8
+char_decl (61)
+    on left: 13, on right: 9
+int_array_decl (62)
+    on left: 14, on right: 11
+char_array_decl (63)
+    on left: 15, on right: 10
+int (64)
+    on left: 16, on right: 12 34
+char (65)
+    on left: 17, on right: 13 35
+int_array (66)
+    on left: 18, on right: 36
+char_array (67)
+    on left: 19, on right: 37
+struct_decl (68)
+    on left: 20, on right: 22 23
+typedef_decl (69)
+    on left: 21, on right: 24 25
+struct_decls (70)
+    on left: 22 23 24 25 26, on right: 1 23 25
+struct_call (71)
+    on left: 27, on right: 38
+functions (72)
+    on left: 28 29, on right: 1 29
+function (73)
+    on left: 30 31, on right: 28 29
+parameters (74)
+    on left: 32 33, on right: 31 33 68
+parameter (75)
+    on left: 34 35 36 37 38, on right: 32 33
+body (76)
+    on left: 39, on right: 2 31
+return (77)
+    on left: 40 41, on right: 31
+return_val (78)
+    on left: 42 43 44, on right: 41
+identifier_list (79)
+    on left: 45 46, on right: 16 17 46 55
+statements (80)
+    on left: 47 48, on right: 39 48 69 73 77 78 85 86 96 97
+statement (81)
+    on left: 49 50 51 52 53 54 55 56, on right: 47 48
+assignment (82)
+    on left: 57 58 59, on right: 49
+expression (83)
+    on left: 60 61 62 63 64 65 66 67 68, on right: 57 62 63 64 65 66
+    67
+if (84)
+    on left: 69 70 71 72, on right: 52
+if_else (85)
+    on left: 73, on right: 70
+if_elsif (86)
+    on left: 74, on right: 71
+else_ifs (87)
+    on left: 75 76, on right: 74 76 78
+else_if (88)
+    on left: 77, on right: 75 76
+if_elsif_else (89)
+    on left: 78, on right: 72
+switch (90)
+    on left: 79 80, on right: 53
+switch_start (91)
+    on left: 81, on right: 79 80
+cases_term (92)
+    on left: 82, on right: 79
+cases (93)
+    on left: 83 84, on right: 80 82 84
+case (94)
+    on left: 85, on right: 83 84
+default (95)
+    on left: 86, on right: 80
+condition (96)
+    on left: 87 88 89 90 91 92 93 94 95, on right: 69 73 74 77 78 81
+    85 89 90 91 92 93 94 95 96
+while (97)
+    on left: 96, on right: 50
+for (98)
+    on left: 97, on right: 51
+print (99)
+    on left: 98 99, on right: 54
+
+
+state 0
+
+    0 $accept: . program $end
+
+    KEY_PROGRAM  shift, and go to state 1
+
+    program  go to state 2
+
+
+state 1
+
+    1 program: KEY_PROGRAM . KEY_IDENTIFIER struct_decls functions main
+
+    KEY_IDENTIFIER  shift, and go to state 3
+
+
+state 2
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 4
+
+
+state 3
+
+    1 program: KEY_PROGRAM KEY_IDENTIFIER . struct_decls functions main
+
+    KEY_TYPEDEF  shift, and go to state 5
+    KEY_STRUCT   shift, and go to state 6
+
+    KEY_TYPEDEF  [reduce using rule 26 (struct_decls)]
+    KEY_STRUCT   [reduce using rule 26 (struct_decls)]
+    $default     reduce using rule 26 (struct_decls)
+
+    struct_decl   go to state 7
+    typedef_decl  go to state 8
+    struct_decls  go to state 9
+
+
+state 4
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+state 5
+
+   21 typedef_decl: KEY_TYPEDEF . KEY_STRUCT KEY_IDENTIFIER vardeclaration KEY_SEMICOLON KEY_IDENTIFIER KEY_ENDSTRUCT
+
+    KEY_STRUCT  shift, and go to state 10
+
+
+state 6
+
+   20 struct_decl: KEY_STRUCT . KEY_IDENTIFIER vardeclaration KEY_ENDSTRUCT
+
+    KEY_IDENTIFIER  shift, and go to state 11
+
+
+state 7
+
+   22 struct_decls: struct_decl .
+
+    $default  reduce using rule 22 (struct_decls)
+
+
+state 8
+
+   24 struct_decls: typedef_decl .
+
+    $default  reduce using rule 24 (struct_decls)
+
+
+state 9
+
+    1 program: KEY_PROGRAM KEY_IDENTIFIER struct_decls . functions main
+   23 struct_decls: struct_decls . struct_decl
+   25             | struct_decls . typedef_decl
+
+    KEY_FUNCTION  shift, and go to state 12
+    KEY_TYPEDEF   shift, and go to state 5
+    KEY_STRUCT    shift, and go to state 6
+
+    KEY_FUNCTION  [reduce using rule 30 (function)]
+    $default      reduce using rule 30 (function)
+
+    struct_decl   go to state 13
+    typedef_decl  go to state 14
+    functions     go to state 15
+    function      go to state 16
+
+
+state 10
+
+   21 typedef_decl: KEY_TYPEDEF KEY_STRUCT . KEY_IDENTIFIER vardeclaration KEY_SEMICOLON KEY_IDENTIFIER KEY_ENDSTRUCT
+
+    KEY_IDENTIFIER  shift, and go to state 17
+
+
+state 11
+
+   20 struct_decl: KEY_STRUCT KEY_IDENTIFIER . vardeclaration KEY_ENDSTRUCT
+
+    KEY_VARS  shift, and go to state 18
+
+    $default  reduce using rule 3 (vardeclaration)
+
+    vardeclaration  go to state 19
+
+
+state 12
+
+   31 function: KEY_FUNCTION . KEY_IDENTIFIER KEY_PARL parameters KEY_PARR body return KEY_ENDFUNCTION
+
+    KEY_IDENTIFIER  shift, and go to state 20
+
+
+state 13
+
+   23 struct_decls: struct_decls struct_decl .
+
+    $default  reduce using rule 23 (struct_decls)
+
+
+state 14
+
+   25 struct_decls: struct_decls typedef_decl .
+
+    $default  reduce using rule 25 (struct_decls)
+
+
+state 15
+
+    1 program: KEY_PROGRAM KEY_IDENTIFIER struct_decls functions . main
+   29 functions: functions . function
+
+    KEY_FUNCTION  shift, and go to state 12
+    KEY_MAIN      shift, and go to state 21
+
+    KEY_FUNCTION  [reduce using rule 30 (function)]
+    KEY_MAIN      [reduce using rule 30 (function)]
+
+    main      go to state 22
+    function  go to state 23
+
+
+state 16
+
+   28 functions: function .
+
+    $default  reduce using rule 28 (functions)
+
+
+state 17
+
+   21 typedef_decl: KEY_TYPEDEF KEY_STRUCT KEY_IDENTIFIER . vardeclaration KEY_SEMICOLON KEY_IDENTIFIER KEY_ENDSTRUCT
+
+    KEY_VARS  shift, and go to state 18
+
+    $default  reduce using rule 3 (vardeclaration)
+
+    vardeclaration  go to state 24
+
+
+state 18
+
+    4 vardeclaration: KEY_VARS . variables_decl
+
+    KEY_CHAR  shift, and go to state 25
+    KEY_INT   shift, and go to state 26
+
+    KEY_CHAR  [reduce using rule 7 (variable_decl)]
+    KEY_INT   [reduce using rule 7 (variable_decl)]
+    $default  reduce using rule 7 (variable_decl)
+
+    variables_decl   go to state 27
+    variable_decl    go to state 28
+    int_decl         go to state 29
+    char_decl        go to state 30
+    int_array_decl   go to state 31
+    char_array_decl  go to state 32
+    int              go to state 33
+    char             go to state 34
+
+
+state 19
+
+   20 struct_decl: KEY_STRUCT KEY_IDENTIFIER vardeclaration . KEY_ENDSTRUCT
+
+    KEY_ENDSTRUCT  shift, and go to state 35
+
+
+state 20
+
+   31 function: KEY_FUNCTION KEY_IDENTIFIER . KEY_PARL parameters KEY_PARR body return KEY_ENDFUNCTION
+
+    KEY_PARL  shift, and go to state 36
+
+
+state 21
+
+    2 main: KEY_MAIN . body KEY_ENDMAIN
+
+    KEY_VARS  shift, and go to state 18
+
+    $default  reduce using rule 3 (vardeclaration)
+
+    vardeclaration  go to state 37
+    body            go to state 38
+
+
+state 22
+
+    1 program: KEY_PROGRAM KEY_IDENTIFIER struct_decls functions main .
+
+    $default  reduce using rule 1 (program)
+
+
+state 23
+
+   29 functions: functions function .
+
+    $default  reduce using rule 29 (functions)
+
+
+state 24
+
+   21 typedef_decl: KEY_TYPEDEF KEY_STRUCT KEY_IDENTIFIER vardeclaration . KEY_SEMICOLON KEY_IDENTIFIER KEY_ENDSTRUCT
+
+    KEY_SEMICOLON  shift, and go to state 39
+
+
+state 25
+
+   15 char_array_decl: KEY_CHAR . KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON
+   17 char: KEY_CHAR . identifier_list
+
+    KEY_IDENTIFIER  shift, and go to state 40
+
+    identifier_list  go to state 41
+
+
+state 26
+
+   14 int_array_decl: KEY_INT . KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON
+   16 int: KEY_INT . identifier_list
+
+    KEY_IDENTIFIER  shift, and go to state 42
+
+    identifier_list  go to state 43
+
+
+state 27
+
+    4 vardeclaration: KEY_VARS variables_decl .
+    6 variables_decl: variables_decl . variable_decl
+
+    KEY_CHAR  shift, and go to state 25
+    KEY_INT   shift, and go to state 26
+
+    KEY_CHAR        [reduce using rule 7 (variable_decl)]
+    KEY_INT         [reduce using rule 7 (variable_decl)]
+    KEY_WHILE       reduce using rule 4 (vardeclaration)
+    KEY_WHILE       [reduce using rule 7 (variable_decl)]
+    KEY_FOR         reduce using rule 4 (vardeclaration)
+    KEY_FOR         [reduce using rule 7 (variable_decl)]
+    KEY_IF          reduce using rule 4 (vardeclaration)
+    KEY_IF          [reduce using rule 7 (variable_decl)]
+    KEY_SWITCH      reduce using rule 4 (vardeclaration)
+    KEY_SWITCH      [reduce using rule 7 (variable_decl)]
+    KEY_PRINT       reduce using rule 4 (vardeclaration)
+    KEY_PRINT       [reduce using rule 7 (variable_decl)]
+    KEY_SEMICOLON   reduce using rule 4 (vardeclaration)
+    KEY_SEMICOLON   [reduce using rule 7 (variable_decl)]
+    KEY_IDENTIFIER  reduce using rule 4 (vardeclaration)
+    KEY_IDENTIFIER  [reduce using rule 7 (variable_decl)]
+    KEY_ENDSTRUCT   reduce using rule 4 (vardeclaration)
+    KEY_ENDSTRUCT   [reduce using rule 7 (variable_decl)]
+    $default        reduce using rule 4 (vardeclaration)
+
+    variable_decl    go to state 44
+    int_decl         go to state 29
+    char_decl        go to state 30
+    int_array_decl   go to state 31
+    char_array_decl  go to state 32
+    int              go to state 33
+    char             go to state 34
+
+
+state 28
+
+    5 variables_decl: variable_decl .
+
+    $default  reduce using rule 5 (variables_decl)
+
+
+state 29
+
+    8 variable_decl: int_decl .
+
+    $default  reduce using rule 8 (variable_decl)
+
+
+state 30
+
+    9 variable_decl: char_decl .
+
+    $default  reduce using rule 9 (variable_decl)
+
+
+state 31
+
+   11 variable_decl: int_array_decl .
+
+    $default  reduce using rule 11 (variable_decl)
+
+
+state 32
+
+   10 variable_decl: char_array_decl .
+
+    $default  reduce using rule 10 (variable_decl)
+
+
+state 33
+
+   12 int_decl: int . KEY_SEMICOLON
+
+    KEY_SEMICOLON  shift, and go to state 45
+
+
+state 34
+
+   13 char_decl: char . KEY_SEMICOLON
+
+    KEY_SEMICOLON  shift, and go to state 46
+
+
+state 35
+
+   20 struct_decl: KEY_STRUCT KEY_IDENTIFIER vardeclaration KEY_ENDSTRUCT .
+
+    $default  reduce using rule 20 (struct_decl)
+
+
+state 36
+
+   31 function: KEY_FUNCTION KEY_IDENTIFIER KEY_PARL . parameters KEY_PARR body return KEY_ENDFUNCTION
+
+    KEY_CHAR    shift, and go to state 47
+    KEY_INT     shift, and go to state 48
+    KEY_STRUCT  shift, and go to state 49
+
+    int          go to state 50
+    char         go to state 51
+    int_array    go to state 52
+    char_array   go to state 53
+    struct_call  go to state 54
+    parameters   go to state 55
+    parameter    go to state 56
+
+
+state 37
+
+   39 body: vardeclaration . statements
+
+    KEY_WHILE       shift, and go to state 57
+    KEY_FOR         shift, and go to state 58
+    KEY_IF          shift, and go to state 59
+    KEY_SWITCH      shift, and go to state 60
+    KEY_PRINT       shift, and go to state 61
+    KEY_IDENTIFIER  shift, and go to state 62
+
+    statements     go to state 63
+    statement      go to state 64
+    assignment     go to state 65
+    if             go to state 66
+    if_else        go to state 67
+    if_elsif       go to state 68
+    if_elsif_else  go to state 69
+    switch         go to state 70
+    switch_start   go to state 71
+    while          go to state 72
+    for            go to state 73
+    print          go to state 74
+
+
+state 38
+
+    2 main: KEY_MAIN body . KEY_ENDMAIN
+
+    KEY_ENDMAIN  shift, and go to state 75
+
+
+state 39
+
+   21 typedef_decl: KEY_TYPEDEF KEY_STRUCT KEY_IDENTIFIER vardeclaration KEY_SEMICOLON . KEY_IDENTIFIER KEY_ENDSTRUCT
+
+    KEY_IDENTIFIER  shift, and go to state 76
+
+
+state 40
+
+   15 char_array_decl: KEY_CHAR KEY_IDENTIFIER . KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON
+   45 identifier_list: KEY_IDENTIFIER .
+
+    KEY_BRACKETL  shift, and go to state 77
+
+    $default  reduce using rule 45 (identifier_list)
+
+
+state 41
+
+   17 char: KEY_CHAR identifier_list .
+   46 identifier_list: identifier_list . KEY_COMMA KEY_IDENTIFIER
+
+    KEY_COMMA  shift, and go to state 78
+
+    KEY_COMMA  [reduce using rule 17 (char)]
+    $default   reduce using rule 17 (char)
+
+
+state 42
+
+   14 int_array_decl: KEY_INT KEY_IDENTIFIER . KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON
+   45 identifier_list: KEY_IDENTIFIER .
+
+    KEY_BRACKETL  shift, and go to state 79
+
+    $default  reduce using rule 45 (identifier_list)
+
+
+state 43
+
+   16 int: KEY_INT identifier_list .
+   46 identifier_list: identifier_list . KEY_COMMA KEY_IDENTIFIER
+
+    KEY_COMMA  shift, and go to state 78
+
+    KEY_COMMA  [reduce using rule 16 (int)]
+    $default   reduce using rule 16 (int)
+
+
+state 44
+
+    6 variables_decl: variables_decl variable_decl .
+
+    $default  reduce using rule 6 (variables_decl)
+
+
+state 45
+
+   12 int_decl: int KEY_SEMICOLON .
+
+    $default  reduce using rule 12 (int_decl)
+
+
+state 46
+
+   13 char_decl: char KEY_SEMICOLON .
+
+    $default  reduce using rule 13 (char_decl)
+
+
+state 47
+
+   17 char: KEY_CHAR . identifier_list
+   19 char_array: KEY_CHAR . KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR
+
+    KEY_IDENTIFIER  shift, and go to state 80
+
+    identifier_list  go to state 41
+
+
+state 48
+
+   16 int: KEY_INT . identifier_list
+   18 int_array: KEY_INT . KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR
+
+    KEY_IDENTIFIER  shift, and go to state 81
+
+    identifier_list  go to state 43
+
+
+state 49
+
+   27 struct_call: KEY_STRUCT . KEY_IDENTIFIER
+
+    KEY_IDENTIFIER  shift, and go to state 82
+
+
+state 50
+
+   34 parameter: int .
+
+    $default  reduce using rule 34 (parameter)
+
+
+state 51
+
+   35 parameter: char .
+
+    $default  reduce using rule 35 (parameter)
+
+
+state 52
+
+   36 parameter: int_array .
+
+    $default  reduce using rule 36 (parameter)
+
+
+state 53
+
+   37 parameter: char_array .
+
+    $default  reduce using rule 37 (parameter)
+
+
+state 54
+
+   38 parameter: struct_call .
+
+    $default  reduce using rule 38 (parameter)
+
+
+state 55
+
+   31 function: KEY_FUNCTION KEY_IDENTIFIER KEY_PARL parameters . KEY_PARR body return KEY_ENDFUNCTION
+   33 parameters: parameters . KEY_COMMA parameter
+
+    KEY_PARR   shift, and go to state 83
+    KEY_COMMA  shift, and go to state 84
+
+
+state 56
+
+   32 parameters: parameter .
+
+    $default  reduce using rule 32 (parameters)
+
+
+state 57
+
+   96 while: KEY_WHILE . KEY_PARL condition KEY_PARR statements KEY_ENDWHILE
+
+    KEY_PARL  shift, and go to state 85
+
+
+state 58
+
+   97 for: KEY_FOR . KEY_IDENTIFIER KEY_COLON KEY_ASSIGN KEY_NUM KEY_TO KEY_NUM KEY_STEP KEY_NUM statements KEY_ENDFOR
+
+    KEY_IDENTIFIER  shift, and go to state 86
+
+
+state 59
+
+   69 if: KEY_IF . KEY_PARL condition KEY_PARR KEY_THEN statements KEY_ENDIF
+   73 if_else: KEY_IF . KEY_PARL condition KEY_PARR KEY_THEN statements KEY_ELSE statements KEY_ENDIF
+   74 if_elsif: KEY_IF . KEY_PARL condition KEY_PARR else_ifs KEY_ENDIF
+   78 if_elsif_else: KEY_IF . KEY_PARL condition KEY_PARR KEY_THEN statements else_ifs KEY_ELSE statements KEY_ENDIF
+
+    KEY_PARL  shift, and go to state 87
+
+
+state 60
+
+   81 switch_start: KEY_SWITCH . KEY_PARL condition KEY_PARR
+
+    KEY_PARL  shift, and go to state 88
+
+
+state 61
+
+   98 print: KEY_PRINT . KEY_PARL KEY_STRING KEY_PARR KEY_SEMICOLON
+   99      | KEY_PRINT . KEY_PARL KEY_STRING KEY_PARR KEY_COMMA KEY_IDENTIFIER KEY_BRACKETR KEY_PARR KEY_SEMICOLON
+
+    KEY_PARL  shift, and go to state 89
+
+
+state 62
+
+   55 statement: KEY_IDENTIFIER . KEY_PARL identifier_list KEY_PARR KEY_SEMICOLON
+   56          | KEY_IDENTIFIER . KEY_PARL KEY_PARR KEY_SEMICOLON
+   57 assignment: KEY_IDENTIFIER . KEY_ASSIGN expression KEY_SEMICOLON
+   58           | KEY_IDENTIFIER . KEY_ASSIGN KEY_NUM KEY_SEMICOLON
+   59           | KEY_IDENTIFIER . KEY_ASSIGN KEY_CHARACTER KEY_SEMICOLON
+
+    KEY_ASSIGN  shift, and go to state 90
+    KEY_PARL    shift, and go to state 91
+
+
+state 63
+
+   39 body: vardeclaration statements .
+   48 statements: statements . statement
+
+    KEY_WHILE       shift, and go to state 57
+    KEY_FOR         shift, and go to state 58
+    KEY_IF          shift, and go to state 59
+    KEY_SWITCH      shift, and go to state 60
+    KEY_PRINT       shift, and go to state 61
+    KEY_IDENTIFIER  shift, and go to state 62
+
+    $default  reduce using rule 39 (body)
+
+    statement      go to state 92
+    assignment     go to state 65
+    if             go to state 66
+    if_else        go to state 67
+    if_elsif       go to state 68
+    if_elsif_else  go to state 69
+    switch         go to state 70
+    switch_start   go to state 71
+    while          go to state 72
+    for            go to state 73
+    print          go to state 74
+
+
+state 64
+
+   47 statements: statement .
+
+    $default  reduce using rule 47 (statements)
+
+
+state 65
+
+   49 statement: assignment .
+
+    $default  reduce using rule 49 (statement)
+
+
+state 66
+
+   52 statement: if .
+
+    $default  reduce using rule 52 (statement)
+
+
+state 67
+
+   70 if: if_else .
+
+    $default  reduce using rule 70 (if)
+
+
+state 68
+
+   71 if: if_elsif .
+
+    $default  reduce using rule 71 (if)
+
+
+state 69
+
+   72 if: if_elsif_else .
+
+    $default  reduce using rule 72 (if)
+
+
+state 70
+
+   53 statement: switch .
+
+    $default  reduce using rule 53 (statement)
+
+
+state 71
+
+   79 switch: switch_start . cases_term
+   80       | switch_start . cases default
+
+    KEY_CASE  shift, and go to state 93
+
+    cases_term  go to state 94
+    cases       go to state 95
+    case        go to state 96
+
+
+state 72
+
+   50 statement: while .
+
+    $default  reduce using rule 50 (statement)
+
+
+state 73
+
+   51 statement: for .
+
+    $default  reduce using rule 51 (statement)
+
+
+state 74
+
+   54 statement: print .
+
+    $default  reduce using rule 54 (statement)
+
+
+state 75
+
+    2 main: KEY_MAIN body KEY_ENDMAIN .
+
+    $default  reduce using rule 2 (main)
+
+
+state 76
+
+   21 typedef_decl: KEY_TYPEDEF KEY_STRUCT KEY_IDENTIFIER vardeclaration KEY_SEMICOLON KEY_IDENTIFIER . KEY_ENDSTRUCT
+
+    KEY_ENDSTRUCT  shift, and go to state 97
+
+
+state 77
+
+   15 char_array_decl: KEY_CHAR KEY_IDENTIFIER KEY_BRACKETL . KEY_NUM KEY_BRACKETR KEY_SEMICOLON
+
+    KEY_NUM  shift, and go to state 98
+
+
+state 78
+
+   46 identifier_list: identifier_list KEY_COMMA . KEY_IDENTIFIER
+
+    KEY_IDENTIFIER  shift, and go to state 99
+
+
+state 79
+
+   14 int_array_decl: KEY_INT KEY_IDENTIFIER KEY_BRACKETL . KEY_NUM KEY_BRACKETR KEY_SEMICOLON
+
+    KEY_NUM  shift, and go to state 100
+
+
+state 80
+
+   19 char_array: KEY_CHAR KEY_IDENTIFIER . KEY_BRACKETL KEY_NUM KEY_BRACKETR
+   45 identifier_list: KEY_IDENTIFIER .
+
+    KEY_BRACKETL  shift, and go to state 101
+
+    $default  reduce using rule 45 (identifier_list)
+
+
+state 81
+
+   18 int_array: KEY_INT KEY_IDENTIFIER . KEY_BRACKETL KEY_NUM KEY_BRACKETR
+   45 identifier_list: KEY_IDENTIFIER .
+
+    KEY_BRACKETL  shift, and go to state 102
+
+    $default  reduce using rule 45 (identifier_list)
+
+
+state 82
+
+   27 struct_call: KEY_STRUCT KEY_IDENTIFIER .
+
+    $default  reduce using rule 27 (struct_call)
+
+
+state 83
+
+   31 function: KEY_FUNCTION KEY_IDENTIFIER KEY_PARL parameters KEY_PARR . body return KEY_ENDFUNCTION
+
+    KEY_VARS  shift, and go to state 18
+
+    $default  reduce using rule 3 (vardeclaration)
+
+    vardeclaration  go to state 37
+    body            go to state 103
+
+
+state 84
+
+   33 parameters: parameters KEY_COMMA . parameter
+
+    KEY_CHAR    shift, and go to state 47
+    KEY_INT     shift, and go to state 48
+    KEY_STRUCT  shift, and go to state 49
+
+    int          go to state 50
+    char         go to state 51
+    int_array    go to state 52
+    char_array   go to state 53
+    struct_call  go to state 54
+    parameter    go to state 104
+
+
+state 85
+
+   96 while: KEY_WHILE KEY_PARL . condition KEY_PARR statements KEY_ENDWHILE
+
+    KEY_PARL        shift, and go to state 105
+    KEY_NUM         shift, and go to state 106
+    KEY_IDENTIFIER  shift, and go to state 107
+
+    condition  go to state 108
+
+
+state 86
+
+   97 for: KEY_FOR KEY_IDENTIFIER . KEY_COLON KEY_ASSIGN KEY_NUM KEY_TO KEY_NUM KEY_STEP KEY_NUM statements KEY_ENDFOR
+
+    KEY_COLON  shift, and go to state 109
+
+
+state 87
+
+   69 if: KEY_IF KEY_PARL . condition KEY_PARR KEY_THEN statements KEY_ENDIF
+   73 if_else: KEY_IF KEY_PARL . condition KEY_PARR KEY_THEN statements KEY_ELSE statements KEY_ENDIF
+   74 if_elsif: KEY_IF KEY_PARL . condition KEY_PARR else_ifs KEY_ENDIF
+   78 if_elsif_else: KEY_IF KEY_PARL . condition KEY_PARR KEY_THEN statements else_ifs KEY_ELSE statements KEY_ENDIF
+
+    KEY_PARL        shift, and go to state 105
+    KEY_NUM         shift, and go to state 106
+    KEY_IDENTIFIER  shift, and go to state 107
+
+    condition  go to state 110
+
+
+state 88
+
+   81 switch_start: KEY_SWITCH KEY_PARL . condition KEY_PARR
+
+    KEY_PARL        shift, and go to state 105
+    KEY_NUM         shift, and go to state 106
+    KEY_IDENTIFIER  shift, and go to state 107
+
+    condition  go to state 111
+
+
+state 89
+
+   98 print: KEY_PRINT KEY_PARL . KEY_STRING KEY_PARR KEY_SEMICOLON
+   99      | KEY_PRINT KEY_PARL . KEY_STRING KEY_PARR KEY_COMMA KEY_IDENTIFIER KEY_BRACKETR KEY_PARR KEY_SEMICOLON
+
+    KEY_STRING  shift, and go to state 112
+
+
+state 90
+
+   57 assignment: KEY_IDENTIFIER KEY_ASSIGN . expression KEY_SEMICOLON
+   58           | KEY_IDENTIFIER KEY_ASSIGN . KEY_NUM KEY_SEMICOLON
+   59           | KEY_IDENTIFIER KEY_ASSIGN . KEY_CHARACTER KEY_SEMICOLON
+
+    KEY_PARL        shift, and go to state 113
+    KEY_CHARACTER   shift, and go to state 114
+    KEY_NUM         shift, and go to state 115
+    KEY_IDENTIFIER  shift, and go to state 116
+    KEY_MIN         shift, and go to state 117
+
+    expression  go to state 118
+
+
+state 91
+
+   55 statement: KEY_IDENTIFIER KEY_PARL . identifier_list KEY_PARR KEY_SEMICOLON
+   56          | KEY_IDENTIFIER KEY_PARL . KEY_PARR KEY_SEMICOLON
+
+    KEY_PARR        shift, and go to state 119
+    KEY_IDENTIFIER  shift, and go to state 120
+
+    identifier_list  go to state 121
+
+
+state 92
+
+   48 statements: statements statement .
+
+    $default  reduce using rule 48 (statements)
+
+
+state 93
+
+   85 case: KEY_CASE . KEY_PARL condition KEY_PARR KEY_COLON statements KEY_BREAK KEY_SEMICOLON
+
+    KEY_PARL  shift, and go to state 122
+
+
+state 94
+
+   79 switch: switch_start cases_term .
+
+    $default  reduce using rule 79 (switch)
+
+
+state 95
+
+   80 switch: switch_start cases . default
+   82 cases_term: cases . KEY_ENDSWITCH
+   84 cases: cases . case
+
+    KEY_CASE       shift, and go to state 93
+    KEY_DEFAULT    shift, and go to state 123
+    KEY_ENDSWITCH  shift, and go to state 124
+
+    case     go to state 125
+    default  go to state 126
+
+
+state 96
+
+   83 cases: case .
+
+    $default  reduce using rule 83 (cases)
+
+
+state 97
+
+   21 typedef_decl: KEY_TYPEDEF KEY_STRUCT KEY_IDENTIFIER vardeclaration KEY_SEMICOLON KEY_IDENTIFIER KEY_ENDSTRUCT .
+
+    $default  reduce using rule 21 (typedef_decl)
+
+
+state 98
+
+   15 char_array_decl: KEY_CHAR KEY_IDENTIFIER KEY_BRACKETL KEY_NUM . KEY_BRACKETR KEY_SEMICOLON
+
+    KEY_BRACKETR  shift, and go to state 127
+
+
+state 99
+
+   46 identifier_list: identifier_list KEY_COMMA KEY_IDENTIFIER .
+
+    $default  reduce using rule 46 (identifier_list)
+
+
+state 100
+
+   14 int_array_decl: KEY_INT KEY_IDENTIFIER KEY_BRACKETL KEY_NUM . KEY_BRACKETR KEY_SEMICOLON
+
+    KEY_BRACKETR  shift, and go to state 128
+
+
+state 101
+
+   19 char_array: KEY_CHAR KEY_IDENTIFIER KEY_BRACKETL . KEY_NUM KEY_BRACKETR
+
+    KEY_NUM  shift, and go to state 129
+
+
+state 102
+
+   18 int_array: KEY_INT KEY_IDENTIFIER KEY_BRACKETL . KEY_NUM KEY_BRACKETR
+
+    KEY_NUM  shift, and go to state 130
+
+
+state 103
+
+   31 function: KEY_FUNCTION KEY_IDENTIFIER KEY_PARL parameters KEY_PARR body . return KEY_ENDFUNCTION
+
+    KEY_RETURN  shift, and go to state 131
+
+    $default  reduce using rule 40 (return)
+
+    return  go to state 132
+
+
+state 104
+
+   33 parameters: parameters KEY_COMMA parameter .
+
+    $default  reduce using rule 33 (parameters)
+
+
+state 105
+
+   95 condition: KEY_PARL . condition KEY_PARR
+
+    KEY_PARL        shift, and go to state 105
+    KEY_NUM         shift, and go to state 106
+    KEY_IDENTIFIER  shift, and go to state 107
+
+    condition  go to state 133
+
+
+state 106
+
+   87 condition: KEY_NUM .
+
+    $default  reduce using rule 87 (condition)
+
+
+state 107
+
+   88 condition: KEY_IDENTIFIER .
+
+    $default  reduce using rule 88 (condition)
+
+
+state 108
+
+   89 condition: condition . KEY_GREATER condition
+   90          | condition . KEY_LESSER condition
+   91          | condition . KEY_EQUAL condition
+   92          | condition . KEY_NOTEQUAL condition
+   93          | condition . KEY_AND condition
+   94          | condition . KEY_OR condition
+   96 while: KEY_WHILE KEY_PARL condition . KEY_PARR statements KEY_ENDWHILE
+
+    KEY_PARR      shift, and go to state 134
+    KEY_AND       shift, and go to state 135
+    KEY_OR        shift, and go to state 136
+    KEY_NOTEQUAL  shift, and go to state 137
+    KEY_EQUAL     shift, and go to state 138
+    KEY_LESSER    shift, and go to state 139
+    KEY_GREATER   shift, and go to state 140
+
+
+state 109
+
+   97 for: KEY_FOR KEY_IDENTIFIER KEY_COLON . KEY_ASSIGN KEY_NUM KEY_TO KEY_NUM KEY_STEP KEY_NUM statements KEY_ENDFOR
+
+    KEY_ASSIGN  shift, and go to state 141
+
+
+state 110
+
+   69 if: KEY_IF KEY_PARL condition . KEY_PARR KEY_THEN statements KEY_ENDIF
+   73 if_else: KEY_IF KEY_PARL condition . KEY_PARR KEY_THEN statements KEY_ELSE statements KEY_ENDIF
+   74 if_elsif: KEY_IF KEY_PARL condition . KEY_PARR else_ifs KEY_ENDIF
+   78 if_elsif_else: KEY_IF KEY_PARL condition . KEY_PARR KEY_THEN statements else_ifs KEY_ELSE statements KEY_ENDIF
+   89 condition: condition . KEY_GREATER condition
+   90          | condition . KEY_LESSER condition
+   91          | condition . KEY_EQUAL condition
+   92          | condition . KEY_NOTEQUAL condition
+   93          | condition . KEY_AND condition
+   94          | condition . KEY_OR condition
+
+    KEY_PARR      shift, and go to state 142
+    KEY_AND       shift, and go to state 135
+    KEY_OR        shift, and go to state 136
+    KEY_NOTEQUAL  shift, and go to state 137
+    KEY_EQUAL     shift, and go to state 138
+    KEY_LESSER    shift, and go to state 139
+    KEY_GREATER   shift, and go to state 140
+
+
+state 111
+
+   81 switch_start: KEY_SWITCH KEY_PARL condition . KEY_PARR
+   89 condition: condition . KEY_GREATER condition
+   90          | condition . KEY_LESSER condition
+   91          | condition . KEY_EQUAL condition
+   92          | condition . KEY_NOTEQUAL condition
+   93          | condition . KEY_AND condition
+   94          | condition . KEY_OR condition
+
+    KEY_PARR      shift, and go to state 143
+    KEY_AND       shift, and go to state 135
+    KEY_OR        shift, and go to state 136
+    KEY_NOTEQUAL  shift, and go to state 137
+    KEY_EQUAL     shift, and go to state 138
+    KEY_LESSER    shift, and go to state 139
+    KEY_GREATER   shift, and go to state 140
+
+
+state 112
+
+   98 print: KEY_PRINT KEY_PARL KEY_STRING . KEY_PARR KEY_SEMICOLON
+   99      | KEY_PRINT KEY_PARL KEY_STRING . KEY_PARR KEY_COMMA KEY_IDENTIFIER KEY_BRACKETR KEY_PARR KEY_SEMICOLON
+
+    KEY_PARR  shift, and go to state 144
+
+
+state 113
+
+   67 expression: KEY_PARL . expression KEY_PARR
+
+    KEY_PARL        shift, and go to state 113
+    KEY_NUM         shift, and go to state 145
+    KEY_IDENTIFIER  shift, and go to state 116
+    KEY_MIN         shift, and go to state 117
+
+    expression  go to state 146
+
+
+state 114
+
+   59 assignment: KEY_IDENTIFIER KEY_ASSIGN KEY_CHARACTER . KEY_SEMICOLON
+
+    KEY_SEMICOLON  shift, and go to state 147
+
+
+state 115
+
+   58 assignment: KEY_IDENTIFIER KEY_ASSIGN KEY_NUM . KEY_SEMICOLON
+   60 expression: KEY_NUM .
+
+    KEY_SEMICOLON  shift, and go to state 148
+
+    KEY_SEMICOLON  [reduce using rule 60 (expression)]
+    $default       reduce using rule 60 (expression)
+
+
+state 116
+
+   61 expression: KEY_IDENTIFIER .
+   68           | KEY_IDENTIFIER . KEY_PARL parameters KEY_PARR KEY_SEMICOLON
+
+    KEY_PARL  shift, and go to state 149
+
+    $default  reduce using rule 61 (expression)
+
+
+state 117
+
+   66 expression: KEY_MIN . expression
+
+    KEY_PARL        shift, and go to state 113
+    KEY_NUM         shift, and go to state 145
+    KEY_IDENTIFIER  shift, and go to state 116
+    KEY_MIN         shift, and go to state 117
+
+    expression  go to state 150
+
+
+state 118
+
+   57 assignment: KEY_IDENTIFIER KEY_ASSIGN expression . KEY_SEMICOLON
+   62 expression: expression . KEY_PLUS expression
+   63           | expression . KEY_MIN expression
+   64           | expression . KEY_MUL expression
+   65           | expression . KEY_DIV expression
+
+    KEY_SEMICOLON  shift, and go to state 151
+    KEY_DIV        shift, and go to state 152
+    KEY_MUL        shift, and go to state 153
+    KEY_MIN        shift, and go to state 154
+    KEY_PLUS       shift, and go to state 155
+
+
+state 119
+
+   56 statement: KEY_IDENTIFIER KEY_PARL KEY_PARR . KEY_SEMICOLON
+
+    KEY_SEMICOLON  shift, and go to state 156
+
+
+state 120
+
+   45 identifier_list: KEY_IDENTIFIER .
+
+    $default  reduce using rule 45 (identifier_list)
+
+
+state 121
+
+   46 identifier_list: identifier_list . KEY_COMMA KEY_IDENTIFIER
+   55 statement: KEY_IDENTIFIER KEY_PARL identifier_list . KEY_PARR KEY_SEMICOLON
+
+    KEY_PARR   shift, and go to state 157
+    KEY_COMMA  shift, and go to state 78
+
+
+state 122
+
+   85 case: KEY_CASE KEY_PARL . condition KEY_PARR KEY_COLON statements KEY_BREAK KEY_SEMICOLON
+
+    KEY_PARL        shift, and go to state 105
+    KEY_NUM         shift, and go to state 106
+    KEY_IDENTIFIER  shift, and go to state 107
+
+    condition  go to state 158
+
+
+state 123
+
+   86 default: KEY_DEFAULT . KEY_COLON statements KEY_ENDSWITCH
+
+    KEY_COLON  shift, and go to state 159
+
+
+state 124
+
+   82 cases_term: cases KEY_ENDSWITCH .
+
+    $default  reduce using rule 82 (cases_term)
+
+
+state 125
+
+   84 cases: cases case .
+
+    $default  reduce using rule 84 (cases)
+
+
+state 126
+
+   80 switch: switch_start cases default .
+
+    $default  reduce using rule 80 (switch)
+
+
+state 127
+
+   15 char_array_decl: KEY_CHAR KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR . KEY_SEMICOLON
+
+    KEY_SEMICOLON  shift, and go to state 160
+
+
+state 128
+
+   14 int_array_decl: KEY_INT KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR . KEY_SEMICOLON
+
+    KEY_SEMICOLON  shift, and go to state 161
+
+
+state 129
+
+   19 char_array: KEY_CHAR KEY_IDENTIFIER KEY_BRACKETL KEY_NUM . KEY_BRACKETR
+
+    KEY_BRACKETR  shift, and go to state 162
+
+
+state 130
+
+   18 int_array: KEY_INT KEY_IDENTIFIER KEY_BRACKETL KEY_NUM . KEY_BRACKETR
+
+    KEY_BRACKETR  shift, and go to state 163
+
+
+state 131
+
+   41 return: KEY_RETURN . return_val
+
+    KEY_CHARACTER   shift, and go to state 164
+    KEY_NUM         shift, and go to state 165
+    KEY_IDENTIFIER  shift, and go to state 166
+
+    return_val  go to state 167
+
+
+state 132
+
+   31 function: KEY_FUNCTION KEY_IDENTIFIER KEY_PARL parameters KEY_PARR body return . KEY_ENDFUNCTION
+
+    KEY_ENDFUNCTION  shift, and go to state 168
+
+
+state 133
+
+   89 condition: condition . KEY_GREATER condition
+   90          | condition . KEY_LESSER condition
+   91          | condition . KEY_EQUAL condition
+   92          | condition . KEY_NOTEQUAL condition
+   93          | condition . KEY_AND condition
+   94          | condition . KEY_OR condition
+   95          | KEY_PARL condition . KEY_PARR
+
+    KEY_PARR      shift, and go to state 169
+    KEY_AND       shift, and go to state 135
+    KEY_OR        shift, and go to state 136
+    KEY_NOTEQUAL  shift, and go to state 137
+    KEY_EQUAL     shift, and go to state 138
+    KEY_LESSER    shift, and go to state 139
+    KEY_GREATER   shift, and go to state 140
+
+
+state 134
+
+   96 while: KEY_WHILE KEY_PARL condition KEY_PARR . statements KEY_ENDWHILE
+
+    KEY_WHILE       shift, and go to state 57
+    KEY_FOR         shift, and go to state 58
+    KEY_IF          shift, and go to state 59
+    KEY_SWITCH      shift, and go to state 60
+    KEY_PRINT       shift, and go to state 61
+    KEY_IDENTIFIER  shift, and go to state 62
+
+    statements     go to state 170
+    statement      go to state 64
+    assignment     go to state 65
+    if             go to state 66
+    if_else        go to state 67
+    if_elsif       go to state 68
+    if_elsif_else  go to state 69
+    switch         go to state 70
+    switch_start   go to state 71
+    while          go to state 72
+    for            go to state 73
+    print          go to state 74
+
+
+state 135
+
+   93 condition: condition KEY_AND . condition
+
+    KEY_PARL        shift, and go to state 105
+    KEY_NUM         shift, and go to state 106
+    KEY_IDENTIFIER  shift, and go to state 107
+
+    condition  go to state 171
+
+
+state 136
+
+   94 condition: condition KEY_OR . condition
+
+    KEY_PARL        shift, and go to state 105
+    KEY_NUM         shift, and go to state 106
+    KEY_IDENTIFIER  shift, and go to state 107
+
+    condition  go to state 172
+
+
+state 137
+
+   92 condition: condition KEY_NOTEQUAL . condition
+
+    KEY_PARL        shift, and go to state 105
+    KEY_NUM         shift, and go to state 106
+    KEY_IDENTIFIER  shift, and go to state 107
+
+    condition  go to state 173
+
+
+state 138
+
+   91 condition: condition KEY_EQUAL . condition
+
+    KEY_PARL        shift, and go to state 105
+    KEY_NUM         shift, and go to state 106
+    KEY_IDENTIFIER  shift, and go to state 107
+
+    condition  go to state 174
+
+
+state 139
+
+   90 condition: condition KEY_LESSER . condition
+
+    KEY_PARL        shift, and go to state 105
+    KEY_NUM         shift, and go to state 106
+    KEY_IDENTIFIER  shift, and go to state 107
+
+    condition  go to state 175
+
+
+state 140
+
+   89 condition: condition KEY_GREATER . condition
+
+    KEY_PARL        shift, and go to state 105
+    KEY_NUM         shift, and go to state 106
+    KEY_IDENTIFIER  shift, and go to state 107
+
+    condition  go to state 176
+
+
+state 141
+
+   97 for: KEY_FOR KEY_IDENTIFIER KEY_COLON KEY_ASSIGN . KEY_NUM KEY_TO KEY_NUM KEY_STEP KEY_NUM statements KEY_ENDFOR
+
+    KEY_NUM  shift, and go to state 177
+
+
+state 142
+
+   69 if: KEY_IF KEY_PARL condition KEY_PARR . KEY_THEN statements KEY_ENDIF
+   73 if_else: KEY_IF KEY_PARL condition KEY_PARR . KEY_THEN statements KEY_ELSE statements KEY_ENDIF
+   74 if_elsif: KEY_IF KEY_PARL condition KEY_PARR . else_ifs KEY_ENDIF
+   78 if_elsif_else: KEY_IF KEY_PARL condition KEY_PARR . KEY_THEN statements else_ifs KEY_ELSE statements KEY_ENDIF
+
+    KEY_ELSEIF  shift, and go to state 178
+    KEY_THEN    shift, and go to state 179
+
+    else_ifs  go to state 180
+    else_if   go to state 181
+
+
+state 143
+
+   81 switch_start: KEY_SWITCH KEY_PARL condition KEY_PARR .
+
+    $default  reduce using rule 81 (switch_start)
+
+
+state 144
+
+   98 print: KEY_PRINT KEY_PARL KEY_STRING KEY_PARR . KEY_SEMICOLON
+   99      | KEY_PRINT KEY_PARL KEY_STRING KEY_PARR . KEY_COMMA KEY_IDENTIFIER KEY_BRACKETR KEY_PARR KEY_SEMICOLON
+
+    KEY_COMMA      shift, and go to state 182
+    KEY_SEMICOLON  shift, and go to state 183
+
+
+state 145
+
+   60 expression: KEY_NUM .
+
+    $default  reduce using rule 60 (expression)
+
+
+state 146
+
+   62 expression: expression . KEY_PLUS expression
+   63           | expression . KEY_MIN expression
+   64           | expression . KEY_MUL expression
+   65           | expression . KEY_DIV expression
+   67           | KEY_PARL expression . KEY_PARR
+
+    KEY_PARR  shift, and go to state 184
+    KEY_DIV   shift, and go to state 152
+    KEY_MUL   shift, and go to state 153
+    KEY_MIN   shift, and go to state 154
+    KEY_PLUS  shift, and go to state 155
+
+
+state 147
+
+   59 assignment: KEY_IDENTIFIER KEY_ASSIGN KEY_CHARACTER KEY_SEMICOLON .
+
+    $default  reduce using rule 59 (assignment)
+
+
+state 148
+
+   58 assignment: KEY_IDENTIFIER KEY_ASSIGN KEY_NUM KEY_SEMICOLON .
+
+    $default  reduce using rule 58 (assignment)
+
+
+state 149
+
+   68 expression: KEY_IDENTIFIER KEY_PARL . parameters KEY_PARR KEY_SEMICOLON
+
+    KEY_CHAR    shift, and go to state 47
+    KEY_INT     shift, and go to state 48
+    KEY_STRUCT  shift, and go to state 49
+
+    int          go to state 50
+    char         go to state 51
+    int_array    go to state 52
+    char_array   go to state 53
+    struct_call  go to state 54
+    parameters   go to state 185
+    parameter    go to state 56
+
+
+state 150
+
+   62 expression: expression . KEY_PLUS expression
+   63           | expression . KEY_MIN expression
+   64           | expression . KEY_MUL expression
+   65           | expression . KEY_DIV expression
+   66           | KEY_MIN expression .
+
+    $default  reduce using rule 66 (expression)
+
+
+state 151
+
+   57 assignment: KEY_IDENTIFIER KEY_ASSIGN expression KEY_SEMICOLON .
+
+    $default  reduce using rule 57 (assignment)
+
+
+state 152
+
+   65 expression: expression KEY_DIV . expression
+
+    KEY_PARL        shift, and go to state 113
+    KEY_NUM         shift, and go to state 145
+    KEY_IDENTIFIER  shift, and go to state 116
+    KEY_MIN         shift, and go to state 117
+
+    expression  go to state 186
+
+
+state 153
+
+   64 expression: expression KEY_MUL . expression
+
+    KEY_PARL        shift, and go to state 113
+    KEY_NUM         shift, and go to state 145
+    KEY_IDENTIFIER  shift, and go to state 116
+    KEY_MIN         shift, and go to state 117
+
+    expression  go to state 187
+
+
+state 154
+
+   63 expression: expression KEY_MIN . expression
+
+    KEY_PARL        shift, and go to state 113
+    KEY_NUM         shift, and go to state 145
+    KEY_IDENTIFIER  shift, and go to state 116
+    KEY_MIN         shift, and go to state 117
+
+    expression  go to state 188
+
+
+state 155
+
+   62 expression: expression KEY_PLUS . expression
+
+    KEY_PARL        shift, and go to state 113
+    KEY_NUM         shift, and go to state 145
+    KEY_IDENTIFIER  shift, and go to state 116
+    KEY_MIN         shift, and go to state 117
+
+    expression  go to state 189
+
+
+state 156
+
+   56 statement: KEY_IDENTIFIER KEY_PARL KEY_PARR KEY_SEMICOLON .
+
+    $default  reduce using rule 56 (statement)
+
+
+state 157
+
+   55 statement: KEY_IDENTIFIER KEY_PARL identifier_list KEY_PARR . KEY_SEMICOLON
+
+    KEY_SEMICOLON  shift, and go to state 190
+
+
+state 158
+
+   85 case: KEY_CASE KEY_PARL condition . KEY_PARR KEY_COLON statements KEY_BREAK KEY_SEMICOLON
+   89 condition: condition . KEY_GREATER condition
+   90          | condition . KEY_LESSER condition
+   91          | condition . KEY_EQUAL condition
+   92          | condition . KEY_NOTEQUAL condition
+   93          | condition . KEY_AND condition
+   94          | condition . KEY_OR condition
+
+    KEY_PARR      shift, and go to state 191
+    KEY_AND       shift, and go to state 135
+    KEY_OR        shift, and go to state 136
+    KEY_NOTEQUAL  shift, and go to state 137
+    KEY_EQUAL     shift, and go to state 138
+    KEY_LESSER    shift, and go to state 139
+    KEY_GREATER   shift, and go to state 140
+
+
+state 159
+
+   86 default: KEY_DEFAULT KEY_COLON . statements KEY_ENDSWITCH
+
+    KEY_WHILE       shift, and go to state 57
+    KEY_FOR         shift, and go to state 58
+    KEY_IF          shift, and go to state 59
+    KEY_SWITCH      shift, and go to state 60
+    KEY_PRINT       shift, and go to state 61
+    KEY_IDENTIFIER  shift, and go to state 62
+
+    statements     go to state 192
+    statement      go to state 64
+    assignment     go to state 65
+    if             go to state 66
+    if_else        go to state 67
+    if_elsif       go to state 68
+    if_elsif_else  go to state 69
+    switch         go to state 70
+    switch_start   go to state 71
+    while          go to state 72
+    for            go to state 73
+    print          go to state 74
+
+
+state 160
+
+   15 char_array_decl: KEY_CHAR KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON .
+
+    $default  reduce using rule 15 (char_array_decl)
+
+
+state 161
+
+   14 int_array_decl: KEY_INT KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON .
+
+    $default  reduce using rule 14 (int_array_decl)
+
+
+state 162
+
+   19 char_array: KEY_CHAR KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR .
+
+    $default  reduce using rule 19 (char_array)
+
+
+state 163
+
+   18 int_array: KEY_INT KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR .
+
+    $default  reduce using rule 18 (int_array)
+
+
+state 164
+
+   44 return_val: KEY_CHARACTER .
+
+    $default  reduce using rule 44 (return_val)
+
+
+state 165
+
+   43 return_val: KEY_NUM .
+
+    $default  reduce using rule 43 (return_val)
+
+
+state 166
+
+   42 return_val: KEY_IDENTIFIER .
+
+    $default  reduce using rule 42 (return_val)
+
+
+state 167
+
+   41 return: KEY_RETURN return_val .
+
+    $default  reduce using rule 41 (return)
+
+
+state 168
+
+   31 function: KEY_FUNCTION KEY_IDENTIFIER KEY_PARL parameters KEY_PARR body return KEY_ENDFUNCTION .
+
+    $default  reduce using rule 31 (function)
+
+
+state 169
+
+   95 condition: KEY_PARL condition KEY_PARR .
+
+    $default  reduce using rule 95 (condition)
+
+
+state 170
+
+   48 statements: statements . statement
+   96 while: KEY_WHILE KEY_PARL condition KEY_PARR statements . KEY_ENDWHILE
+
+    KEY_WHILE       shift, and go to state 57
+    KEY_ENDWHILE    shift, and go to state 193
+    KEY_FOR         shift, and go to state 58
+    KEY_IF          shift, and go to state 59
+    KEY_SWITCH      shift, and go to state 60
+    KEY_PRINT       shift, and go to state 61
+    KEY_IDENTIFIER  shift, and go to state 62
+
+    statement      go to state 92
+    assignment     go to state 65
+    if             go to state 66
+    if_else        go to state 67
+    if_elsif       go to state 68
+    if_elsif_else  go to state 69
+    switch         go to state 70
+    switch_start   go to state 71
+    while          go to state 72
+    for            go to state 73
+    print          go to state 74
+
+
+state 171
+
+   89 condition: condition . KEY_GREATER condition
+   90          | condition . KEY_LESSER condition
+   91          | condition . KEY_EQUAL condition
+   92          | condition . KEY_NOTEQUAL condition
+   93          | condition . KEY_AND condition
+   93          | condition KEY_AND condition .
+   94          | condition . KEY_OR condition
+
+    KEY_OR        shift, and go to state 136
+    KEY_NOTEQUAL  shift, and go to state 137
+    KEY_EQUAL     shift, and go to state 138
+    KEY_LESSER    shift, and go to state 139
+    KEY_GREATER   shift, and go to state 140
+
+    $default  reduce using rule 93 (condition)
+
+
+state 172
+
+   89 condition: condition . KEY_GREATER condition
+   90          | condition . KEY_LESSER condition
+   91          | condition . KEY_EQUAL condition
+   92          | condition . KEY_NOTEQUAL condition
+   93          | condition . KEY_AND condition
+   94          | condition . KEY_OR condition
+   94          | condition KEY_OR condition .
+
+    KEY_NOTEQUAL  shift, and go to state 137
+    KEY_EQUAL     shift, and go to state 138
+    KEY_LESSER    shift, and go to state 139
+    KEY_GREATER   shift, and go to state 140
+
+    $default  reduce using rule 94 (condition)
+
+
+state 173
+
+   89 condition: condition . KEY_GREATER condition
+   90          | condition . KEY_LESSER condition
+   91          | condition . KEY_EQUAL condition
+   92          | condition . KEY_NOTEQUAL condition
+   92          | condition KEY_NOTEQUAL condition .
+   93          | condition . KEY_AND condition
+   94          | condition . KEY_OR condition
+
+    KEY_NOTEQUAL  error (nonassociative)
+    KEY_EQUAL     error (nonassociative)
+    KEY_LESSER    error (nonassociative)
+    KEY_GREATER   error (nonassociative)
+
+    $default  reduce using rule 92 (condition)
+
+
+state 174
+
+   89 condition: condition . KEY_GREATER condition
+   90          | condition . KEY_LESSER condition
+   91          | condition . KEY_EQUAL condition
+   91          | condition KEY_EQUAL condition .
+   92          | condition . KEY_NOTEQUAL condition
+   93          | condition . KEY_AND condition
+   94          | condition . KEY_OR condition
+
+    KEY_NOTEQUAL  error (nonassociative)
+    KEY_EQUAL     error (nonassociative)
+    KEY_LESSER    error (nonassociative)
+    KEY_GREATER   error (nonassociative)
+
+    $default  reduce using rule 91 (condition)
+
+
+state 175
+
+   89 condition: condition . KEY_GREATER condition
+   90          | condition . KEY_LESSER condition
+   90          | condition KEY_LESSER condition .
+   91          | condition . KEY_EQUAL condition
+   92          | condition . KEY_NOTEQUAL condition
+   93          | condition . KEY_AND condition
+   94          | condition . KEY_OR condition
+
+    KEY_NOTEQUAL  error (nonassociative)
+    KEY_EQUAL     error (nonassociative)
+    KEY_LESSER    error (nonassociative)
+    KEY_GREATER   error (nonassociative)
+
+    $default  reduce using rule 90 (condition)
+
+
+state 176
+
+   89 condition: condition . KEY_GREATER condition
+   89          | condition KEY_GREATER condition .
+   90          | condition . KEY_LESSER condition
+   91          | condition . KEY_EQUAL condition
+   92          | condition . KEY_NOTEQUAL condition
+   93          | condition . KEY_AND condition
+   94          | condition . KEY_OR condition
+
+    KEY_NOTEQUAL  error (nonassociative)
+    KEY_EQUAL     error (nonassociative)
+    KEY_LESSER    error (nonassociative)
+    KEY_GREATER   error (nonassociative)
+
+    $default  reduce using rule 89 (condition)
+
+
+state 177
+
+   97 for: KEY_FOR KEY_IDENTIFIER KEY_COLON KEY_ASSIGN KEY_NUM . KEY_TO KEY_NUM KEY_STEP KEY_NUM statements KEY_ENDFOR
+
+    KEY_TO  shift, and go to state 194
+
+
+state 178
+
+   77 else_if: KEY_ELSEIF . KEY_PARL condition KEY_PARR KEY_THEN statements
+
+    KEY_PARL  shift, and go to state 195
+
+
+state 179
+
+   69 if: KEY_IF KEY_PARL condition KEY_PARR KEY_THEN . statements KEY_ENDIF
+   73 if_else: KEY_IF KEY_PARL condition KEY_PARR KEY_THEN . statements KEY_ELSE statements KEY_ENDIF
+   78 if_elsif_else: KEY_IF KEY_PARL condition KEY_PARR KEY_THEN . statements else_ifs KEY_ELSE statements KEY_ENDIF
+
+    KEY_WHILE       shift, and go to state 57
+    KEY_FOR         shift, and go to state 58
+    KEY_IF          shift, and go to state 59
+    KEY_SWITCH      shift, and go to state 60
+    KEY_PRINT       shift, and go to state 61
+    KEY_IDENTIFIER  shift, and go to state 62
+
+    statements     go to state 196
+    statement      go to state 64
+    assignment     go to state 65
+    if             go to state 66
+    if_else        go to state 67
+    if_elsif       go to state 68
+    if_elsif_else  go to state 69
+    switch         go to state 70
+    switch_start   go to state 71
+    while          go to state 72
+    for            go to state 73
+    print          go to state 74
+
+
+state 180
+
+   74 if_elsif: KEY_IF KEY_PARL condition KEY_PARR else_ifs . KEY_ENDIF
+   76 else_ifs: else_ifs . else_if
+
+    KEY_ELSEIF  shift, and go to state 178
+    KEY_ENDIF   shift, and go to state 197
+
+    else_if  go to state 198
+
+
+state 181
+
+   75 else_ifs: else_if .
+
+    $default  reduce using rule 75 (else_ifs)
+
+
+state 182
+
+   99 print: KEY_PRINT KEY_PARL KEY_STRING KEY_PARR KEY_COMMA . KEY_IDENTIFIER KEY_BRACKETR KEY_PARR KEY_SEMICOLON
+
+    KEY_IDENTIFIER  shift, and go to state 199
+
+
+state 183
+
+   98 print: KEY_PRINT KEY_PARL KEY_STRING KEY_PARR KEY_SEMICOLON .
+
+    $default  reduce using rule 98 (print)
+
+
+state 184
+
+   67 expression: KEY_PARL expression KEY_PARR .
+
+    $default  reduce using rule 67 (expression)
+
+
+state 185
+
+   33 parameters: parameters . KEY_COMMA parameter
+   68 expression: KEY_IDENTIFIER KEY_PARL parameters . KEY_PARR KEY_SEMICOLON
+
+    KEY_PARR   shift, and go to state 200
+    KEY_COMMA  shift, and go to state 84
+
+
+state 186
+
+   62 expression: expression . KEY_PLUS expression
+   63           | expression . KEY_MIN expression
+   64           | expression . KEY_MUL expression
+   65           | expression . KEY_DIV expression
+   65           | expression KEY_DIV expression .
+
+    KEY_MIN   shift, and go to state 154
+    KEY_PLUS  shift, and go to state 155
+
+    $default  reduce using rule 65 (expression)
+
+
+state 187
+
+   62 expression: expression . KEY_PLUS expression
+   63           | expression . KEY_MIN expression
+   64           | expression . KEY_MUL expression
+   64           | expression KEY_MUL expression .
+   65           | expression . KEY_DIV expression
+
+    KEY_MIN   shift, and go to state 154
+    KEY_PLUS  shift, and go to state 155
+
+    $default  reduce using rule 64 (expression)
+
+
+state 188
+
+   62 expression: expression . KEY_PLUS expression
+   63           | expression . KEY_MIN expression
+   63           | expression KEY_MIN expression .
+   64           | expression . KEY_MUL expression
+   65           | expression . KEY_DIV expression
+
+    $default  reduce using rule 63 (expression)
+
+
+state 189
+
+   62 expression: expression . KEY_PLUS expression
+   62           | expression KEY_PLUS expression .
+   63           | expression . KEY_MIN expression
+   64           | expression . KEY_MUL expression
+   65           | expression . KEY_DIV expression
+
+    $default  reduce using rule 62 (expression)
+
+
+state 190
+
+   55 statement: KEY_IDENTIFIER KEY_PARL identifier_list KEY_PARR KEY_SEMICOLON .
+
+    $default  reduce using rule 55 (statement)
+
+
+state 191
+
+   85 case: KEY_CASE KEY_PARL condition KEY_PARR . KEY_COLON statements KEY_BREAK KEY_SEMICOLON
+
+    KEY_COLON  shift, and go to state 201
+
+
+state 192
+
+   48 statements: statements . statement
+   86 default: KEY_DEFAULT KEY_COLON statements . KEY_ENDSWITCH
+
+    KEY_WHILE       shift, and go to state 57
+    KEY_FOR         shift, and go to state 58
+    KEY_IF          shift, and go to state 59
+    KEY_SWITCH      shift, and go to state 60
+    KEY_ENDSWITCH   shift, and go to state 202
+    KEY_PRINT       shift, and go to state 61
+    KEY_IDENTIFIER  shift, and go to state 62
+
+    statement      go to state 92
+    assignment     go to state 65
+    if             go to state 66
+    if_else        go to state 67
+    if_elsif       go to state 68
+    if_elsif_else  go to state 69
+    switch         go to state 70
+    switch_start   go to state 71
+    while          go to state 72
+    for            go to state 73
+    print          go to state 74
+
+
+state 193
+
+   96 while: KEY_WHILE KEY_PARL condition KEY_PARR statements KEY_ENDWHILE .
+
+    $default  reduce using rule 96 (while)
+
+
+state 194
+
+   97 for: KEY_FOR KEY_IDENTIFIER KEY_COLON KEY_ASSIGN KEY_NUM KEY_TO . KEY_NUM KEY_STEP KEY_NUM statements KEY_ENDFOR
+
+    KEY_NUM  shift, and go to state 203
+
+
+state 195
+
+   77 else_if: KEY_ELSEIF KEY_PARL . condition KEY_PARR KEY_THEN statements
+
+    KEY_PARL        shift, and go to state 105
+    KEY_NUM         shift, and go to state 106
+    KEY_IDENTIFIER  shift, and go to state 107
+
+    condition  go to state 204
+
+
+state 196
+
+   48 statements: statements . statement
+   69 if: KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements . KEY_ENDIF
+   73 if_else: KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements . KEY_ELSE statements KEY_ENDIF
+   78 if_elsif_else: KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements . else_ifs KEY_ELSE statements KEY_ENDIF
+
+    KEY_WHILE       shift, and go to state 57
+    KEY_FOR         shift, and go to state 58
+    KEY_IF          shift, and go to state 59
+    KEY_ELSEIF      shift, and go to state 178
+    KEY_ENDIF       shift, and go to state 205
+    KEY_ELSE        shift, and go to state 206
+    KEY_SWITCH      shift, and go to state 60
+    KEY_PRINT       shift, and go to state 61
+    KEY_IDENTIFIER  shift, and go to state 62
+
+    statement      go to state 92
+    assignment     go to state 65
+    if             go to state 66
+    if_else        go to state 67
+    if_elsif       go to state 68
+    else_ifs       go to state 207
+    else_if        go to state 181
+    if_elsif_else  go to state 69
+    switch         go to state 70
+    switch_start   go to state 71
+    while          go to state 72
+    for            go to state 73
+    print          go to state 74
+
+
+state 197
+
+   74 if_elsif: KEY_IF KEY_PARL condition KEY_PARR else_ifs KEY_ENDIF .
+
+    $default  reduce using rule 74 (if_elsif)
+
+
+state 198
+
+   76 else_ifs: else_ifs else_if .
+
+    $default  reduce using rule 76 (else_ifs)
+
+
+state 199
+
+   99 print: KEY_PRINT KEY_PARL KEY_STRING KEY_PARR KEY_COMMA KEY_IDENTIFIER . KEY_BRACKETR KEY_PARR KEY_SEMICOLON
+
+    KEY_BRACKETR  shift, and go to state 208
+
+
+state 200
+
+   68 expression: KEY_IDENTIFIER KEY_PARL parameters KEY_PARR . KEY_SEMICOLON
+
+    KEY_SEMICOLON  shift, and go to state 209
+
+
+state 201
+
+   85 case: KEY_CASE KEY_PARL condition KEY_PARR KEY_COLON . statements KEY_BREAK KEY_SEMICOLON
+
+    KEY_WHILE       shift, and go to state 57
+    KEY_FOR         shift, and go to state 58
+    KEY_IF          shift, and go to state 59
+    KEY_SWITCH      shift, and go to state 60
+    KEY_PRINT       shift, and go to state 61
+    KEY_IDENTIFIER  shift, and go to state 62
+
+    statements     go to state 210
+    statement      go to state 64
+    assignment     go to state 65
+    if             go to state 66
+    if_else        go to state 67
+    if_elsif       go to state 68
+    if_elsif_else  go to state 69
+    switch         go to state 70
+    switch_start   go to state 71
+    while          go to state 72
+    for            go to state 73
+    print          go to state 74
+
+
+state 202
+
+   86 default: KEY_DEFAULT KEY_COLON statements KEY_ENDSWITCH .
+
+    $default  reduce using rule 86 (default)
+
+
+state 203
+
+   97 for: KEY_FOR KEY_IDENTIFIER KEY_COLON KEY_ASSIGN KEY_NUM KEY_TO KEY_NUM . KEY_STEP KEY_NUM statements KEY_ENDFOR
+
+    KEY_STEP  shift, and go to state 211
+
+
+state 204
+
+   77 else_if: KEY_ELSEIF KEY_PARL condition . KEY_PARR KEY_THEN statements
+   89 condition: condition . KEY_GREATER condition
+   90          | condition . KEY_LESSER condition
+   91          | condition . KEY_EQUAL condition
+   92          | condition . KEY_NOTEQUAL condition
+   93          | condition . KEY_AND condition
+   94          | condition . KEY_OR condition
+
+    KEY_PARR      shift, and go to state 212
+    KEY_AND       shift, and go to state 135
+    KEY_OR        shift, and go to state 136
+    KEY_NOTEQUAL  shift, and go to state 137
+    KEY_EQUAL     shift, and go to state 138
+    KEY_LESSER    shift, and go to state 139
+    KEY_GREATER   shift, and go to state 140
+
+
+state 205
+
+   69 if: KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements KEY_ENDIF .
+
+    $default  reduce using rule 69 (if)
+
+
+state 206
+
+   73 if_else: KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements KEY_ELSE . statements KEY_ENDIF
+
+    KEY_WHILE       shift, and go to state 57
+    KEY_FOR         shift, and go to state 58
+    KEY_IF          shift, and go to state 59
+    KEY_SWITCH      shift, and go to state 60
+    KEY_PRINT       shift, and go to state 61
+    KEY_IDENTIFIER  shift, and go to state 62
+
+    statements     go to state 213
+    statement      go to state 64
+    assignment     go to state 65
+    if             go to state 66
+    if_else        go to state 67
+    if_elsif       go to state 68
+    if_elsif_else  go to state 69
+    switch         go to state 70
+    switch_start   go to state 71
+    while          go to state 72
+    for            go to state 73
+    print          go to state 74
+
+
+state 207
+
+   76 else_ifs: else_ifs . else_if
+   78 if_elsif_else: KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements else_ifs . KEY_ELSE statements KEY_ENDIF
+
+    KEY_ELSEIF  shift, and go to state 178
+    KEY_ELSE    shift, and go to state 214
+
+    else_if  go to state 198
+
+
+state 208
+
+   99 print: KEY_PRINT KEY_PARL KEY_STRING KEY_PARR KEY_COMMA KEY_IDENTIFIER KEY_BRACKETR . KEY_PARR KEY_SEMICOLON
+
+    KEY_PARR  shift, and go to state 215
+
+
+state 209
+
+   68 expression: KEY_IDENTIFIER KEY_PARL parameters KEY_PARR KEY_SEMICOLON .
+
+    $default  reduce using rule 68 (expression)
+
+
+state 210
+
+   48 statements: statements . statement
+   85 case: KEY_CASE KEY_PARL condition KEY_PARR KEY_COLON statements . KEY_BREAK KEY_SEMICOLON
+
+    KEY_WHILE       shift, and go to state 57
+    KEY_FOR         shift, and go to state 58
+    KEY_IF          shift, and go to state 59
+    KEY_SWITCH      shift, and go to state 60
+    KEY_PRINT       shift, and go to state 61
+    KEY_BREAK       shift, and go to state 216
+    KEY_IDENTIFIER  shift, and go to state 62
+
+    statement      go to state 92
+    assignment     go to state 65
+    if             go to state 66
+    if_else        go to state 67
+    if_elsif       go to state 68
+    if_elsif_else  go to state 69
+    switch         go to state 70
+    switch_start   go to state 71
+    while          go to state 72
+    for            go to state 73
+    print          go to state 74
+
+
+state 211
+
+   97 for: KEY_FOR KEY_IDENTIFIER KEY_COLON KEY_ASSIGN KEY_NUM KEY_TO KEY_NUM KEY_STEP . KEY_NUM statements KEY_ENDFOR
+
+    KEY_NUM  shift, and go to state 217
+
+
+state 212
+
+   77 else_if: KEY_ELSEIF KEY_PARL condition KEY_PARR . KEY_THEN statements
+
+    KEY_THEN  shift, and go to state 218
+
+
+state 213
+
+   48 statements: statements . statement
+   73 if_else: KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements KEY_ELSE statements . KEY_ENDIF
+
+    KEY_WHILE       shift, and go to state 57
+    KEY_FOR         shift, and go to state 58
+    KEY_IF          shift, and go to state 59
+    KEY_ENDIF       shift, and go to state 219
+    KEY_SWITCH      shift, and go to state 60
+    KEY_PRINT       shift, and go to state 61
+    KEY_IDENTIFIER  shift, and go to state 62
+
+    statement      go to state 92
+    assignment     go to state 65
+    if             go to state 66
+    if_else        go to state 67
+    if_elsif       go to state 68
+    if_elsif_else  go to state 69
+    switch         go to state 70
+    switch_start   go to state 71
+    while          go to state 72
+    for            go to state 73
+    print          go to state 74
+
+
+state 214
+
+   78 if_elsif_else: KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements else_ifs KEY_ELSE . statements KEY_ENDIF
+
+    KEY_WHILE       shift, and go to state 57
+    KEY_FOR         shift, and go to state 58
+    KEY_IF          shift, and go to state 59
+    KEY_SWITCH      shift, and go to state 60
+    KEY_PRINT       shift, and go to state 61
+    KEY_IDENTIFIER  shift, and go to state 62
+
+    statements     go to state 220
+    statement      go to state 64
+    assignment     go to state 65
+    if             go to state 66
+    if_else        go to state 67
+    if_elsif       go to state 68
+    if_elsif_else  go to state 69
+    switch         go to state 70
+    switch_start   go to state 71
+    while          go to state 72
+    for            go to state 73
+    print          go to state 74
+
+
+state 215
+
+   99 print: KEY_PRINT KEY_PARL KEY_STRING KEY_PARR KEY_COMMA KEY_IDENTIFIER KEY_BRACKETR KEY_PARR . KEY_SEMICOLON
+
+    KEY_SEMICOLON  shift, and go to state 221
+
+
+state 216
+
+   85 case: KEY_CASE KEY_PARL condition KEY_PARR KEY_COLON statements KEY_BREAK . KEY_SEMICOLON
+
+    KEY_SEMICOLON  shift, and go to state 222
+
+
+state 217
+
+   97 for: KEY_FOR KEY_IDENTIFIER KEY_COLON KEY_ASSIGN KEY_NUM KEY_TO KEY_NUM KEY_STEP KEY_NUM . statements KEY_ENDFOR
+
+    KEY_WHILE       shift, and go to state 57
+    KEY_FOR         shift, and go to state 58
+    KEY_IF          shift, and go to state 59
+    KEY_SWITCH      shift, and go to state 60
+    KEY_PRINT       shift, and go to state 61
+    KEY_IDENTIFIER  shift, and go to state 62
+
+    statements     go to state 223
+    statement      go to state 64
+    assignment     go to state 65
+    if             go to state 66
+    if_else        go to state 67
+    if_elsif       go to state 68
+    if_elsif_else  go to state 69
+    switch         go to state 70
+    switch_start   go to state 71
+    while          go to state 72
+    for            go to state 73
+    print          go to state 74
+
+
+state 218
+
+   77 else_if: KEY_ELSEIF KEY_PARL condition KEY_PARR KEY_THEN . statements
+
+    KEY_WHILE       shift, and go to state 57
+    KEY_FOR         shift, and go to state 58
+    KEY_IF          shift, and go to state 59
+    KEY_SWITCH      shift, and go to state 60
+    KEY_PRINT       shift, and go to state 61
+    KEY_IDENTIFIER  shift, and go to state 62
+
+    statements     go to state 224
+    statement      go to state 64
+    assignment     go to state 65
+    if             go to state 66
+    if_else        go to state 67
+    if_elsif       go to state 68
+    if_elsif_else  go to state 69
+    switch         go to state 70
+    switch_start   go to state 71
+    while          go to state 72
+    for            go to state 73
+    print          go to state 74
+
+
+state 219
+
+   73 if_else: KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements KEY_ELSE statements KEY_ENDIF .
+
+    $default  reduce using rule 73 (if_else)
+
+
+state 220
+
+   48 statements: statements . statement
+   78 if_elsif_else: KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements else_ifs KEY_ELSE statements . KEY_ENDIF
+
+    KEY_WHILE       shift, and go to state 57
+    KEY_FOR         shift, and go to state 58
+    KEY_IF          shift, and go to state 59
+    KEY_ENDIF       shift, and go to state 225
+    KEY_SWITCH      shift, and go to state 60
+    KEY_PRINT       shift, and go to state 61
+    KEY_IDENTIFIER  shift, and go to state 62
+
+    statement      go to state 92
+    assignment     go to state 65
+    if             go to state 66
+    if_else        go to state 67
+    if_elsif       go to state 68
+    if_elsif_else  go to state 69
+    switch         go to state 70
+    switch_start   go to state 71
+    while          go to state 72
+    for            go to state 73
+    print          go to state 74
+
+
+state 221
+
+   99 print: KEY_PRINT KEY_PARL KEY_STRING KEY_PARR KEY_COMMA KEY_IDENTIFIER KEY_BRACKETR KEY_PARR KEY_SEMICOLON .
+
+    $default  reduce using rule 99 (print)
+
+
+state 222
+
+   85 case: KEY_CASE KEY_PARL condition KEY_PARR KEY_COLON statements KEY_BREAK KEY_SEMICOLON .
+
+    $default  reduce using rule 85 (case)
+
+
+state 223
+
+   48 statements: statements . statement
+   97 for: KEY_FOR KEY_IDENTIFIER KEY_COLON KEY_ASSIGN KEY_NUM KEY_TO KEY_NUM KEY_STEP KEY_NUM statements . KEY_ENDFOR
+
+    KEY_WHILE       shift, and go to state 57
+    KEY_FOR         shift, and go to state 58
+    KEY_ENDFOR      shift, and go to state 226
+    KEY_IF          shift, and go to state 59
+    KEY_SWITCH      shift, and go to state 60
+    KEY_PRINT       shift, and go to state 61
+    KEY_IDENTIFIER  shift, and go to state 62
+
+    statement      go to state 92
+    assignment     go to state 65
+    if             go to state 66
+    if_else        go to state 67
+    if_elsif       go to state 68
+    if_elsif_else  go to state 69
+    switch         go to state 70
+    switch_start   go to state 71
+    while          go to state 72
+    for            go to state 73
+    print          go to state 74
+
+
+state 224
+
+   48 statements: statements . statement
+   77 else_if: KEY_ELSEIF KEY_PARL condition KEY_PARR KEY_THEN statements .
+
+    KEY_WHILE       shift, and go to state 57
+    KEY_FOR         shift, and go to state 58
+    KEY_IF          shift, and go to state 59
+    KEY_SWITCH      shift, and go to state 60
+    KEY_PRINT       shift, and go to state 61
+    KEY_IDENTIFIER  shift, and go to state 62
+
+    $default  reduce using rule 77 (else_if)
+
+    statement      go to state 92
+    assignment     go to state 65
+    if             go to state 66
+    if_else        go to state 67
+    if_elsif       go to state 68
+    if_elsif_else  go to state 69
+    switch         go to state 70
+    switch_start   go to state 71
+    while          go to state 72
+    for            go to state 73
+    print          go to state 74
+
+
+state 225
+
+   78 if_elsif_else: KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements else_ifs KEY_ELSE statements KEY_ENDIF .
+
+    $default  reduce using rule 78 (if_elsif_else)
+
+
+state 226
+
+   97 for: KEY_FOR KEY_IDENTIFIER KEY_COLON KEY_ASSIGN KEY_NUM KEY_TO KEY_NUM KEY_STEP KEY_NUM statements KEY_ENDFOR .
+
+    $default  reduce using rule 97 (for)
