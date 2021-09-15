@@ -1,6 +1,6 @@
 PROGRAM HOTSAUCE
 
-FUNCTION foo(INT a)
+FUNCTION foo(INTEGER a)
 VARS
 INTEGER tsotso;
 tsotso = 0;
@@ -14,7 +14,7 @@ STARTMAIN
 
 VARS
 CHAR b;
-INTEGER c;
+INTEGER c,e;
 c = 5;
 %This is a comment
 FOR counter:= 1 TO 5 STEP 1

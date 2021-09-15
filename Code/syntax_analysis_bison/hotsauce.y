@@ -70,13 +70,53 @@ main:
 
 vardeclaration:
   //empty
-  | KEY_VARS variables;
-
-
-body:
-  //empty
-  | vardeclaration statements
+  | KEY_VARS variables_decl
   ;
+
+variables_decl:
+  variable_decl
+  | variables_decl variable_decl
+  ;
+
+variable_decl:
+  //empty
+  | int_decl
+  | char_decl
+  | char_array_decl
+  | int_array_decl
+  ;
+
+int_decl:
+  int KEY_SEMICOLON
+  ;
+
+char_decl:
+  char KEY_SEMICOLON
+  ;
+
+int_array_decl:
+  KEY_INT KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON ;
+
+char_array_decl:
+  KEY_CHAR KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON ;
+
+int:
+  KEY_INT identifier_list
+  ;
+
+char:
+  KEY_CHAR identifier_list
+  ;
+
+int_array:
+  KEY_INT KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR
+  ;
+
+char_array:
+  KEY_CHAR KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR
+  ;
+
+
 
 /*** start of structs ***/
 
@@ -113,12 +153,26 @@ function:
   | KEY_FUNCTION KEY_IDENTIFIER KEY_PARL parameters KEY_PARR body return KEY_ENDFUNCTION {}
   ;
 
+
+
 parameters:
-  variable
-  | parameters KEY_COMMA variable
+  parameter
+  | parameters KEY_COMMA parameter
   ;
 
+parameter:
+  int
+  | char
+  | int_array
+  | char_array
+  | struct_call
+  :
 
+
+body:
+  //empty
+  | vardeclaration statements
+  ;
 
 return:
   | KEY_RETURN return_val
@@ -130,39 +184,9 @@ return_val:
   | KEY_CHARACTER
 	;
 
-variables:
-  variable
-  | variables variable
-	;
-
-variable:
-  //empty
-  | int
-  | char
-  | char_array
-  | int_array
-  | struct_call
-	;
-
-int:
-  KEY_INT identifier_list KEY_SEMICOLON
-  ;
-
-char:
-  KEY_CHAR identifier_list KEY_SEMICOLON
-  ;
-
 identifier_list:
   KEY_IDENTIFIER
   | identifier_list KEY_COMMA KEY_IDENTIFIER
-	;
-
-int_array:
-  KEY_INT KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON
-  ;
-
-char_array:
-  KEY_CHAR KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON
   ;
 
 statements:
