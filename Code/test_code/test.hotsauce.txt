@@ -21,10 +21,11 @@ STARTMAIN
 VARS
 CHAR b;
 INTEGER c,e;
-c = 5;
+c = 4;
 
 %This is a comment
 
+IF (c<5) THEN
 FOR counter:= 1 TO 5 STEP 1
 foo(c);
 
@@ -36,5 +37,11 @@ comment */
 
 c = c - 1;
 ENDFOR
+
+ELSE
+
+PRINT("ERROR");
+
+ENDIF
 
 ENDMAIN

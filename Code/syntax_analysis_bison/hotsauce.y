@@ -153,8 +153,6 @@ function:
   | KEY_FUNCTION KEY_IDENTIFIER KEY_PARL parameters KEY_PARR body return KEY_ENDFUNCTION {}
   ;
 
-
-
 parameters:
   parameter
   | parameters KEY_COMMA parameter
@@ -166,11 +164,10 @@ parameter:
   | int_array
   | char_array
   | struct_call
-  :
-
+  ;
 
 body:
-  | vardeclaration statements
+  vardeclaration statements
   ;
 
 return:
@@ -194,14 +191,12 @@ statements:
   ;
 
 statement:
-  //empty
-  | assignment
+  assignment
   | while
   | for
   | if
   | switch
   | print
-  | break
   | KEY_IDENTIFIER KEY_PARL identifier_list KEY_PARR KEY_SEMICOLON {}
   | KEY_IDENTIFIER KEY_PARL KEY_PARR KEY_SEMICOLON {}
 	;
@@ -226,15 +221,60 @@ expression:
 
 /*** IF ***/
 
-if: KEY_IF KEY_PARL condition KEY_PARR KEY_THEN  statements elseif else KEY_ENDIF;
-
-elseif: elseif KEY_ELSEIF KEY_PARL condition KEY_PARR  statements
-  | KEY_ELSEIF KEY_PARL condition KEY_PARR  statements
-  | /* empty */
+if:
+	KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements KEY_ENDIF
+	| if_else
+	| if_elsif
+  | if_elsif_else
   ;
 
-else: KEY_ELSE KEY_PARL condition KEY_PARR  statements
-  | /* empty */
+if_else:
+  KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements KEY_ELSE statements KEY_ENDIF
+  ;
+
+if_elsif:
+  KEY_IF KEY_PARL condition KEY_PARR else_ifs KEY_ENDIF
+  ;
+
+else_ifs:
+  else_if
+  |else_ifs else_if
+  ;
+
+else_if:
+  KEY_ELSEIF KEY_PARL condition KEY_PARR KEY_THEN statements
+  ;
+
+if_elsif_else:
+  KEY_IF KEY_PARL condition KEY_PARR KEY_THEN statements else_ifs KEY_ELSE statements KEY_ENDIF
+  ;
+
+/*** SWITCH ***/
+
+switch:
+  switch_start cases_term
+	| switch_start cases default
+	;
+
+switch_start:
+	KEY_SWITCH KEY_PARL condition KEY_PARR
+  ;
+
+cases_term:
+  cases KEY_ENDSWITCH
+  ;
+
+cases:
+	case
+	| cases case
+	;
+
+case:
+	KEY_CASE KEY_PARL condition KEY_PARR KEY_COLON statements break
+  ;
+
+default:
+	KEY_DEFAULT KEY_COLON statements KEY_ENDSWITCH
   ;
 
 
@@ -250,29 +290,6 @@ condition:
   | KEY_PARL condition KEY_PARR
   ;
 
-/*** SWITCH ***/
-
-switch:
-  switch_start cases KEY_ENDSWITCH
-	| switch_start cases default KEY_ENDSWITCH
-	;
-
-switch_start:
-	KEY_SWITCH KEY_PARL condition KEY_PARR
-  ;
-
-cases:
-	case
-	| cases case
-	;
-
-case:
-	KEY_CASE KEY_PARL condition KEY_PARR KEY_COLON statements KEY_BREAK
-  ;
-
-default:
-	KEY_DEFAULT KEY_COLON statements
-  ;
 
 /*** WHILE ***/
 
@@ -285,13 +302,8 @@ for: KEY_FOR KEY_IDENTIFIER KEY_COLON KEY_ASSIGN KEY_NUM KEY_TO KEY_NUM KEY_STEP
 /*** PRINT ***/
 
 print:
-  KEY_PRINT KEY_PARL KEY_PARR KEY_SEMICOLON
-  | KEY_PRINT KEY_PARL KEY_STRING KEY_PARR KEY_SEMICOLON
-  |  KEY_PRINT KEY_PARL KEY_STRING KEY_PARR print_data KEY_BRACKETR KEY_PARR KEY_SEMICOLON
-  ;
-
-print_data:
-  KEY_COMMA KEY_IDENTIFIER
+  KEY_PRINT KEY_PARL KEY_STRING KEY_PARR KEY_SEMICOLON
+  |  KEY_PRINT KEY_PARL KEY_STRING KEY_PARR KEY_COMMA KEY_IDENTIFIER KEY_BRACKETR KEY_PARR KEY_SEMICOLON
   ;
 
 /*** BREAK ***/
