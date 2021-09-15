@@ -19,6 +19,7 @@ extern int  yywrap;
 void yyerror(const char* s);
 
 %}
+<<<<<<< HEAD
 
 %code requires
 {
@@ -34,6 +35,8 @@ void yyerror(const char* s);
 }
 
 %locations
+=======
+>>>>>>> origin/main
 /*** Here, we declare the tokens ***/
 
 %token KEY_PROGRAM
