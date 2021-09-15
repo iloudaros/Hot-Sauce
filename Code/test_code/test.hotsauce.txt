@@ -1,6 +1,6 @@
 PROGRAM HOTSAUCE
 
-FUNCTION foo(a)
+FUNCTION foo(INT a)
 VARS
 INTEGER tsotso;
 tsotso = 0;
