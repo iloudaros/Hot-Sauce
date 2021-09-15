@@ -121,7 +121,7 @@ char_array:
 /*** start of structs ***/
 
 struct_decl:
-	  KEY_STRUCT KEY_IDENTIFIER vardeclaration KEY_SEMICOLON KEY_ENDSTRUCT
+	  KEY_STRUCT KEY_IDENTIFIER vardeclaration KEY_ENDSTRUCT
     ;
 
 typedef_decl:
@@ -170,7 +170,6 @@ parameter:
 
 
 body:
-  //empty
   | vardeclaration statements
   ;
 
