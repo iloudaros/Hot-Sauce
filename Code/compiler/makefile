@@ -4,7 +4,7 @@
 iloudaros: ../lexical_analysis_flex/hotsauce.l ../syntax_analysis_bison/hotsauce.y
 	cp ../lexical_analysis_flex/hotsauce.l ./
 	cp ../syntax_analysis_bison/hotsauce.y ./
-	cp ../test_code/test.hotsauce.txt ./
+	cp ../test_code/test.hotsauce ./
 	cp ../exec_helper/exec_helper.c ./
 	bison -t -d hotsauce.y
 	flex -d hotsauce.l
@@ -48,5 +48,5 @@ clean:
 	rm -f exec_helper.c
 	rm -f hotsauce.tab.o
 	rm -f lex.yy.o
-	rm -f test.hotsauce.txt
+	rm -f test.hotsauce
 	rm -f hotsauce.output
