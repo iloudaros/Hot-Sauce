@@ -23,8 +23,8 @@ whitespace	[ \t\v\n\f]
 
 ^[ ]*\n	   			 {/* Ignore blank lines. */   }
 ^[\t]*\n   			 {/* Ignore blank lines. */   }
-[%].*			    	 { /*Ignore comments*/        }
-[/][*][^*]*[*]+([^*/][^*]*[*]+)*[/]   		 { /*Ignore this type of comments*/}
+[%].*			     { /*Ignore comments*/        }
+[/][*][^*]*[*]+([^*/][^*]*[*]+)*[/]   		 { /*Ignore multiline comments*/}
 
 "PROGRAM"       {return KEY_PROGRAM;}
 "FUNCTION"      {return KEY_FUNCTION;}
