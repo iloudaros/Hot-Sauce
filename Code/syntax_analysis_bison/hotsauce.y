@@ -35,7 +35,7 @@ int found_flag = 0;
 
 %union
 {
-  char* id;
+  char id[30];
 }
 
 /*** Here, we declare the tokens ***/
@@ -80,7 +80,7 @@ int found_flag = 0;
 
 //Declarations
 program:
-  KEY_PROGRAM KEY_IDENTIFIER struct_decls functions main {printf("Parsed Successfully!🔥");}
+  KEY_PROGRAM KEY_IDENTIFIER struct_decls functions main {printf("Parsed Successfully!🔥 \n");}
   ;
 
 main:
