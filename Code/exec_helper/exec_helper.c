@@ -18,10 +18,10 @@ int main() {
 	}while((choice!='y') && (choice!='n'));
 
 
-	if (choice=='y') 
+	if (choice=='y')
 	{
 		system("clear");
-		system("./hotsauce test.hotsauce.txt");
+		system("./hotsauce test.hotsauce");
 	}
 	else
 	{

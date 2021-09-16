@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "hotsauce.tab.h"
+
+static void skip_multiple_line_comment(void);
 %}
 
 %option noyywrap
@@ -74,6 +76,11 @@ whitespace	[ \t\v\n\f]
 ")"             {return KEY_PARR;}
 "["             {return KEY_BRACKETL;}
 "]"             {return KEY_BRACKETR;}
+"/*"            { puts("long comment begins ");
+	                    skip_multiple_line_comment();
+	                    puts("long comment ends");
+								}
+
 \n							{}
 
 {identifier}    {
@@ -90,3 +97,33 @@ whitespace	[ \t\v\n\f]
 {whitespace}    {  }
 
 %%
+
+
+static void skip_multiple_line_comment(void)
+{
+  int c;
+
+  for(;;)
+  {
+    switch(input())
+    {
+      /* We expect ending the comment first before EOF */
+      case EOF:
+        fprintf(stderr, "Error unclosed comment, expect */\n");
+        exit(-1);
+        goto done;
+      break;
+      /* Is it the end of comment? */
+      case '*':
+        if((c = input()) == '/') goto done;
+        unput(c);
+        break;
+      default:
+        /* skip this character */
+        break;
+    }
+  }
+
+done:
+  /* exit entry */ ;
+}
