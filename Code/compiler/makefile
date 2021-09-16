@@ -49,3 +49,4 @@ clean:
 	rm -f hotsauce.tab.o
 	rm -f lex.yy.o
 	rm -f test.hotsauce.txt
+	rm -f hotsauce.output
