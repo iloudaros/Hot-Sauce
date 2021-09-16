@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define CHECK_SIZE 200
+//#define 10 50
 
 //Declarations of flex derived tools
 
@@ -20,9 +20,9 @@ extern int  yywrap;
 int yylex();
 void yyerror(const char* s);
 
-char decl_vars [CHECK_SIZE][50];
-char decl_funcs [CHECK_SIZE][50];
-char decl_structs [CHECK_SIZE][50];
+char decl_vars [10][30];
+char decl_funcs [10][30];
+char decl_structs [10][30];
 
 int var_count = 0;
 int fun_count = 0;
@@ -114,10 +114,10 @@ char_decl:
   ;
 
 int_array_decl:
-  KEY_INT KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON  { strcpy(decl_vars[var_count, $2); var_count++; } ;
+  KEY_INT KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON  { strcpy(decl_vars[var_count], $2); var_count++; } ;
 
 char_array_decl:
-  KEY_CHAR KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON { strcpy(decl_vars[var_count, $2); var_count++; } ;
+  KEY_CHAR KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR KEY_SEMICOLON { strcpy(decl_vars[var_count], $2); var_count++; } ;
 
 int:
   KEY_INT identifier_list
@@ -128,21 +128,21 @@ char:
   ;
 
 int_array:
-  KEY_INT KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR { strcpy(decl_vars[var_count, $2); var_count++; }
+  KEY_INT KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR { strcpy(decl_vars[var_count], $2); var_count++; }
   ;
 
 char_array:
-  KEY_CHAR KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR { strcpy(decl_vars[var_count, $2); var_count++; }
+  KEY_CHAR KEY_IDENTIFIER KEY_BRACKETL KEY_NUM KEY_BRACKETR { strcpy(decl_vars[var_count], $2); var_count++; }
   ;
 
 /*** start of structs ***/
 
 struct_decl:
-	  KEY_STRUCT KEY_IDENTIFIER vardeclaration KEY_ENDSTRUCT { strcpy(decl_structs[struct_count, $2); struct_count++; }
+	  KEY_STRUCT KEY_IDENTIFIER vardeclaration KEY_ENDSTRUCT { strcpy(decl_structs[struct_count], $2); struct_count++; }
     ;
 
 typedef_decl:
-	  KEY_TYPEDEF KEY_STRUCT KEY_IDENTIFIER vardeclaration KEY_SEMICOLON KEY_IDENTIFIER KEY_ENDSTRUCT { strcpy(decl_structs[struct_decls], $6); struct_decls++; }
+	  KEY_TYPEDEF KEY_STRUCT KEY_IDENTIFIER vardeclaration KEY_SEMICOLON KEY_IDENTIFIER KEY_ENDSTRUCT { strcpy(decl_structs[struct_count], $6); struct_count++; }
     ;
 
 struct_decls:
@@ -155,19 +155,20 @@ struct_decls:
 
 struct_call:
 	  KEY_STRUCT KEY_IDENTIFIER {
-                                int flag = 0;
+                                found_flag = 0;
 
-                                for(int i=0; i<=CHECK_SIZE; i++)
+                                for(int i=0; i<10 ; i++)
                                 {
-                                  if(strcmp($2,decl_structs[i]==0)
+                                  if(strcmp($2,decl_structs[i])==0)
                                   {
-                                    flag = 1;
+                                    found_flag = 1;
                                     break;
                                   }
 
-                                  if(flag == 0)
+                                  if(found_flag == 0)
                                   {
                                     printf("Struct %s in line %d not declared. \n",$2, yylineno);
+                                    exit(1);
                                   }
 
                                 }
@@ -183,7 +184,7 @@ functions:
 
 function:
   //empty
-  | KEY_FUNCTION KEY_IDENTIFIER KEY_PARL parameters KEY_PARR body return KEY_ENDFUNCTION { strcpy(decl_funcs[fun_count, $2); fun_count++; }
+  | KEY_FUNCTION KEY_IDENTIFIER KEY_PARL parameters KEY_PARR body return KEY_ENDFUNCTION { strcpy(decl_funcs[fun_count], $2); fun_count++; }
   ;
 
 parameters:
@@ -209,18 +210,18 @@ return:
 
 return_val:
   KEY_IDENTIFIER  {
-                    flag = 0;
+                    found_flag = 0;
 
-                    for(int i=0; i<=CHECK_SIZE; i++)
+                    for(int i=0; i<10 ; i++)
                     {
-                      if(strcmp($1,decl_vars[i]==0)
+                      if(strcmp($1,decl_vars[i])==0)
                       {
-                        flag = 1;
+                        found_flag = 1;
                         break;
                       }
                     }
 
-                    if(flag == 0)
+                    if(found_flag == 0)
                     {
                       printf("Variable %s in line %d not declared. \n",$1, yylineno);
                       exit(1);
@@ -249,18 +250,18 @@ statement:
   | switch
   | print
   | KEY_IDENTIFIER KEY_PARL identifier_list KEY_PARR KEY_SEMICOLON {
-                                                                      flag = 0;
+                                                                      found_flag = 0;
 
-                                                                      for(int i=0; i<=CHECK_SIZE; i++)
+                                                                      for(int i=0; i<10 ; i++)
                                                                       {
-                                                                        if(strcmp($1,decl_funcs[i]==0)
+                                                                        if(strcmp($1,decl_funcs[i])==0)
                                                                         {
-                                                                          flag = 1;
+                                                                          found_flag = 1;
                                                                           break;
                                                                         }
                                                                       }
 
-                                                                      if(flag == 0)
+                                                                      if(found_flag == 0)
                                                                       {
                                                                         printf("Function %s in line %d not declared. \n",$1, yylineno);
                                                                         exit(1);
@@ -268,18 +269,18 @@ statement:
 
                                                                     }
   | KEY_IDENTIFIER KEY_PARL KEY_PARR KEY_SEMICOLON {
-                                                      flag = 0;
+                                                      found_flag = 0;
 
-                                                      for(int i=0; i<=CHECK_SIZE; i++)
+                                                      for(int i=0; i<10 ; i++)
                                                       {
-                                                        if(strcmp($1,decl_funcs[i]==0)
+                                                        if(strcmp($1,decl_funcs[i])==0)
                                                         {
-                                                          flag = 1;
+                                                          found_flag = 1;
                                                           break;
                                                         }
                                                       }
 
-                                                      if(flag == 0)
+                                                      if(found_flag == 0)
                                                       {
                                                         printf("Function %s in line %d not declared. \n",$1, yylineno);
                                                         exit(1);
@@ -290,18 +291,18 @@ statement:
 
 assignment:
   KEY_IDENTIFIER KEY_ASSIGN expression KEY_SEMICOLON {
-                                                        flag = 0;
+                                                        found_flag = 0;
 
-                                                        for(int i=0; i<=CHECK_SIZE; i++)
+                                                        for(int i=0; i<10 ; i++)
                                                         {
-                                                          if(strcmp($1,decl_vars[i]==0)
+                                                          if(strcmp($1,decl_vars[i])==0)
                                                           {
-                                                            flag = 1;
+                                                            found_flag = 1;
                                                             break;
                                                           }
                                                         }
 
-                                                        if(flag == 0)
+                                                        if(found_flag == 0)
                                                         {
                                                           printf("Variable %s in line %d not declared. \n",$1, yylineno);
                                                           exit(1);
@@ -309,18 +310,18 @@ assignment:
 
                                                       }
   | KEY_IDENTIFIER KEY_ASSIGN KEY_CHARACTER KEY_SEMICOLON {
-                                                            flag = 0;
+                                                            found_flag = 0;
 
-                                                            for(int i=0; i<=CHECK_SIZE; i++)
+                                                            for(int i=0; i<10 ; i++)
                                                             {
-                                                              if(strcmp($1,decl_vars[i]==0)
+                                                              if(strcmp($1,decl_vars[i])==0)
                                                               {
-                                                                flag = 1;
+                                                                found_flag = 1;
                                                                 break;
                                                               }
                                                             }
 
-                                                            if(flag == 0)
+                                                            if(found_flag == 0)
                                                             {
                                                               printf("Variable %s in line %d not declared. \n",$1, yylineno);
                                                               exit(1);
@@ -332,18 +333,18 @@ assignment:
 expression:
   KEY_NUM
   | KEY_IDENTIFIER {
-                      flag = 0;
+                      found_flag = 0;
 
-                      for(int i=0; i<=CHECK_SIZE; i++)
+                      for(int i=0; i<10 ; i++)
                       {
-                        if(strcmp($1,decl_vars[i]==0)
+                        if(strcmp($1,decl_vars[i])==0)
                         {
-                          flag = 1;
+                          found_flag = 1;
                           break;
                         }
                       }
 
-                      if(flag == 0)
+                      if(found_flag == 0)
                       {
                         printf("Variable %s in line %d not declared. \n",$1, yylineno);
                         exit(1);
@@ -357,18 +358,18 @@ expression:
   | KEY_MIN expression %prec KEY_MIN
   | KEY_PARL expression KEY_PARR
   | KEY_IDENTIFIER KEY_PARL parameters KEY_PARR KEY_SEMICOLON {
-                                                                flag = 0;
+                                                                found_flag = 0;
 
-                                                                for(int i=0; i<=CHECK_SIZE; i++)
+                                                                for(int i=0; i<10 ; i++)
                                                                 {
-                                                                  if(strcmp($1,decl_funcs[i]==0)
+                                                                  if(strcmp($1,decl_funcs[i])==0)
                                                                   {
-                                                                    flag = 1;
+                                                                    found_flag = 1;
                                                                     break;
                                                                   }
                                                                 }
 
-                                                                if(flag == 0)
+                                                                if(found_flag == 0)
                                                                 {
                                                                   printf("Function %s in line %d not declared. \n",$1, yylineno);
                                                                   exit(1);
@@ -439,18 +440,18 @@ default:
 condition:
   KEY_NUM
   | KEY_IDENTIFIER {
-                      flag = 0;
+                      found_flag = 0;
 
-                      for(int i=0; i<=CHECK_SIZE; i++)
+                      for(int i=0; i<10 ; i++)
                       {
-                        if(strcmp($1,decl_vars[i]==0)
+                        if(strcmp($1,decl_vars[i])==0)
                         {
-                          flag = 1;
+                          found_flag = 1;
                           break;
                         }
                       }
 
-                      if(flag == 0)
+                      if(found_flag == 0)
                       {
                         printf("Variable %s in line %d not declared. \n",$1, yylineno);
                         exit(1);
@@ -474,18 +475,18 @@ while: KEY_WHILE KEY_PARL condition KEY_PARR statements KEY_ENDWHILE;
 /*** FOR ***/
 
 for: KEY_FOR KEY_IDENTIFIER KEY_COLON KEY_ASSIGN KEY_NUM KEY_TO KEY_NUM KEY_STEP KEY_NUM statements KEY_ENDFOR  {
-                                                                                                                  flag = 0;
+                                                                                                                  found_flag = 0;
 
-                                                                                                                  for(int i=0; i<=CHECK_SIZE; i++)
+                                                                                                                  for(int i=0; i<10 ; i++)
                                                                                                                   {
-                                                                                                                    if(strcmp($2,decl_vars[i]==0)
+                                                                                                                    if(strcmp($2,decl_vars[i])==0)
                                                                                                                     {
-                                                                                                                      flag = 1;
+                                                                                                                      found_flag = 1;
                                                                                                                       break;
                                                                                                                     }
                                                                                                                   }
 
-                                                                                                                  if(flag == 0)
+                                                                                                                  if(found_flag == 0)
                                                                                                                   {
                                                                                                                     printf("Variable %s in line %d not declared. \n",$2, yylineno);
                                                                                                                     exit(1);
@@ -499,18 +500,18 @@ for: KEY_FOR KEY_IDENTIFIER KEY_COLON KEY_ASSIGN KEY_NUM KEY_TO KEY_NUM KEY_STEP
 print:
   KEY_PRINT KEY_PARL KEY_STRING KEY_PARR KEY_SEMICOLON
   |  KEY_PRINT KEY_PARL KEY_STRING KEY_PARR KEY_COMMA KEY_IDENTIFIER KEY_BRACKETR KEY_PARR KEY_SEMICOLON  {
-                                                                                                            flag = 0;
+                                                                                                            found_flag = 0;
 
-                                                                                                            for(int i=0; i<=CHECK_SIZE; i++)
+                                                                                                            for(int i=0; i<10 ; i++)
                                                                                                             {
-                                                                                                              if(strcmp($6,decl_vars[i]==0)
+                                                                                                              if(strcmp($6,decl_vars[i])==0)
                                                                                                               {
-                                                                                                                flag = 1;
+                                                                                                                found_flag = 1;
                                                                                                                 break;
                                                                                                               }
                                                                                                             }
 
-                                                                                                            if(flag == 0)
+                                                                                                            if(found_flag == 0)
                                                                                                             {
                                                                                                               printf("Variable %s in line %d not declared. \n",$6, yylineno);
                                                                                                               exit(1);
