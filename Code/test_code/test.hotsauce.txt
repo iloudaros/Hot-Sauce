@@ -29,6 +29,8 @@ IF (c<5) THEN
 FOR counter:= 1 TO 5 STEP 1
 foo(c);
 
+kati = 3;
+
 /* This
 is
 a
