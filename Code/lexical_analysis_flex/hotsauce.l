@@ -84,6 +84,7 @@ whitespace	[ \t\v\n\f]
 \n							{}
 
 {identifier}    {
+									yylval.str = strdup(yytext);
 				          return KEY_IDENTIFIER;
                 }
 
