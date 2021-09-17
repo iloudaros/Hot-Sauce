@@ -21,7 +21,7 @@ printf("      |`XXX |  |  \n");
 printf("      |        |  \n");
 printf("      `-......-\' \n");
 
-	printf("\t=============\n\nDo you wanna compile the input \"test\" using hotsauce?[y/n]\n");
+	printf("     =============\n\nDo you wanna compile the input \"test\" using hotsauce?[y/n]\n");
 	char choice;
 	char dump;
 	do{
@@ -43,7 +43,7 @@ printf("      `-......-\' \n");
 	else
 	{
 		system("clear");
-		printf("\n\n*****************************************************************\n|  ✅  Hotsauce is ready for use.                               |\n|  📣  test.hotsauce.txt has been copied in the local directory.|\n*****************************************************************\n");
+		printf("\n\n*****************************************************************\n|  ✅  Hotsauce is ready for use.                               |\n|  📣  test.hotsauce has been copied in the local directory.    |\n*****************************************************************\n");
 	}
 
 }
