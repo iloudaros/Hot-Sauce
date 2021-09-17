@@ -1,0 +1,49 @@
+PROGRAM HOTSAUCE
+
+STRUCT human
+VARS
+CHAR onoma;
+INTEGER ilikia;
+ENDSTRUCT
+
+FUNCTION foo(INTEGER a)
+VARS
+INTEGER tsotso;
+tsotso = 0;
+WHILE (tsotso < 5)
+tsotso = tsotso + 1;
+ENDWHILE
+RETURN a
+END_FUNCTION
+
+STARTMAIN
+
+VARS
+CHAR b;
+INTEGER c,e;
+c = 4;
+
+%This is a comment
+
+IF (c<5) THEN
+FOR counter:= 1 TO 5 STEP 1
+foo(c);
+
+kati = 3;
+
+/* This
+is
+a
+multiline
+comment */
+
+c = c - 1;
+ENDFOR
+
+ELSE
+
+PRINT("ERROR");
+
+ENDIF
+
+ENDMAIN
