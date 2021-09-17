@@ -3,7 +3,24 @@
 
 int main() {
 
-//	system("clear");
+system("clear");
+printf("          __ \n");
+printf("         [__] \n");
+printf("         |  | \n");
+printf("         |  | \n");
+printf("         |  | \n");
+printf("         |  | \n");
+printf("         |  | \n");
+printf("       / -.  \\   \n");
+printf("      /-._|   \\  \n");
+printf("      | `      |   \n");
+printf("      |-....   |   \n");
+printf("      |\'HOT\'|  | \n");
+printf("      |SAUCE|  |  \n");
+printf("      |`XXX |  |  \n");
+printf("      |        |  \n");
+printf("      `-......-\' \n");
+
 	printf("\t=============\n\nDo you wanna compile the input \"test\" using hotsauce?[y/n]\n");
 	char choice;
 	char dump;
